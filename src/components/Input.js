@@ -1,18 +1,27 @@
 import React from "react";
-import { TextInput, StyleSheet } from "react-native";
+import { TextInput, StyleSheet, Text, View } from "react-native";
 import Colors from "../constants/Colors";
 
 const Input = (props) => {
-  return <TextInput {...props} style={styles.input} />;
+  return (
+    <View>
+      <Text style={{ paddingLeft: 10, fontSize: 14 }}>{props.title}</Text>
+      <TextInput
+        {...props}
+        style={{ ...styles.input, marginBottom: props.title ? 20 : 0 }}
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
   input: {
     borderWidth: 2,
     borderColor: Colors.secondary,
-    borderRadius: 20,
-    padding: 10,
-    marginVertical: 7,
+    borderRadius: 25,
+    padding: 12,
+    paddingHorizontal: 20,
+    marginVertical: 5,
   },
 });
 
