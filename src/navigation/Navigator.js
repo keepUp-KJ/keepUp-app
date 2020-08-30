@@ -13,7 +13,7 @@ const Navigator = createSwitchNavigator(
     ForgotPassword: ForgotPasswordScreen,
   },
   {
-    initialRouteName: "SignUp",
+    // initialRouteName: "SignUp",
   }
 );
 

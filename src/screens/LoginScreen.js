@@ -51,9 +51,15 @@ class LoginScreen extends React.Component {
               style={styles.input}
               autoCorrect={false}
             />
-            <Text style={{ textAlign: "center", marginTop: 10 }}>
-              Forgot password?
-            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("ForgotPassword");
+              }}
+            >
+              <Text style={{ textAlign: "center", marginTop: 10 }}>
+                Forgot password?
+              </Text>
+            </TouchableOpacity>
           </View>
 
           {/* Buttons */}
@@ -99,6 +105,7 @@ class LoginScreen extends React.Component {
               flex: 0.25,
               justifyContent: "center",
               flexDirection: "row",
+              alignItems: "center",
             }}
           >
             <Text>Don't have an account? </Text>
