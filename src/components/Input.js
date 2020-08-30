@@ -5,7 +5,9 @@ import Colors from "../constants/Colors";
 const Input = (props) => {
   return (
     <View>
-      <Text style={{ paddingLeft: 10, fontSize: 14 }}>{props.title}</Text>
+      <Text style={{ paddingLeft: 10, fontSize: 14, fontFamily: "Futura" }}>
+        {props.title}
+      </Text>
       <TextInput
         {...props}
         style={{ ...styles.input, marginBottom: props.title ? 20 : 0 }}
@@ -22,6 +24,7 @@ const styles = StyleSheet.create({
     padding: 12,
     paddingHorizontal: 20,
     marginVertical: 5,
+    fontFamily: "Futura",
   },
 });
 

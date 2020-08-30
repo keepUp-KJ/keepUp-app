@@ -99,10 +99,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 30,
+    fontSize: 28,
     textAlign: "center",
-    fontWeight: "800",
+    fontWeight: "700",
     color: Colors.secondary,
+    fontFamily: "Futura",
   },
   footerContainer: {
     alignItems: "center",
@@ -112,9 +113,10 @@ const styles = StyleSheet.create({
   termsText: {
     textAlign: "center",
     marginHorizontal: 40,
-    fontSize: 12,
+    fontSize: 10,
     width: "60%",
     color: Colors.secondary,
+    fontFamily: "Futura",
   },
 });
 

@@ -13,6 +13,7 @@ const Btn = (props) => {
           fontSize: props.fontSize,
           fontWeight: props.bold ? "800" : "400",
           marginLeft: 5,
+          fontFamily: "Futura",
         }}
       >
         {props.title}

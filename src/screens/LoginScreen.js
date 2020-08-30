@@ -56,8 +56,15 @@ class LoginScreen extends React.Component {
                 this.props.navigation.navigate("ForgotPassword");
               }}
             >
-              <Text style={{ textAlign: "center", marginTop: 10 }}>
-                Forgot password?
+              <Text
+                style={{
+                  textAlign: "center",
+                  marginTop: 10,
+                  fontFamily: "Futura",
+                }}
+              >
+                Forgot password
+                <Text style={{ fontFamily: "Arial" }}>?</Text>
               </Text>
             </TouchableOpacity>
           </View>
@@ -100,21 +107,23 @@ class LoginScreen extends React.Component {
           </View>
 
           {/* Footer */}
-          <View
-            style={{
-              flex: 0.25,
-              justifyContent: "center",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Text>Don't have an account? </Text>
+          <View style={styles.footerContainer}>
+            <Text style={{ fontFamily: "Futura" }}>
+              Don't have an account
+              <Text style={{ fontFamily: "Arial" }}>? </Text>
+            </Text>
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("SignUp");
               }}
             >
-              <Text style={{ color: Colors.primaryColor, fontWeight: "700" }}>
+              <Text
+                style={{
+                  color: Colors.primaryColor,
+                  fontWeight: "700",
+                  fontFamily: "Futura",
+                }}
+              >
                 Sign Up
               </Text>
             </TouchableOpacity>
@@ -132,11 +141,18 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 50,
-    fontWeight: "700",
+    fontWeight: "800",
     color: Colors.secondary,
+    fontFamily: "Futura",
   },
   input: {
     marginHorizontal: 7,
+  },
+  footerContainer: {
+    flex: 0.25,
+    justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
 

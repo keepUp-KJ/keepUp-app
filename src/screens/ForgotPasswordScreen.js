@@ -72,11 +72,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     textAlign: "center",
     fontWeight: "800",
     color: Colors.secondary,
     marginHorizontal: 14,
+    fontFamily: "Futura",
   },
   body: {
     fontSize: 16,
@@ -84,6 +85,7 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
     marginVertical: 10,
     marginHorizontal: 30,
+    fontFamily: "Futura",
   },
   container: {
     justifyContent: "center",
