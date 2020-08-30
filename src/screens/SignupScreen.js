@@ -23,11 +23,7 @@ class SignupScreen extends React.Component {
         <SafeAreaView style={styles.screen}>
           {/* back arrow */}
           <View
-            style={{
-              flex: 0.1,
-              justifyContent: "center",
-              paddingLeft: 15,
-            }}
+            style={{ flex: 0.1, justifyContent: "center", paddingLeft: 15 }}
           >
             <Ionicons
               name="md-arrow-back"
@@ -38,12 +34,13 @@ class SignupScreen extends React.Component {
               }}
             />
           </View>
-          {/* Header */}
 
+          {/* Header */}
           <View style={{ ...styles.container, flex: 0.15 }}>
             <Text style={styles.title}>CREATE{"\n"}ACCOUNT</Text>
           </View>
-          {/* Input */}
+
+          {/* Inputs */}
           <View style={{ ...styles.container, flex: 0.5 }}>
             <View style={{ width: "80%" }}>
               <Input
@@ -69,14 +66,9 @@ class SignupScreen extends React.Component {
               />
             </View>
           </View>
+
           {/* Footer */}
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "space-between",
-              flex: 0.15,
-            }}
-          >
+          <View style={styles.footerContainer}>
             <View style={{ width: "70%" }}>
               <Btn
                 title="SIGN UP"
@@ -86,15 +78,7 @@ class SignupScreen extends React.Component {
               />
             </View>
 
-            <Text
-              style={{
-                textAlign: "center",
-                marginHorizontal: 40,
-                fontSize: 12,
-                width: "60%",
-                color: Colors.secondary,
-              }}
-            >
+            <Text style={styles.termsText}>
               By creating an account you agree to our terms of service and
               privacy policy
             </Text>
@@ -117,7 +101,19 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     textAlign: "center",
-    fontWeight: "700",
+    fontWeight: "800",
+    color: Colors.secondary,
+  },
+  footerContainer: {
+    alignItems: "center",
+    justifyContent: "space-between",
+    flex: 0.15,
+  },
+  termsText: {
+    textAlign: "center",
+    marginHorizontal: 40,
+    fontSize: 12,
+    width: "60%",
     color: Colors.secondary,
   },
 });

@@ -3,7 +3,6 @@ import {
   View,
   StyleSheet,
   Text,
-  TouchableOpacity,
   SafeAreaView,
   TouchableWithoutFeedback,
   Keyboard,
@@ -24,11 +23,7 @@ class ForgotPasswordScreen extends React.Component {
         <SafeAreaView style={styles.screen}>
           {/* back arrow */}
           <View
-            style={{
-              flex: 0.1,
-              justifyContent: "center",
-              paddingLeft: 15,
-            }}
+            style={{ flex: 0.1, justifyContent: "center", paddingLeft: 15 }}
           >
             <Ionicons
               name="md-arrow-back"
@@ -39,28 +34,24 @@ class ForgotPasswordScreen extends React.Component {
               }}
             />
           </View>
-          {/* Header */}
 
+          {/* Header */}
           <View style={{ ...styles.container, flex: 0.2 }}>
             <Text style={styles.title}>FORGOT YOUR PASSWORD?</Text>
             <Text style={styles.body}>
               Confirm your email and we'll send the instructions
             </Text>
           </View>
+
           {/* Input */}
-          <View
-            style={{
-              ...styles.container,
-              flex: 0.05,
-              paddingBottom: 30,
-            }}
-          >
+          <View style={{ ...styles.container, flex: 0.05, paddingBottom: 30 }}>
             <View style={{ width: "80%" }}>
               <Input placeholder="Enter email" style={styles.input} />
             </View>
           </View>
+
           {/* Confirm button */}
-          <View style={{ ...styles.container }}>
+          <View style={{ ...styles.container, flex: 0.15 }}>
             <View style={{ width: "60%" }}>
               <Btn
                 title="Confirm"
@@ -81,9 +72,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 25,
+    fontSize: 24,
     textAlign: "center",
-    fontWeight: "700",
+    fontWeight: "800",
     color: Colors.secondary,
     marginHorizontal: 14,
   },
