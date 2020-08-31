@@ -51,21 +51,25 @@ class ForgotPasswordScreen extends React.Component {
           {/* Header */}
           <View style={{ ...styles.container, flex: 0.2 }}>
             <Text style={styles.title}>FORGOT YOUR PASSWORD?</Text>
-            <Text style={styles.body}>
-              {this.state.confirm
-                ? `An email was sent to ${this.state.email} with the instructions. Enter the code sent to your inbox to proceed with the password renewal for your account.`
-                : "Confirm your email and we'll send the instructions"}
-            </Text>
+            {this.state.confirm ? (
+              <Text style={styles.body}>
+                <Text>An email was sent to </Text>
+                <Text style={{ fontWeight: "bold" }}>{this.state.email} </Text>
+                <Text>
+                  with the instructions. Enter the code sent to your inbox to
+                  proceed with the password renewal for your account.
+                </Text>
+              </Text>
+            ) : (
+              <Text style={styles.body}>
+                Confirm your email and we'll send the instructions
+              </Text>
+            )}
           </View>
 
           {/* Input */}
           <View style={{ ...styles.container, flex: 0.05, paddingBottom: 30 }}>
-            <View
-              style={{
-                width: this.state.confirm ? "50%" : "80%",
-                alignItem: "center",
-              }}
-            >
+            <View style={{ width: this.state.confirm ? "50%" : "80%" }}>
               {this.state.confirm ? (
                 <OTPInputView
                   style={{ marginTop: 10 }}
@@ -116,10 +120,10 @@ const styles = StyleSheet.create({
     fontFamily: "Futura",
   },
   body: {
-    fontSize: 16,
+    fontSize: 15,
     textAlign: "center",
     color: Colors.secondary,
-    marginVertical: 10,
+    marginTop: 10,
     marginHorizontal: 30,
     fontFamily: "Futura",
   },
