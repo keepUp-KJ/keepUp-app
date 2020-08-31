@@ -5,6 +5,7 @@ import SignupScreen from "../screens/SignupScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import RenewPasswordScreen from "../screens/RenewPasswordScreen";
+import VerifyEmailScreen from "../screens/VerifyEmailScreen";
 
 const Navigator = createSwitchNavigator(
   {
@@ -13,9 +14,13 @@ const Navigator = createSwitchNavigator(
     Home: HomeScreen,
     ForgotPassword: ForgotPasswordScreen,
     RenewPassword: RenewPasswordScreen,
+    VerifyEmail: VerifyEmailScreen,
   },
   {
     // initialRouteName: "RenewPassword",
+  },
+  {
+    // initialRouteName: "VerifyEmail",
   }
 );
 
