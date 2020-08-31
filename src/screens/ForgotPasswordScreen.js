@@ -36,15 +36,11 @@ class ForgotPasswordScreen extends React.Component {
               name="md-arrow-back"
               size={30}
               color={Colors.secondary}
-              onPress={
+              onPress={() => {
                 this.state.confirm
-                  ? () => {
-                      this.setState({ confirm: false });
-                    }
-                  : () => {
-                      this.props.navigation.navigate("Login");
-                    }
-              }
+                  ? this.setState({ confirm: false })
+                  : this.props.navigation.navigate("Login");
+              }}
             />
           </View>
 
@@ -91,12 +87,14 @@ class ForgotPasswordScreen extends React.Component {
           <View style={{ ...styles.container, flex: 0.15 }}>
             <View style={{ width: "60%" }}>
               <Btn
-                title="Confirm"
+                title="CONFIRM"
                 btnColor={Colors.primaryColor}
                 fontSize={14}
                 bold
                 onPress={() => {
-                  this.setState({ confirm: true });
+                  this.state.confirm
+                    ? this.props.navigation.navigate("RenewPassword")
+                    : this.setState({ confirm: true });
                 }}
               />
             </View>
