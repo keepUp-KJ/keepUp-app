@@ -5,6 +5,7 @@ const Btn = (props) => {
   return (
     <TouchableOpacity
       style={{ ...styles.container, backgroundColor: props.btnColor }}
+      onPress={props.onPress}
     >
       {props.icon}
       <Text
