@@ -13,6 +13,11 @@ import Input from "../components/Input";
 import { Ionicons } from "@expo/vector-icons";
 
 class SignupScreen extends React.Component {
+  state = {
+    email: "johndoe@gmail.com",
+    password: "mypass",
+    confPassword: "mypass",
+  };
   render() {
     return (
       <TouchableWithoutFeedback
@@ -44,6 +49,10 @@ class SignupScreen extends React.Component {
           <View style={{ ...styles.container, flex: 0.5 }}>
             <View style={{ width: "80%" }}>
               <Input
+                value={this.state.email}
+                onChangeText={(email) => {
+                  this.setState({ email });
+                }}
                 title="Email"
                 placeholder="Email"
                 style={styles.input}
@@ -51,6 +60,10 @@ class SignupScreen extends React.Component {
                 autoCorrect={false}
               />
               <Input
+                value={this.state.password}
+                onChangeText={(password) => {
+                  this.setState({ password });
+                }}
                 title="Password"
                 secureTextEntry
                 placeholder="Password"
@@ -58,6 +71,10 @@ class SignupScreen extends React.Component {
                 autoCorrect={false}
               />
               <Input
+                value={this.state.confPassword}
+                onChangeText={(confPassword) => {
+                  this.setState({ confPassword });
+                }}
                 title="Confirm Password"
                 secureTextEntry
                 placeholder="Confirm Password"
@@ -73,7 +90,7 @@ class SignupScreen extends React.Component {
               <Btn
                 title="SIGN UP"
                 btnColor={Colors.primaryColor}
-                fontSize={14}
+                fontSize={12}
                 bold
                 onPress={() => {
                   this.props.navigation.navigate("VerifyEmail");
