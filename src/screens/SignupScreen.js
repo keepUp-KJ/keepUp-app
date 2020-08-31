@@ -75,6 +75,9 @@ class SignupScreen extends React.Component {
                 btnColor={Colors.primaryColor}
                 fontSize={14}
                 bold
+                onPress={() => {
+                  this.props.navigation.navigate("VerifyEmail");
+                }}
               />
             </View>
 
