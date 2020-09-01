@@ -15,8 +15,8 @@ import Colors from "../constants/Colors";
 
 class LoginScreen extends React.Component {
   state = {
-    email: "",
-    password: "",
+    email: "johndoe@gmail.com",
+    password: "mypass",
   };
   render() {
     return (

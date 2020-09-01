@@ -13,10 +13,9 @@ import OTPInputView from "@twotalltotems/react-native-otp-input";
 import Btn from "../components/Btn";
 
 class VerifyEmailScreen extends React.Component {
-  state = {
-    email: "johndoe@gmail.com",
-  };
   render() {
+    const userEmail = this.props.navigation.getParam("email");
+
     return (
       <TouchableWithoutFeedback
         onPress={() => {
@@ -47,8 +46,8 @@ class VerifyEmailScreen extends React.Component {
           <View style={{ ...styles.container, flex: 0.2 }}>
             <Text style={styles.body}>
               Thank you for choosing KeepUp! {"\n\n"}Please confirm that{" "}
-              <Text style={{ fontWeight: "bold" }}>{this.state.email}</Text> is
-              your email address by entering the code sent to your inbox
+              <Text style={{ fontWeight: "bold" }}>{userEmail}</Text> is your
+              email address by entering the code sent to your inbox
             </Text>
           </View>
 
