@@ -1,1 +1,0 @@
-{"ast":null,"code":"export{default}from'@expo/next-adapter/document';","map":{"version":3,"sources":["/Users/khokha/Desktop/Apps/keepUP/keepUp-app/pages/_document.js"],"names":[],"mappings":"AACA,OAAA,OAAA,KAAA,6BAAA","sourcesContent":["// @generated: @expo/next-adapter@2.1.26\nexport { default } from '@expo/next-adapter/document';\n"]},"metadata":{},"sourceType":"module"}
