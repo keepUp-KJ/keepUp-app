@@ -18,6 +18,23 @@ class SignupScreen extends React.Component {
     password: "mypass",
     confPassword: "mypass",
   };
+
+  // signup = (email, password, confirmPassword) => {
+  //   fetch("http://localhost:3000/users", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       email,
+  //       password,
+  //       confirmPassword,
+  //     }),
+  //   }).then((res) => {
+  //     console.log(res.json());
+  //   });
+  // };
+
   render() {
     return (
       <TouchableWithoutFeedback
@@ -93,6 +110,11 @@ class SignupScreen extends React.Component {
                 fontSize={12}
                 bold
                 onPress={() => {
+                  // this.signup(
+                  //   this.state.email,
+                  //   this.state.password,
+                  //   this.state.confPassword
+                  // );
                   this.props.navigation.navigate("VerifyEmail");
                 }}
               />
