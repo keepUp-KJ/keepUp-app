@@ -76,6 +76,20 @@ class LoginScreen extends React.Component {
               btnColor={Colors.primaryColor}
               fontSize={12}
               bold
+              onPress={() => {
+                fetch("http://localhost:3000/api/users/login", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    email: this.state.email,
+                    password: this.state.password,
+                  }),
+                }).then(() => {
+                  this.props.navigation.navigate("Home");
+                });
+              }}
             />
 
             <View style={{ flexDirection: "row", alignItems: "center" }}>
