@@ -94,7 +94,7 @@ class SignupScreen extends React.Component {
                 fontSize={12}
                 bold
                 onPress={() => {
-                  fetch("http://localhost:3000/api/users", {
+                  fetch("http://192.168.1.140:3000/api/users", {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json",
@@ -103,11 +103,11 @@ class SignupScreen extends React.Component {
                       email: this.state.email,
                       password: this.state.password,
                     }),
-                  }).then(() => {
-                    this.props.navigation.navigate("VerifyEmail", {
-                      email: this.state.email,
+                  })
+                    .then((res) => res.json())
+                    .then((json) => {
+                      console.log(json.response);
                     });
-                  });
                 }}
               />
             </View>

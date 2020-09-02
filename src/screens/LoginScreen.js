@@ -77,7 +77,7 @@ class LoginScreen extends React.Component {
               fontSize={12}
               bold
               onPress={() => {
-                fetch("http://localhost:3000/api/users/login", {
+                fetch("http://192.168.1.140:3000/api/users/login", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
@@ -86,9 +86,11 @@ class LoginScreen extends React.Component {
                     email: this.state.email,
                     password: this.state.password,
                   }),
-                }).then(() => {
-                  this.props.navigation.navigate("Home");
-                });
+                })
+                  .then((res) => res.json())
+                  .then((json) => {
+                    console.log(json.response);
+                  });
               }}
             />
 
