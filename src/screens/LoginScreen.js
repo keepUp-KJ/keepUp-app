@@ -17,7 +17,9 @@ class LoginScreen extends React.Component {
   state = {
     email: "johndoe@gmail.com",
     password: "mypass",
+    error: "",
   };
+
   render() {
     return (
       <TouchableWithoutFeedback
@@ -67,6 +69,7 @@ class LoginScreen extends React.Component {
                 <Text style={{ fontFamily: "Arial" }}>?</Text>
               </Text>
             </TouchableOpacity>
+            <Text style={styles.errorText}>{this.state.error}</Text>
           </View>
 
           {/* Buttons */}
@@ -77,7 +80,7 @@ class LoginScreen extends React.Component {
               fontSize={12}
               bold
               onPress={() => {
-                fetch("http://192.168.1.140:3000/api/users/login", {
+                fetch("http://localhost:3000/api/users/login", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
@@ -89,7 +92,11 @@ class LoginScreen extends React.Component {
                 })
                   .then((res) => res.json())
                   .then((json) => {
-                    console.log(json.response);
+                    if (json.response === "Success") {
+                      this.props.navigation.navigate("Home");
+                    } else {
+                      this.setState({ error: json.response });
+                    }
                   });
               }}
             />
@@ -169,6 +176,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
     alignItems: "center",
+  },
+  errorText: {
+    textAlign: "center",
+    marginTop: 10,
+    fontFamily: "Futura",
+    color: "#990000",
   },
 });
 

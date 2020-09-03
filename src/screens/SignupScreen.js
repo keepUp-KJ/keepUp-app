@@ -17,6 +17,7 @@ class SignupScreen extends React.Component {
     email: "johndoe@gmail.com",
     password: "mypass",
     confPassword: "mypass",
+    error: "",
   };
 
   render() {
@@ -82,6 +83,7 @@ class SignupScreen extends React.Component {
                 style={styles.input}
                 autoCorrect={false}
               />
+              <Text style={styles.errorText}>{this.state.error}</Text>
             </View>
           </View>
 
@@ -94,7 +96,7 @@ class SignupScreen extends React.Component {
                 fontSize={12}
                 bold
                 onPress={() => {
-                  fetch("http://192.168.1.140:3000/api/users", {
+                  fetch("http://localhost:3000/api/users", {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json",
@@ -106,7 +108,11 @@ class SignupScreen extends React.Component {
                   })
                     .then((res) => res.json())
                     .then((json) => {
-                      console.log(json.response);
+                      if (json.response === "Success") {
+                        this.props.navigation.navigate("VerifyEmail");
+                      } else {
+                        this.setState({ error: json.response });
+                      }
                     });
                 }}
               />
@@ -151,6 +157,12 @@ const styles = StyleSheet.create({
     width: "60%",
     color: Colors.secondary,
     fontFamily: "Futura",
+  },
+  errorText: {
+    textAlign: "center",
+    marginTop: 10,
+    fontFamily: "Futura",
+    color: "#990000",
   },
 });
 
