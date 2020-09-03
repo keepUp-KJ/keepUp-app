@@ -1,5 +1,10 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet, Text } from "react-native";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  ActivityIndicator,
+} from "react-native";
 
 const Btn = (props) => {
   return (
@@ -8,17 +13,21 @@ const Btn = (props) => {
       onPress={props.onPress}
     >
       {props.icon}
-      <Text
-        style={{
-          color: "white" || props.textColor,
-          fontSize: props.fontSize,
-          fontWeight: props.bold ? "800" : "400",
-          marginLeft: 5,
-          fontFamily: "Futura",
-        }}
-      >
-        {props.title}
-      </Text>
+      {props.loading ? (
+        <ActivityIndicator size="small" color="white" />
+      ) : (
+        <Text
+          style={{
+            color: "white" || props.textColor,
+            fontSize: props.fontSize,
+            fontWeight: props.bold ? "800" : "400",
+            marginLeft: 5,
+            fontFamily: "Futura",
+          }}
+        >
+          {props.title}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 };

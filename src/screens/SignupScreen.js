@@ -14,10 +14,35 @@ import { Ionicons } from "@expo/vector-icons";
 
 class SignupScreen extends React.Component {
   state = {
-    email: "johndoe@gmail.com",
-    password: "mypass",
-    confPassword: "mypass",
+    email: "",
+    password: "",
+    confPassword: "",
     error: "",
+    loading: false,
+  };
+
+  signupHandler = (email, password) => {
+    this.setState({ loading: true });
+    fetch("http://192.168.1.140:3000/api/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.token) {
+          this.props.navigation.navigate("VerifyEmail", {
+            email: this.state.email,
+          });
+        } else {
+          this.setState({ error: json.error, loading: false });
+        }
+      });
   };
 
   render() {
@@ -56,7 +81,7 @@ class SignupScreen extends React.Component {
                   this.setState({ email });
                 }}
                 title="Email"
-                placeholder="Email"
+                placeholder="contact@example.com"
                 style={styles.input}
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -68,7 +93,6 @@ class SignupScreen extends React.Component {
                 }}
                 title="Password"
                 secureTextEntry
-                placeholder="Password"
                 style={styles.input}
                 autoCorrect={false}
               />
@@ -79,7 +103,6 @@ class SignupScreen extends React.Component {
                 }}
                 title="Confirm Password"
                 secureTextEntry
-                placeholder="Confirm Password"
                 style={styles.input}
                 autoCorrect={false}
               />
@@ -95,25 +118,9 @@ class SignupScreen extends React.Component {
                 btnColor={Colors.primaryColor}
                 fontSize={12}
                 bold
+                loading={this.state.loading}
                 onPress={() => {
-                  fetch("http://localhost:3000/api/users", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      email: this.state.email,
-                      password: this.state.password,
-                    }),
-                  })
-                    .then((res) => res.json())
-                    .then((json) => {
-                      if (json.response === "Success") {
-                        this.props.navigation.navigate("VerifyEmail");
-                      } else {
-                        this.setState({ error: json.response });
-                      }
-                    });
+                  this.signupHandler(this.state.email, this.state.password);
                 }}
               />
             </View>

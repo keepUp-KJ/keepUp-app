@@ -20,6 +20,36 @@ class LoginScreen extends React.Component {
     error: "",
   };
 
+  loginWithGoogle = () => {
+    fetch("http://192.168.1.140:3000/api/users/login-google", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
+  loginHandler = (email, password) => {
+    fetch("http://192.168.1.140:3000/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.token) {
+          this.props.navigation.navigate("Home");
+        } else {
+          this.setState({ error: json.error });
+        }
+      });
+  };
+
   render() {
     return (
       <TouchableWithoutFeedback
@@ -79,26 +109,9 @@ class LoginScreen extends React.Component {
               btnColor={Colors.primaryColor}
               fontSize={12}
               bold
-              onPress={() => {
-                fetch("http://localhost:3000/api/users/login", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    email: this.state.email,
-                    password: this.state.password,
-                  }),
-                })
-                  .then((res) => res.json())
-                  .then((json) => {
-                    if (json.response === "Success") {
-                      this.props.navigation.navigate("Home");
-                    } else {
-                      this.setState({ error: json.response });
-                    }
-                  });
-              }}
+              onPress={() =>
+                this.loginHandler(this.state.email, this.state.password)
+              }
             />
 
             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -109,6 +122,7 @@ class LoginScreen extends React.Component {
                   btnColor={Colors.secondary}
                   fontSize={8}
                   bold
+                  onPress={() => this.loginWithGoogle()}
                 />
               </View>
               <View style={{ width: "50%" }}>
