@@ -108,10 +108,10 @@ class SignupScreen extends React.Component {
                   })
                     .then((res) => res.json())
                     .then((json) => {
-                      if (json.response === "Success") {
+                      if (json.token) {
                         this.props.navigation.navigate("VerifyEmail");
                       } else {
-                        this.setState({ error: json.response });
+                        this.setState({ error: json.error });
                       }
                     });
                 }}

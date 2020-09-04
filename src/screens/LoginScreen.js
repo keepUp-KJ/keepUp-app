@@ -92,10 +92,10 @@ class LoginScreen extends React.Component {
                 })
                   .then((res) => res.json())
                   .then((json) => {
-                    if (json.response === "Success") {
+                    if (json.token) {
                       this.props.navigation.navigate("Home");
                     } else {
-                      this.setState({ error: json.response });
+                      this.setState({ error: json.error });
                     }
                   });
               }}
