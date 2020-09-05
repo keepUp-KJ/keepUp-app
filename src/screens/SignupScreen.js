@@ -36,7 +36,6 @@ class SignupScreen extends React.Component {
       .then((res) => res.json())
       .then((json) => {
         if (json.token) {
-          console.log(json.code);
           this.props.navigation.navigate("VerifyEmail", {
             email: this.state.email,
             code: json.code,
@@ -121,27 +120,11 @@ class SignupScreen extends React.Component {
                 title="SIGN UP"
                 btnColor={Colors.primaryColor}
                 fontSize={12}
+                loading={this.state.loading}
                 bold
-                onPress={() => {
-                  fetch("http://localhost:3000/api/users", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      email: this.state.email,
-                      password: this.state.password,
-                    }),
-                  })
-                    .then((res) => res.json())
-                    .then((json) => {
-                      if (json.token) {
-                        this.props.navigation.navigate("VerifyEmail");
-                      } else {
-                        this.setState({ error: json.error });
-                      }
-                    });
-                }}
+                onPress={() =>
+                  this.signupHandler(this.state.email, this.state.password)
+                }
               />
             </View>
 

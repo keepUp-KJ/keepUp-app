@@ -73,7 +73,7 @@ class VerifyEmailScreen extends React.Component {
                 fontSize={12}
                 bold
                 onPress={() => {
-                  if (this.state.code === verifyCode) {
+                  if (this.state.code === verifyCode.toString()) {
                     this.props.navigation.navigate("Home");
                   }
                 }}

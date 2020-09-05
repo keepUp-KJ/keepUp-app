@@ -18,6 +18,29 @@ class LoginScreen extends React.Component {
     email: "johndoe@gmail.com",
     password: "mypass",
     error: "",
+    loading: false,
+  };
+
+  loginHandler = (email, password) => {
+    this.setState({ loading: true });
+    fetch("http://localhost:3000/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.token) {
+          this.props.navigation.navigate("Home");
+        } else {
+          this.setState({ error: json.error, loading: false });
+        }
+      });
   };
 
   render() {
@@ -79,25 +102,9 @@ class LoginScreen extends React.Component {
               btnColor={Colors.primaryColor}
               fontSize={12}
               bold
+              loading={this.state.loading}
               onPress={() => {
-                fetch("http://localhost:3000/api/users/login", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    email: this.state.email,
-                    password: this.state.password,
-                  }),
-                })
-                  .then((res) => res.json())
-                  .then((json) => {
-                    if (json.token) {
-                      this.props.navigation.navigate("Home");
-                    } else {
-                      this.setState({ error: json.error });
-                    }
-                  });
+                this.loginHandler(this.state.email, this.state.password);
               }}
             />
 
