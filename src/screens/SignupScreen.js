@@ -18,6 +18,33 @@ class SignupScreen extends React.Component {
     password: "mypass",
     confPassword: "mypass",
     error: "",
+    loading: false,
+  };
+
+  signupHandler = (email, password) => {
+    this.setState({ loading: true });
+    fetch("http://192.168.1.140:3000/api/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.token) {
+          console.log(json.code);
+          this.props.navigation.navigate("VerifyEmail", {
+            email: this.state.email,
+            code: json.code,
+          });
+        } else {
+          this.setState({ error: json.error, loading: false });
+        }
+      });
   };
 
   render() {
