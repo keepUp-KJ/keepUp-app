@@ -13,8 +13,12 @@ import OTPInputView from "@twotalltotems/react-native-otp-input";
 import Btn from "../components/Btn";
 
 class VerifyEmailScreen extends React.Component {
+  state = {
+    code: "",
+  };
   render() {
     const userEmail = this.props.navigation.getParam("email");
+    const verifyCode = this.props.navigation.getParam("code");
 
     return (
       <TouchableWithoutFeedback
@@ -68,6 +72,11 @@ class VerifyEmailScreen extends React.Component {
                 btnColor={Colors.primaryColor}
                 fontSize={12}
                 bold
+                onPress={() => {
+                  if (this.state.code === verifyCode) {
+                    this.props.navigation.navigate("Home");
+                  }
+                }}
               />
             </View>
           </View>
