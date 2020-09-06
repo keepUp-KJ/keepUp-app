@@ -15,6 +15,7 @@ import Btn from "../components/Btn";
 class VerifyEmailScreen extends React.Component {
   state = {
     code: "",
+    error: "",
   };
   render() {
     const userEmail = this.props.navigation.getParam("email");
@@ -58,7 +59,6 @@ class VerifyEmailScreen extends React.Component {
           <View style={{ ...styles.container, flex: 0.1 }}>
             <View style={{ width: "60%" }}>
               <OTPInputView
-                style={{ marginTop: 10 }}
                 pinCount={4}
                 autoFocusOnLoad
                 codeInputFieldStyle={styles.underlineStyleBase}
@@ -67,6 +67,8 @@ class VerifyEmailScreen extends React.Component {
                   this.setState({ code });
                 }}
               />
+              <Text style={styles.errorText}>{this.state.error}</Text>
+
               <Btn
                 title="VERIFY"
                 btnColor={Colors.primaryColor}
@@ -75,6 +77,8 @@ class VerifyEmailScreen extends React.Component {
                 onPress={() => {
                   if (this.state.code === verifyCode) {
                     this.props.navigation.navigate("Home");
+                  } else {
+                    this.setState({ error: "Wrong code entered" });
                   }
                 }}
               />
@@ -119,6 +123,12 @@ const styles = StyleSheet.create({
   },
   underlineStyleHighLighted: {
     borderColor: Colors.primaryColor,
+  },
+  errorText: {
+    textAlign: "center",
+    fontFamily: "Futura",
+    color: "#990000",
+    marginBottom: 10,
   },
 });
 
