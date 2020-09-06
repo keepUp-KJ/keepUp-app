@@ -15,9 +15,10 @@ import OTPInputView from "@twotalltotems/react-native-otp-input";
 
 class ForgotPasswordScreen extends React.Component {
   state = {
-    email: "johndoe@gmail.com",
+    email: "janakhamdy@gmail.com",
     confirm: false,
     code: "",
+    OTP: "",
   };
 
   render() {
@@ -47,39 +48,22 @@ class ForgotPasswordScreen extends React.Component {
           {/* Header */}
           <View style={{ ...styles.container, flex: 0.2 }}>
             <Text style={styles.title}>FORGOT YOUR PASSWORD?</Text>
-            {this.state.confirm ? (
-              <Text style={styles.body}>
-                <Text>An email was sent to </Text>
-                <Text style={{ fontWeight: "bold" }}>{this.state.email} </Text>
-                <Text>
-                  with the instructions. Enter the code sent to your inbox to
-                  proceed with the password renewal for your account.
-                </Text>
-              </Text>
-            ) : (
-              <Text style={styles.body}>
-                Confirm your email and we'll send the instructions
-              </Text>
-            )}
+            <Text style={styles.body}>
+              Confirm your email and we'll send the instructions
+            </Text>
           </View>
 
           {/* Input */}
           <View style={{ ...styles.container, flex: 0.05, paddingBottom: 30 }}>
-            <View style={{ width: this.state.confirm ? "50%" : "80%" }}>
-              {this.state.confirm ? (
-                <OTPInputView
-                  style={{ marginTop: 10 }}
-                  pinCount={4}
-                  autoFocusOnLoad
-                  codeInputFieldStyle={styles.underlineStyleBase}
-                  codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                  onCodeFilled={(code) => {
-                    this.setState({ code });
-                  }}
-                />
-              ) : (
-                <Input placeholder="Enter email" style={styles.input} />
-              )}
+            <View style={{ width: "80%" }}>
+              <Input
+                placeholder="Enter email"
+                style={styles.input}
+                value={this.state.email}
+                onChangeText={(email) => {
+                  this.setState({ email });
+                }}
+              />
             </View>
           </View>
 
@@ -92,9 +76,24 @@ class ForgotPasswordScreen extends React.Component {
                 fontSize={14}
                 bold
                 onPress={() => {
-                  this.state.confirm
-                    ? this.props.navigation.navigate("RenewPassword")
-                    : this.setState({ confirm: true });
+                  fetch("http://172.20.10.3:3000/api/users/forgot-password", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      email: this.state.email,
+                    }),
+                  })
+                    .then((res) => res.json())
+                    .then((json) => {
+                      if (json.sent) {
+                        this.props.navigation.navigate("Login");
+                      } else alert("Invalid email");
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
                 }}
               />
             </View>

@@ -23,7 +23,7 @@ class SignupScreen extends React.Component {
 
   signupHandler = (email, password) => {
     this.setState({ loading: true });
-    fetch("http://192.168.1.140:3000/api/users", {
+    fetch("http://172.20.10.3:3000/api/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
