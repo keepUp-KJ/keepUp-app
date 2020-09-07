@@ -16,14 +16,13 @@ class SignupScreen extends React.Component {
   state = {
     email: "johndoe@gmail.com",
     password: "mypass",
-    confPassword: "mypass",
-    error: "",
+    confPassword: "mypas",
     loading: false,
   };
 
-  signupHandler = (email, password) => {
+  signupHandler = (email, password, confPassword) => {
     this.setState({ loading: true });
-    fetch("http://172.20.10.3:3000/api/users", {
+    fetch("http://localhost:3000/api/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,17 +30,14 @@ class SignupScreen extends React.Component {
       body: JSON.stringify({
         email,
         password,
+        confPassword,
       }),
     })
       .then((res) => res.json())
       .then((json) => {
+        this.setState({ loading: false });
         if (json.token) {
-          this.props.navigation.navigate("VerifyEmail", {
-            email: this.state.email,
-            code: json.code,
-          });
-        } else {
-          this.setState({ error: json.error, loading: false });
+          this.props.navigation.navigate("VerifyEmail");
         }
       });
   };
@@ -83,9 +79,9 @@ class SignupScreen extends React.Component {
                 }}
                 title="Email"
                 placeholder="Email"
-                style={styles.input}
                 autoCapitalize="none"
                 autoCorrect={false}
+                error={this.state.emailError}
               />
               <Input
                 value={this.state.password}
@@ -95,7 +91,6 @@ class SignupScreen extends React.Component {
                 title="Password"
                 secureTextEntry
                 placeholder="Password"
-                style={styles.input}
                 autoCorrect={false}
               />
               <Input
@@ -106,10 +101,9 @@ class SignupScreen extends React.Component {
                 title="Confirm Password"
                 secureTextEntry
                 placeholder="Confirm Password"
-                style={styles.input}
                 autoCorrect={false}
+                error={this.state.passwordError}
               />
-              <Text style={styles.errorText}>{this.state.error}</Text>
             </View>
           </View>
 
@@ -123,7 +117,11 @@ class SignupScreen extends React.Component {
                 loading={this.state.loading}
                 bold
                 onPress={() =>
-                  this.signupHandler(this.state.email, this.state.password)
+                  this.signupHandler(
+                    this.state.email,
+                    this.state.password,
+                    this.state.confPassword
+                  )
                 }
               />
             </View>
