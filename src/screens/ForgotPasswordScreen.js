@@ -22,7 +22,7 @@ class ForgotPasswordScreen extends React.Component {
   };
 
   confirmHandler = (email) => {
-    fetch("http://localhost:3000/api/users/forgot-password", {
+    fetch("http://keep-up-mock.herokuapp.com/api/users/forgot-password", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,7 +42,7 @@ class ForgotPasswordScreen extends React.Component {
   };
 
   verifyHandler = (code) => {
-    fetch("http://localhost:3000/api/users/verify-email", {
+    fetch("http://keep-up-mock.herokuapp.com/api/users/verify-email", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

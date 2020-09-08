@@ -25,7 +25,7 @@ class SignupScreen extends React.Component {
 
   signupHandler = (email, password, confPassword) => {
     this.setState({ loading: true });
-    fetch("http://localhost:3000/api/users", {
+    fetch("http://keep-up-mock.herokuapp.com/api/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
