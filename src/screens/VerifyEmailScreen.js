@@ -31,7 +31,6 @@ class VerifyEmailScreen extends React.Component {
       .then((res) => res.json())
       .then((json) => {
         this.setState({ loading: false });
-        console.log(json);
         if (json.response) {
           this.props.navigation.navigate("Home");
         } else {

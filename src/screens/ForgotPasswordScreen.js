@@ -104,23 +104,27 @@ class ForgotPasswordScreen extends React.Component {
               }}
             >
               {this.state.confirm ? (
-                <OTPInputView
-                  style={{ marginTop: 10 }}
-                  code={this.state.code}
-                  pinCount={4}
-                  autoFocusOnLoad
-                  codeInputFieldStyle={styles.underlineStyleBase}
-                  codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                  onCodeFilled={(code) => {
-                    this.setState({ code });
-                  }}
-                />
+                <View>
+                  <OTPInputView
+                    style={{ marginTop: 10 }}
+                    code={this.state.code}
+                    pinCount={4}
+                    autoFocusOnLoad
+                    codeInputFieldStyle={styles.underlineStyleBase}
+                    codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                    onCodeFilled={(code) => {
+                      this.setState({ code });
+                    }}
+                  />
+                  <Text style={styles.errorStyle}>{this.state.error}</Text>
+                </View>
               ) : (
                 <Input
                   placeholder="Enter email"
                   style={styles.input}
                   value={this.state.email}
                   onChangeText={(email) => this.setState({ email })}
+                  error={this.state.error}
                 />
               )}
             </View>
@@ -181,6 +185,13 @@ const styles = StyleSheet.create({
   },
   underlineStyleHighLighted: {
     borderColor: Colors.primaryColor,
+  },
+  errorStyle: {
+    textAlign: "center",
+    color: "#990000",
+    marginTop: 0,
+    fontWeight: "600",
+    fontFamily: "Futura",
   },
 });
 

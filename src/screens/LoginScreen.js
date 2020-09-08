@@ -23,7 +23,7 @@ class LoginScreen extends React.Component {
 
   loginHandler = (email, password) => {
     this.setState({ loading: true });
-    fetch("http://172.20.10.3:3000/api/users/login", {
+    fetch("http://localhost:3000/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
