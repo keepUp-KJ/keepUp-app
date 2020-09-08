@@ -19,7 +19,7 @@ class VerifyEmailScreen extends React.Component {
   };
 
   verifyHandler = (code) => {
-    fetch("http://192.168.1.11:3000/api/users/verify-email", {
+    fetch("http://localhost:3000/api/users/verify-email", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,6 +31,7 @@ class VerifyEmailScreen extends React.Component {
       .then((res) => res.json())
       .then((json) => {
         this.setState({ loading: false });
+        console.log(json);
         if (json.response) {
           this.props.navigation.navigate("Home");
         } else {
@@ -68,7 +69,7 @@ class VerifyEmailScreen extends React.Component {
           {/* Body */}
           <View style={{ ...styles.container, flex: 0.2 }}>
             <Text style={styles.body}>
-              Thank you for choosing KeepUp! {"\n\n"}Please confirm that{" "}
+              Please confirm that{" "}
               <Text style={{ fontWeight: "bold" }}>johndoe@gmail.com</Text> is
               your email address by entering the code sent to your inbox
             </Text>
@@ -141,6 +142,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#990000",
     marginTop: -15,
+    fontWeight: "600",
+    fontFamily: "Futura",
   },
 });
 

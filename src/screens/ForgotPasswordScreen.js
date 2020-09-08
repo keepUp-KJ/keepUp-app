@@ -11,14 +11,31 @@ import Colors from "../constants/Colors";
 import Btn from "../components/Btn";
 import Input from "../components/Input";
 import { Ionicons } from "@expo/vector-icons";
-import OTPInputView from "@twotalltotems/react-native-otp-input";
 
 class ForgotPasswordScreen extends React.Component {
   state = {
-    email: "janakhamdy@gmail.com",
-    confirm: false,
-    code: "",
-    OTP: "",
+    email: "johndoe@gmail.com",
+    error: "",
+  };
+
+  confirmHandler = (email) => {
+    fetch("http://localhost:3000/api/users/forgot-password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.response) {
+          this.props.navigation.navigate("VerifyEmail");
+        } else {
+          this.setState({ error: json.error });
+        }
+      });
   };
 
   render() {
@@ -38,9 +55,7 @@ class ForgotPasswordScreen extends React.Component {
               size={30}
               color={Colors.secondary}
               onPress={() => {
-                this.state.confirm
-                  ? this.setState({ confirm: false })
-                  : this.props.navigation.navigate("Login");
+                this.props.navigation.navigate("Login");
               }}
             />
           </View>
@@ -63,6 +78,7 @@ class ForgotPasswordScreen extends React.Component {
                 onChangeText={(email) => {
                   this.setState({ email });
                 }}
+                error={this.state.error}
               />
             </View>
           </View>
@@ -76,24 +92,7 @@ class ForgotPasswordScreen extends React.Component {
                 fontSize={14}
                 bold
                 onPress={() => {
-                  fetch("http://172.20.10.3:3000/api/users/forgot-password", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      email: this.state.email,
-                    }),
-                  })
-                    .then((res) => res.json())
-                    .then((json) => {
-                      if (json.sent) {
-                        this.props.navigation.navigate("Login");
-                      } else alert("Invalid email");
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
+                  this.confirmHandler(this.state.email);
                 }}
               />
             </View>

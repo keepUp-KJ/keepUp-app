@@ -25,7 +25,7 @@ class SignupScreen extends React.Component {
 
   signupHandler = (email, password, confPassword) => {
     this.setState({ loading: true });
-    fetch("http://192.168.1.11:3000/api/users", {
+    fetch("http://localhost:3000/api/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -152,7 +152,6 @@ class SignupScreen extends React.Component {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: "flex-start",
   },
   container: {
     justifyContent: "center",
@@ -180,7 +179,6 @@ const styles = StyleSheet.create({
   },
   errorText: {
     textAlign: "center",
-    marginTop: 10,
     fontFamily: "Futura",
     color: "#990000",
   },

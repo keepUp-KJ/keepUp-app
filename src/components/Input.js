@@ -12,7 +12,6 @@ const Input = (props) => {
         {...props}
         style={{
           ...styles.input,
-          marginBottom: props.title ? 20 : 0,
           borderColor: props.error ? "#990000" : Colors.secondary,
         }}
       />
@@ -27,7 +26,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     padding: 12,
     paddingHorizontal: 20,
-    marginVertical: 5,
+    marginVertical: 2,
     fontFamily: "Futura",
   },
   errorText: {
@@ -35,8 +34,6 @@ const styles = StyleSheet.create({
     color: "#990000",
     fontFamily: "Futura",
     fontSize: 12,
-    marginTop: -15,
-    marginBottom: 5,
   },
 });
 
