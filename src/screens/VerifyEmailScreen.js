@@ -39,6 +39,7 @@ class VerifyEmailScreen extends React.Component {
         }
       });
   };
+
   render() {
     return (
       <TouchableWithoutFeedback
@@ -69,7 +70,7 @@ class VerifyEmailScreen extends React.Component {
           {/* Body */}
           <View style={{ ...styles.container, flex: 0.2 }}>
             <Text style={styles.body}>
-              Please confirm that{" "}
+              Thank you for choosing KeepUp! {"\n\n"}Please confirm that{" "}
               <Text style={{ fontWeight: "bold" }}>johndoe@gmail.com</Text> is
               your email address by entering the code sent to your inbox
             </Text>

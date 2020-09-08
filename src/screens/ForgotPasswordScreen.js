@@ -11,11 +11,14 @@ import Colors from "../constants/Colors";
 import Btn from "../components/Btn";
 import Input from "../components/Input";
 import { Ionicons } from "@expo/vector-icons";
+import OTPInputView from "@twotalltotems/react-native-otp-input";
 
 class ForgotPasswordScreen extends React.Component {
   state = {
     email: "johndoe@gmail.com",
     error: "",
+    confirm: false,
+    code: "1234",
   };
 
   confirmHandler = (email) => {
@@ -31,7 +34,29 @@ class ForgotPasswordScreen extends React.Component {
       .then((res) => res.json())
       .then((json) => {
         if (json.response) {
-          this.props.navigation.navigate("VerifyEmail");
+          this.setState({ confirm: true });
+        } else {
+          this.setState({ error: json.error });
+        }
+      });
+  };
+
+  verifyHandler = (code) => {
+    fetch("http://localhost:3000/api/users/verify-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        code,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        this.setState({ loading: false });
+        console.log(json);
+        if (json.response) {
+          this.props.navigation.navigate("RenewPassword");
         } else {
           this.setState({ error: json.error });
         }
@@ -64,22 +89,40 @@ class ForgotPasswordScreen extends React.Component {
           <View style={{ ...styles.container, flex: 0.2 }}>
             <Text style={styles.title}>FORGOT YOUR PASSWORD?</Text>
             <Text style={styles.body}>
-              Confirm your email and we'll send the instructions
+              {this.state.confirm
+                ? `An email was sent to ${this.state.email} with the instructions. Enter the code sent to your inbox to proceed with the password renewal for your account.`
+                : "Confirm your email and we'll send the instructions"}
             </Text>
           </View>
 
           {/* Input */}
           <View style={{ ...styles.container, flex: 0.05, paddingBottom: 30 }}>
-            <View style={{ width: "80%" }}>
-              <Input
-                placeholder="Enter email"
-                style={styles.input}
-                value={this.state.email}
-                onChangeText={(email) => {
-                  this.setState({ email });
-                }}
-                error={this.state.error}
-              />
+            <View
+              style={{
+                width: this.state.confirm ? "50%" : "80%",
+                alignItem: "center",
+              }}
+            >
+              {this.state.confirm ? (
+                <OTPInputView
+                  style={{ marginTop: 10 }}
+                  code={this.state.code}
+                  pinCount={4}
+                  autoFocusOnLoad
+                  codeInputFieldStyle={styles.underlineStyleBase}
+                  codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                  onCodeFilled={(code) => {
+                    this.setState({ code });
+                  }}
+                />
+              ) : (
+                <Input
+                  placeholder="Enter email"
+                  style={styles.input}
+                  value={this.state.email}
+                  onChangeText={(email) => this.setState({ email })}
+                />
+              )}
             </View>
           </View>
 
@@ -92,7 +135,9 @@ class ForgotPasswordScreen extends React.Component {
                 fontSize={14}
                 bold
                 onPress={() => {
-                  this.confirmHandler(this.state.email);
+                  !this.state.confirm
+                    ? this.confirmHandler(this.state.email)
+                    : this.verifyHandler(this.state.code);
                 }}
               />
             </View>
