@@ -13,6 +13,31 @@ import OTPInputView from "@twotalltotems/react-native-otp-input";
 import Btn from "../components/Btn";
 
 class VerifyEmailScreen extends React.Component {
+  state = {
+    code: "1234",
+    error: "",
+  };
+
+  verifyHandler = (code) => {
+    fetch("http://192.168.1.11:3000/api/users/verify-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        code,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        this.setState({ loading: false });
+        if (json.response) {
+          this.props.navigation.navigate("Home");
+        } else {
+          this.setState({ error: json.error });
+        }
+      });
+  };
   render() {
     return (
       <TouchableWithoutFeedback
@@ -53,6 +78,7 @@ class VerifyEmailScreen extends React.Component {
             <View style={{ width: "60%" }}>
               <OTPInputView
                 style={{ marginTop: 10 }}
+                code={this.state.code}
                 pinCount={4}
                 autoFocusOnLoad
                 codeInputFieldStyle={styles.underlineStyleBase}
@@ -61,11 +87,13 @@ class VerifyEmailScreen extends React.Component {
                   this.setState({ code });
                 }}
               />
+              <Text style={styles.errorStyle}>{this.state.error}</Text>
               <Btn
                 title="VERIFY"
                 btnColor={Colors.primaryColor}
                 fontSize={12}
                 bold
+                onPress={() => this.verifyHandler(this.state.code)}
               />
             </View>
           </View>
@@ -108,6 +136,11 @@ const styles = StyleSheet.create({
   },
   underlineStyleHighLighted: {
     borderColor: Colors.primaryColor,
+  },
+  errorStyle: {
+    textAlign: "center",
+    color: "#990000",
+    marginTop: -15,
   },
 });
 
