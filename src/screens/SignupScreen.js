@@ -14,10 +14,13 @@ import { Ionicons } from "@expo/vector-icons";
 
 class SignupScreen extends React.Component {
   state = {
-    email: "johndoe@gmail.com",
-    password: "mypass",
-    confPassword: "mypas",
+    email: "",
+    password: "",
+    confPassword: "",
     loading: false,
+    emailError: "",
+    passwordError: "",
+    confPasswordError: "",
   };
 
   signupHandler = (email, password, confPassword) => {
@@ -38,6 +41,14 @@ class SignupScreen extends React.Component {
         this.setState({ loading: false });
         if (json.token) {
           this.props.navigation.navigate("VerifyEmail");
+        } else {
+          if (json.error.includes("email") || json.error.includes("Email")) {
+            this.setState({ emailError: json.error });
+          } else if (json.error === "Password does not match") {
+            this.setState({ confPasswordError: json.error });
+          } else {
+            this.setState({ passwordError: json.error });
+          }
         }
       });
   };
@@ -75,7 +86,7 @@ class SignupScreen extends React.Component {
               <Input
                 value={this.state.email}
                 onChangeText={(email) => {
-                  this.setState({ email });
+                  this.setState({ email, emailError: "" });
                 }}
                 title="Email"
                 placeholder="Email"
@@ -86,23 +97,24 @@ class SignupScreen extends React.Component {
               <Input
                 value={this.state.password}
                 onChangeText={(password) => {
-                  this.setState({ password });
+                  this.setState({ password, passwordError: "" });
                 }}
                 title="Password"
                 secureTextEntry
                 placeholder="Password"
                 autoCorrect={false}
+                error={this.state.passwordError}
               />
               <Input
                 value={this.state.confPassword}
                 onChangeText={(confPassword) => {
-                  this.setState({ confPassword });
+                  this.setState({ confPassword, confPasswordError: "" });
                 }}
                 title="Confirm Password"
                 secureTextEntry
                 placeholder="Confirm Password"
                 autoCorrect={false}
-                error={this.state.passwordError}
+                error={this.state.confPasswordError}
               />
             </View>
           </View>
