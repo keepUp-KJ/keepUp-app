@@ -12,6 +12,8 @@ import Btn from "../components/Btn";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Input from "../components/Input";
 import Colors from "../constants/Colors";
+import * as Facebook from "expo-facebook";
+import * as Google from "expo-google-app-auth";
 
 class LoginScreen extends React.Component {
   state = {
@@ -19,6 +21,50 @@ class LoginScreen extends React.Component {
     password: "mypass",
     error: "",
     loading: false,
+  };
+
+  loginWithGoogle = async () => {
+    const { type, accessToken, user } = await Google.logInAsync({
+      clientId:
+        "185536610149-1vmlrrujcfe75lfdln3eqstp4lrd840g.apps.googleusercontent.com",
+      language: "en-US",
+    });
+
+    if (type === "success") {
+      // Then you can use the Google REST API
+      let userInfoResponse = await fetch(
+        "https://www.googleapis.com/userinfo/v2/me",
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+    }
+  };
+
+  loginWithFacebook = async () => {
+    try {
+      await Facebook.initializeAsync("2720884158015038");
+      const {
+        type,
+        token,
+        expires,
+        permissions,
+        declinedPermissions,
+      } = await Facebook.logInWithReadPermissionsAsync({
+        permissions: ["public_profile"],
+      });
+      if (type === "success") {
+        // Get the user's name using Facebook's Graph API
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}`
+        );
+        Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    }
   };
 
   loginHandler = (email, password) => {
@@ -116,6 +162,7 @@ class LoginScreen extends React.Component {
                   btnColor={Colors.secondary}
                   fontSize={8}
                   bold
+                  onPress={this.loginWithGoogle}
                 />
               </View>
               <View style={{ width: "50%" }}>
@@ -131,6 +178,7 @@ class LoginScreen extends React.Component {
                   btnColor={Colors.secondary}
                   fontSize={8}
                   bold
+                  onPress={this.loginWithFacebook}
                 />
               </View>
             </View>
