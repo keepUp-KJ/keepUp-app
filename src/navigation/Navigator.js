@@ -17,10 +17,7 @@ const Navigator = createSwitchNavigator(
     VerifyEmail: VerifyEmailScreen,
   },
   {
-    // initialRouteName: "RenewPassword",
-  },
-  {
-    // initialRouteName: "VerifyEmail",
+    // initialRouteName: "Home",
   }
 );
 
