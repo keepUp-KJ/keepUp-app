@@ -69,7 +69,7 @@ class LoginScreen extends React.Component {
 
   loginHandler = (email, password) => {
     this.setState({ loading: true });
-    fetch("http://keep-up-mock.herokuapp.com/api/users/login", {
+    fetch("https://keep-up-mock.herokuapp.com/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

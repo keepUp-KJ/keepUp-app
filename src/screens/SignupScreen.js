@@ -25,7 +25,7 @@ class SignupScreen extends React.Component {
 
   signupHandler = (email, password, confPassword) => {
     this.setState({ loading: true });
-    fetch("http://keep-up-mock.herokuapp.com/api/users", {
+    fetch("http://localhost:3000/api/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,12 +42,18 @@ class SignupScreen extends React.Component {
         if (json.token) {
           this.props.navigation.navigate("VerifyEmail");
         } else {
-          if (json.error.includes("email") || json.error.includes("Email")) {
-            this.setState({ emailError: json.error });
-          } else if (json.error === "Password does not match") {
-            this.setState({ confPasswordError: json.error });
-          } else {
-            this.setState({ passwordError: json.error });
+          if (json.errors.email) {
+            this.setState({ emailError: "Invalid email" });
+          }
+          if (json.errors.password) {
+            this.setState({
+              passwordError: "Password must be at least 6 characters",
+            });
+          }
+          if (json.errors.password_confirmation) {
+            this.setState({
+              confPasswordError: "Password does not match",
+            });
           }
         }
       });
