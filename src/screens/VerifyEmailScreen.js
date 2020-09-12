@@ -19,7 +19,7 @@ class VerifyEmailScreen extends React.Component {
   };
 
   verifyHandler = (code) => {
-    fetch("http://keep-up-mock.herokuapp.com/api/users/verify-email", {
+    fetch("https://keep-up-mock.herokuapp.com/api/users/verify-email", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
