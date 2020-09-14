@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
+import { SearchBar } from "react-native-elements";
 import * as Contacts from "expo-contacts";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import Contact from "../components/Contact";
@@ -10,6 +11,8 @@ import Header from "../components/Header";
 class PickContactsScreen extends React.Component {
   state = {
     contacts: [],
+    filteredContacts: [],
+    input: "",
   };
 
   async componentDidMount() {
@@ -51,20 +54,44 @@ class PickContactsScreen extends React.Component {
             }
           />
           <View style={{ width: "85%" }}>
-            <Input placeholder="Search..." />
+            <Input
+              placeholder="Search..."
+              value={this.state.input}
+              onChangeText={(text) => {
+                const updatedContacts = this.state.contacts.filter(
+                  (contact) => {
+                    const name =
+                      contact.firstName || "" + " " + contact.lastName || "";
+                    return name.indexOf(text) > -1;
+                  }
+                );
+                this.setState({
+                  filteredContacts: updatedContacts,
+                  input: text,
+                });
+              }}
+            />
           </View>
         </View>
 
         <View style={{ flex: 0.9 }}>
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={this.state.contacts.sort((a, b) => {
-              if (a.firstName < b.firstName) return -1;
-              if (a.firstName > b.firstName) return 1;
-            })}
+            data={
+              !this.state.input
+                ? this.state.contacts.sort((a, b) => {
+                    if (a.firstName < b.firstName) return -1;
+                    if (a.firstName > b.firstName) return 1;
+                  })
+                : this.state.filteredContacts.sort((a, b) => {
+                    if (a.firstName < b.firstName) return -1;
+                    if (a.firstName > b.firstName) return 1;
+                  })
+            }
             keyExtractor={(item) => item.id}
             renderItem={(itemData) => <Contact name={itemData.item.name} />}
             numColumns={3}
+            ListHeaderComponent={this.renderHeader}
           />
         </View>
       </SafeAreaView>
