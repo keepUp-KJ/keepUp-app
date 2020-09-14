@@ -61,9 +61,12 @@ class PickContactsScreen extends React.Component {
               onChangeText={(text) => {
                 const updatedContacts = this.state.contacts.filter(
                   (contact) => {
-                    const name =
-                      contact.firstName || "" + " " + contact.lastName || "";
-                    return name.indexOf(text) > -1;
+                    const name = String.prototype.toUpperCase.call(
+                      (contact.firstName || "") + " " + (contact.lastName || "")
+                    );
+
+                    const search = String.prototype.toUpperCase.call(text);
+                    return name.indexOf(search) > -1;
                   }
                 );
                 this.setState({
