@@ -29,9 +29,18 @@ class PickContactsScreen extends React.Component {
         <View style={styles.container}>
           <Header
             centerComponent={
-              <Text style={{ ...styles.text, fontWeight: "700" }}>
-                PICK CONTACTS
-              </Text>
+              <View>
+                <Text style={styles.text}>PICK CONTACTS</Text>
+                <Text
+                  style={{
+                    ...styles.text,
+                    fontSize: 12,
+                    color: Colors.primaryColor,
+                  }}
+                >
+                  2 CONTACTS SELECTED
+                </Text>
+              </View>
             }
             rightComponent={
               <TouchableOpacity
@@ -84,6 +93,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "Futura",
     color: Colors.secondary,
+    textAlign: "center",
+    fontWeight: "700",
   },
 });
 

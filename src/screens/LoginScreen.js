@@ -26,7 +26,7 @@ class LoginScreen extends React.Component {
   loginWithGoogle = async () => {
     const { type, accessToken, user } = await Google.logInAsync({
       clientId:
-        "185536610149-1vmlrrujcfe75lfdln3eqstp4lrd840g.apps.googleusercontent.com",
+        "185536610149-0a5l8ktbfqciapvko2mkf4dmisk4epq8.apps.googleusercontent.com",
       language: "en-US",
     });
 
