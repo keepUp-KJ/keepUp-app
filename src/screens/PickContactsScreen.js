@@ -1,6 +1,5 @@
 import React from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
-import { SearchBar } from "react-native-elements";
 import * as Contacts from "expo-contacts";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import Contact from "../components/Contact";
@@ -21,7 +20,11 @@ class PickContactsScreen extends React.Component {
 
     if (status === "granted") {
       const { data } = await Contacts.getContactsAsync({
-        fields: [Contacts.Fields.ID, Contacts.Fields.Birthday],
+        fields: [
+          Contacts.Fields.ID,
+          Contacts.Fields.Birthday,
+          Contacts.Fields.PhoneNumbers,
+        ],
       });
       this.setState({ contacts: data });
     }
@@ -93,7 +96,7 @@ class PickContactsScreen extends React.Component {
                   })
             }
             keyExtractor={(item) => item.id}
-            renderItem={(itemData) => <Contact name={itemData.item.name} />}
+            renderItem={(itemData) => <Contact contact={itemData.item} />}
             numColumns={3}
             ListHeaderComponent={this.renderHeader}
           />

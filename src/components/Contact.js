@@ -17,7 +17,7 @@ const Contact = (props) => {
         setContactPressed(true);
       }}
     >
-      <Text style={styles.text}>{props.name}</Text>
+      <Text style={styles.text}>{props.contact.name}</Text>
 
       {accepted ? (
         <Ionicons
@@ -44,6 +44,26 @@ const Contact = (props) => {
             size={50}
             color={Colors.primaryColor}
             onPress={() => {
+              fetch("https://keep-up-mock.herokuapp.com/api/contacts", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  first_name: props.contact.firstName,
+                  last_name: props.contact.lastName || "",
+                  mobile: props.contact.phoneNumbers[0].number,
+                  status: "Accepted",
+                  frequency: "Weekly",
+                  relation: "",
+                }),
+              })
+                .then((res) => res.json())
+                .then(async (json) => {
+                  if (json.response === "SUCCESS") {
+                    //Add field in Contact that indicates this contact is accepted
+                  }
+                });
               setAccepted(true);
               setContactPressed(false);
             }}
