@@ -22,7 +22,7 @@ const Input = (props) => {
 
 const styles = StyleSheet.create({
   input: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 25,
     padding: 12,
     paddingHorizontal: 20,

@@ -1,10 +1,10 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Colors from "../constants/Colors";
 
 const Contact = (props) => {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} activeOpacity={0.6}>
       <Text
         style={{
           textAlign: "center",
@@ -16,7 +16,7 @@ const Contact = (props) => {
       >
         {props.name}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

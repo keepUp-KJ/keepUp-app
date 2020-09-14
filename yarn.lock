@@ -3655,6 +3655,11 @@ merge-stream@^2.0.0:
   resolved "https://registry.yarnpkg.com/merge-stream/-/merge-stream-2.0.0.tgz#52823629a14dd00c9770fb6ad47dc6310f2c1f60"
   integrity sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==
 
+merge@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/merge/-/merge-1.2.1.tgz#38bebf80c3220a8a487b6fcfb3941bb11720c145"
+  integrity sha512-VjFo4P5Whtj4vsLzsYBu5ayHhoHJ0UqNm7ibvShmbmoz7tGi0vXaoJbGdB+GmDMLUdg8DpQXEIeVDAe8MaABvQ==
+
 metro-babel-register@0.58.0:
   version "0.58.0"
   resolved "https://registry.yarnpkg.com/metro-babel-register/-/metro-babel-register-0.58.0.tgz#5c44786d49a044048df56cf476a2263491d4f53a"
@@ -4511,6 +4516,14 @@ react-is@^16.12.0, react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1, react-
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-native-alphabet-sectionlist@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-alphabet-sectionlist/-/react-native-alphabet-sectionlist-0.0.4.tgz#6d8aa46acdbc1e76b20ee6ca90cbfd0ad2c154a9"
+  integrity sha512-iX6ZVVvCBcaz2FyMxXQkjpgrg0VBuSaFax8FArmXOzQRVYeVrw20NAAxo2Mloia6heQeMS2cyhR8JHQAntRYow==
+  dependencies:
+    merge "^1.2.1"
+    prop-types "^15.7.2"
 
 react-native-appearance@~0.3.3:
   version "0.3.4"

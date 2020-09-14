@@ -32,7 +32,7 @@ class VerifyEmailScreen extends React.Component {
       .then((json) => {
         this.setState({ loading: false });
         if (json.response) {
-          this.props.navigation.navigate("Home");
+          this.props.navigation.navigate("PickContacts");
         } else {
           this.setState({ error: json.error });
         }

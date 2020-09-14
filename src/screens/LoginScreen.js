@@ -82,7 +82,7 @@ class LoginScreen extends React.Component {
       .then((res) => res.json())
       .then((json) => {
         if (json.token) {
-          this.props.navigation.navigate("Home");
+          this.props.navigation.navigate("PickContacts");
         } else {
           this.setState({ error: json.error, loading: false });
         }
