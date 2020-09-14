@@ -7,6 +7,7 @@ import Contact from "../components/Contact";
 import Colors from "../constants/Colors";
 import Input from "../components/Input";
 import Header from "../components/Header";
+import Btn from "../components/Btn";
 
 class PickContactsScreen extends React.Component {
   state = {
@@ -93,6 +94,13 @@ class PickContactsScreen extends React.Component {
             numColumns={3}
             ListHeaderComponent={this.renderHeader}
           />
+          <View style={{ alignItems: "center" }}>
+            <Btn
+              title="Done"
+              btnColor={Colors.primaryColor}
+              style={{ position: "absolute", width: "50%", marginTop: -80 }}
+            />
+          </View>
         </View>
       </SafeAreaView>
     );

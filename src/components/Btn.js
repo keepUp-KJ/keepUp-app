@@ -9,7 +9,12 @@ import {
 const Btn = (props) => {
   return (
     <TouchableOpacity
-      style={{ ...styles.container, backgroundColor: props.btnColor }}
+      activeOpacity={0.7}
+      style={{
+        ...props.style,
+        ...styles.container,
+        backgroundColor: props.btnColor,
+      }}
       onPress={props.onPress}
     >
       {props.icon}
