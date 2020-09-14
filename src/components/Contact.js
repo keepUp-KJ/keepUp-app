@@ -41,7 +41,7 @@ const Contact = (props) => {
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Ionicons
             name="ios-checkmark-circle"
-            size={40}
+            size={50}
             color={Colors.primaryColor}
             onPress={() => {
               setAccepted(true);
@@ -50,7 +50,7 @@ const Contact = (props) => {
           />
           <Ionicons
             name="ios-close-circle"
-            size={40}
+            size={50}
             color="#990000"
             style={{ marginLeft: 5 }}
             onPress={() => {
