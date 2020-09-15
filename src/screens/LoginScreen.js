@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
 import Btn from "../components/Btn";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";

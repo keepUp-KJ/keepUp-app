@@ -23,7 +23,7 @@ const Btn = (props) => {
       ) : (
         <Text
           style={{
-            color: "white" || props.textColor,
+            color: props.textColor,
             fontSize: props.fontSize,
             fontWeight: props.bold ? "800" : "400",
             marginLeft: 5,
