@@ -8,15 +8,14 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  Alert,
 } from "react-native";
 import Btn from "../components/Btn";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Input from "../components/Input";
 import Colors from "../constants/Colors";
 import * as Facebook from "expo-facebook";
-import { Notifier } from "@airbrake/browser";
 import { GoogleSignin, statusCodes } from "react-native-google-signin";
+import { Notifier } from "@airbrake/browser";
 
 const airbrake = new Notifier({
   projectId: 297602,
@@ -45,7 +44,6 @@ class LoginScreen extends React.Component {
     try {
       await GoogleSignin.hasPlayServices();
       const { accessToken, idToken } = await GoogleSignin.signIn();
-      setloggedIn(true);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
