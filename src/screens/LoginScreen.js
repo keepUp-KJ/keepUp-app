@@ -1,6 +1,7 @@
 import React from "react";
 import {
   View,
+  Alert,
   StyleSheet,
   Text,
   SafeAreaView,
@@ -14,7 +15,14 @@ import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Input from "../components/Input";
 import Colors from "../constants/Colors";
 import * as Facebook from "expo-facebook";
-import * as Google from "expo-google-app-auth";
+import { Notifier } from "@airbrake/browser";
+import { GoogleSignin, statusCodes } from "react-native-google-signin";
+
+const airbrake = new Notifier({
+  projectId: 297602,
+  projectKey: "c08de80cdcacbf61e9b1091b4590c1ae",
+  environment: "production",
+});
 
 class LoginScreen extends React.Component {
   state = {
@@ -24,21 +32,33 @@ class LoginScreen extends React.Component {
     loading: false,
   };
 
-  loginWithGoogle = async () => {
-    const { type, accessToken, user } = await Google.logInAsync({
-      clientId:
-        "185536610149-0a5l8ktbfqciapvko2mkf4dmisk4epq8.apps.googleusercontent.com",
-      language: "en-US",
+  componentDidMount() {
+    GoogleSignin.configure({
+      scopes: ["email"], // what API you want to access on behalf of the user, default is email and profile
+      webClientId:
+        "185536610149-0a5l8ktbfqciapvko2mkf4dmisk4epq8.apps.googleusercontent.com", // client ID of type WEB for your server (needed to verify user ID and offline access)
+      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
     });
+  }
 
-    if (type === "success") {
-      // Then you can use the Google REST API
-      let userInfoResponse = await fetch(
-        "https://www.googleapis.com/userinfo/v2/me",
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        }
-      );
+  loginWithGoogle = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const { accessToken, idToken } = await GoogleSignin.signIn();
+      setloggedIn(true);
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+        alert("Cancel");
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        alert("Signin in progress");
+        // operation (f.e. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        alert("PLAY_SERVICES_NOT_AVAILABLE");
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
     }
   };
 
@@ -70,24 +90,28 @@ class LoginScreen extends React.Component {
 
   loginHandler = (email, password) => {
     this.setState({ loading: true });
-    fetch("https://keep-up-mock.herokuapp.com/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.token) {
-          this.props.navigation.navigate("PickContacts");
-        } else {
-          this.setState({ error: json.error, loading: false });
-        }
-      });
+    try {
+      fetch("https://keep-up-mock.herokuapp.com/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.token) {
+            this.props.navigation.navigate("PickContacts");
+          } else {
+            this.setState({ error: json.error, loading: false });
+          }
+        });
+    } catch (err) {
+      airbrake.notify(err);
+    }
   };
 
   render() {
