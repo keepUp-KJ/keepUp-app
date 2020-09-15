@@ -14,7 +14,7 @@ import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Input from "../components/Input";
 import Colors from "../constants/Colors";
 import * as Facebook from "expo-facebook";
-import { GoogleSignin, statusCodes } from "react-native-google-signin";
+import * as Google from "expo-google-app-auth";
 import { Notifier } from "@airbrake/browser";
 
 const airbrake = new Notifier({
@@ -31,32 +31,21 @@ class LoginScreen extends React.Component {
     loading: false,
   };
 
-  componentDidMount() {
-    GoogleSignin.configure({
-      scopes: ["email"], // what API you want to access on behalf of the user, default is email and profile
-      webClientId:
-        "185536610149-0a5l8ktbfqciapvko2mkf4dmisk4epq8.apps.googleusercontent.com", // client ID of type WEB for your server (needed to verify user ID and offline access)
-      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-    });
-  }
-
   loginWithGoogle = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const { accessToken, idToken } = await GoogleSignin.signIn();
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-        alert("Cancel");
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        alert("Signin in progress");
-        // operation (f.e. sign in) is in progress already
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        alert("PLAY_SERVICES_NOT_AVAILABLE");
-        // play services not available or outdated
-      } else {
-        // some other error happened
-      }
+    const { type, accessToken, user } = await Google.logInAsync({
+      clientId:
+        "185536610149-0a5l8ktbfqciapvko2mkf4dmisk4epq8.apps.googleusercontent.com",
+      language: "en-US",
+    });
+
+    if (type === "success") {
+      // Then you can use the Google REST API
+      let userInfoResponse = await fetch(
+        "https://www.googleapis.com/userinfo/v2/me",
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
     }
   };
 
