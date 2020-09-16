@@ -29,6 +29,20 @@ class CreateRemiderScreen extends React.Component {
   }
 
   render() {
+    let dropdownItems = [
+      {
+        label: "On the same day",
+        value: "1",
+      },
+      {
+        label: "One week before",
+        value: "2",
+      },
+      {
+        label: "None",
+        value: "3",
+      },
+    ];
     return (
       <TouchableWithoutFeedback
         onPress={() => {
@@ -119,21 +133,22 @@ class CreateRemiderScreen extends React.Component {
               />
               <View style={{ width: "60%", marginHorizontal: 10 }}>
                 <DropDownPicker
-                  items={[
-                    {
-                      label: "UK",
-                      value: "uk",
-                    },
-                    {
-                      label: "France",
-                      value: "france",
-                    },
-                  ]}
+                  style={{ borderWidth: 0 }}
+                  items={dropdownItems}
                   defaultValue={this.state.country}
-                  containerStyle={{ height: 40, marginVertical: 15 }}
+                  containerStyle={{
+                    ...styles.input,
+                    height: 40,
+                    marginVertical: 15,
+                  }}
                   itemStyle={{
                     justifyContent: "flex-start",
                   }}
+                  labelStyle={{
+                    color: Colors.secondary,
+                  }}
+                  arrowSize={18}
+                  arrowStyle={{ marginTop: -4 }}
                   onChangeItem={(item) =>
                     this.setState({
                       country: item.value,
