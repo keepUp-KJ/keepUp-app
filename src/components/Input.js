@@ -5,7 +5,13 @@ import Colors from "../constants/Colors";
 const Input = (props) => {
   return (
     <View>
-      <Text style={{ paddingLeft: 10, fontSize: 14, fontFamily: "Futura" }}>
+      <Text
+        style={{
+          paddingLeft: 10,
+          fontSize: 14,
+          fontFamily: "Futura",
+        }}
+      >
         {props.title}
       </Text>
       <TextInput

@@ -1,7 +1,14 @@
 import React from "react";
-import { View, StyleSheet, Text, SafeAreaView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  FlatList,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import * as Contacts from "expo-contacts";
-import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import Contact from "../components/Contact";
 import Colors from "../constants/Colors";
 import Input from "../components/Input";
@@ -13,6 +20,8 @@ class PickContactsScreen extends React.Component {
     contacts: [],
     filteredContacts: [],
     input: "",
+    acceptedContacts: [],
+    rejectedContacts: [],
   };
 
   async componentDidMount() {
@@ -30,29 +39,64 @@ class PickContactsScreen extends React.Component {
     }
   }
 
+  alert = () =>
+    Alert.alert(
+      "Are you sure?",
+      "We won't be able to set up your account without picking contacts",
+      [
+        { text: "Cancel", style: "default" },
+        {
+          text: "Skip",
+          style: "cancel",
+          onPress: () => {
+            this.props.navigation.navigate("Home");
+          },
+        },
+      ]
+    );
+
+  renderContact = (itemData) => (
+    <Contact
+      contact={itemData.item}
+      onAccept={() => {
+        this.setState({
+          acceptedContacts: [...this.state.acceptedContacts, itemData.item],
+        });
+      }}
+      onReject={() => {
+        this.setState({
+          rejectedContacts: [...this.state.rejectedContacts, itemData.item],
+        });
+      }}
+    />
+  );
+
   render() {
+    const contacts = !this.state.input
+      ? this.state.contacts.sort((a, b) => {
+          if (a.firstName < b.firstName) return -1;
+          if (a.firstName > b.firstName) return 1;
+        })
+      : this.state.filteredContacts.sort((a, b) => {
+          if (a.firstName < b.firstName) return -1;
+          if (a.firstName > b.firstName) return 1;
+        });
+
     return (
       <SafeAreaView style={styles.screen}>
+        {/* HEADER + SEARCH INPUT */}
         <View style={styles.container}>
           <Header
             centerComponent={
               <View>
                 <Text style={styles.text}>PICK CONTACTS</Text>
-                <Text
-                  style={{
-                    ...styles.text,
-                    fontSize: 12,
-                    color: Colors.primaryColor,
-                  }}
-                >
-                  2 CONTACTS SELECTED
+                <Text style={{ ...styles.text, color: Colors.primaryColor }}>
+                  {this.state.acceptedContacts.length} CONTACTS SELECTED
                 </Text>
               </View>
             }
             rightComponent={
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("Home")}
-              >
+              <TouchableOpacity onPress={this.alert}>
                 <Text style={styles.text}>Skip</Text>
               </TouchableOpacity>
             }
@@ -81,35 +125,31 @@ class PickContactsScreen extends React.Component {
           </View>
         </View>
 
+        {/* CONTACTS + DONE BUTTON*/}
         <View style={{ flex: 0.9 }}>
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={
-              !this.state.input
-                ? this.state.contacts.sort((a, b) => {
-                    if (a.firstName < b.firstName) return -1;
-                    if (a.firstName > b.firstName) return 1;
-                  })
-                : this.state.filteredContacts.sort((a, b) => {
-                    if (a.firstName < b.firstName) return -1;
-                    if (a.firstName > b.firstName) return 1;
-                  })
-            }
+            data={contacts}
             keyExtractor={(item) => item.id}
-            renderItem={(itemData) => <Contact contact={itemData.item} />}
+            renderItem={this.renderContact}
             numColumns={3}
             ListHeaderComponent={this.renderHeader}
           />
-          <View style={{ alignItems: "center" }}>
-            <Btn
-              title="Done"
-              btnColor={Colors.primaryColor}
-              style={{ position: "absolute", width: "50%", marginTop: -80 }}
-              onPress={() => {
-                this.props.navigation.navigate("Home");
-              }}
-            />
-          </View>
+          {this.state.acceptedContacts.length === 0 ? null : (
+            <View style={{ alignItems: "center" }}>
+              <Btn
+                title="Done"
+                btnColor={Colors.primaryColor}
+                style={{ position: "absolute", width: "50%", marginTop: -80 }}
+                onPress={() => {
+                  this.props.navigation.navigate("Home", {
+                    accepted: this.state.acceptedContacts,
+                    rejected: this.state.rejectedContacts,
+                  });
+                }}
+              />
+            </View>
+          )}
         </View>
       </SafeAreaView>
     );

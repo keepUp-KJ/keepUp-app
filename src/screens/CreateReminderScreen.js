@@ -6,13 +6,18 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
   Keyboard,
+  Switch,
 } from "react-native";
 import { Picker } from "@react-native-community/picker";
 import DatePicker from "react-native-datepicker";
 import Colors from "../constants/Colors";
 import Btn from "../components/Btn";
 import Input from "../components/Input";
-import { Ionicons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import moment from "moment";
 
 class CreateRemiderScreen extends React.Component {
@@ -52,14 +57,12 @@ class CreateRemiderScreen extends React.Component {
 
           {/* Inputs */}
           <View style={{ ...styles.container, flex: 0.5 }}>
-            <View style={{ width: "60%" }}>
-              <Input
-                value={today}
-                autoCapitalize="none"
-                autoCorrect={false}
-                style={{ color: Colors.secondary, fontWeight: "700" }}
+            <View style={styles.row}>
+              <MaterialCommunityIcons
+                name="calendar-range"
+                size={30}
+                color={Colors.secondary}
               />
-<<<<<<< Updated upstream
               <Input
                 placeholder="Enter contact name"
                 autoCapitalize="none"
@@ -67,7 +70,6 @@ class CreateRemiderScreen extends React.Component {
               />
               <Input placeholder="Enter occasion" autoCorrect={false} />
               <Input placeholder="On the same day" autoCorrect={false} />
-=======
               <View style={{ width: "60%", marginHorizontal: 10 }}>
                 <DatePicker
                   style={styles.input}
@@ -112,7 +114,8 @@ class CreateRemiderScreen extends React.Component {
                 size={30}
                 color={Colors.secondary}
               />
-              <View style={{ width: "60%", marginHorizontal: 10 }}>
+                  
+             <View style={{ width: "60%", marginHorizontal: 10 }}>
                 <Input placeholder="Enter occasion" autoCorrect={false} />
               </View>
             </View>
@@ -133,7 +136,7 @@ class CreateRemiderScreen extends React.Component {
                   <Picker.Item label="One week before" value="2" />
                 </Picker>
               </View>
->>>>>>> Stashed changes
+
             </View>
           </View>
 
@@ -143,9 +146,8 @@ class CreateRemiderScreen extends React.Component {
               <Btn
                 title="Create"
                 btnColor={Colors.primaryColor}
-                fontSize={12}
+                fontSize={20}
                 loading={this.state.loading}
-                bold
                 textColor="white"
               />
             </View>
@@ -161,7 +163,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    justifyContent: "center",
     alignItems: "center",
   },
   title: {
@@ -176,8 +177,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flex: 0.15,
   },
-<<<<<<< Updated upstream
-=======
   row: {
     alignItems: "center",
     flexDirection: "row",
@@ -191,6 +190,6 @@ const styles = StyleSheet.create({
     fontFamily: "Futura",
     width: "100%",
   },
->>>>>>> Stashed changes
+
 });
 export default CreateRemiderScreen;

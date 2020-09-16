@@ -25,7 +25,7 @@ const Navigator = createSwitchNavigator(
     Contacts: ContactsScreen,
   },
   {
-    initialRouteName: "CreateReminder",
+    // initialRouteName: "Contacts",
   }
 );
 

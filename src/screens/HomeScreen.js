@@ -26,23 +26,26 @@ class HomeScreen extends React.Component {
   render() {
     var today = moment().format("MMMM DD");
     const TASKS = [
-      //   { text: "Call Jana" },
-      //   { text: "It's Khaled birthday! call him " },
+      { text: "Call Jana" },
+      { text: "It's Khaled birthday! call him " },
     ];
     const BIRTHDAYS = [
-      {
-        date: "30 SEP",
-        contact: "Yusuf Hamdy",
-      },
-      {
-        date: "15 OCT",
-        contact: "Noha Sabry",
-      },
-      {
-        date: "22 OCT",
-        contact: "John Doe",
-      },
+      // {
+      //   date: "30 SEP",
+      //   contact: "Yusuf Hamdy",
+      // },
+      // {
+      //   date: "15 OCT",
+      //   contact: "Noha Sabry",
+      // },
+      // {
+      //   date: "22 OCT",
+      //   contact: "John Doe",
+      // },
     ];
+
+    const acceptedContacts = this.props.navigation.getParam("accepted");
+    const rejectedContacts = this.props.navigation.getParam("rejected");
 
     return (
       <SafeAreaView style={styles.screen}>
@@ -69,9 +72,32 @@ class HomeScreen extends React.Component {
         <View style={styles.body}>
           <Text style={styles.bodyText}>UPCOMING BIRTHDAYS</Text>
           {/* BIRTHDAYS */}
-          <View style={{ width: "80%", justifyContent: "center", flex: 0.3 }}>
+          <View style={{ width: "80%", justifyContent: "center", flex: 0.4 }}>
             <FlatList
               data={BIRTHDAYS}
+              ListEmptyComponent={
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Text
+                    style={{
+                      ...styles.bodyText,
+                      color: "white",
+                      textAlign: "center",
+                    }}
+                  >
+                    You have no upcoming birthdays
+                  </Text>
+                  <Btn
+                    title="Add contacts"
+                    btnColor={Colors.secondary}
+                    style={{ width: "60%" }}
+                    onPress={() => {
+                      this.props.navigation.navigate("Contacts");
+                    }}
+                  />
+                </View>
+              }
               renderItem={(itemData) =>
                 itemData.index < 2 ? (
                   <BirthdayReminder
@@ -85,20 +111,25 @@ class HomeScreen extends React.Component {
           </View>
           {/* SHOW ALL BUTTON */}
           <View style={{ ...styles.btn, width: "60%", flex: 0.2 }}>
-            <Btn
-              title="Show all"
-              btnColor="white"
-              fontSize={14}
-              bold
-              textColor={Colors.primaryColor}
-            />
+            {BIRTHDAYS.length < 3 ? null : (
+              <Btn
+                title="Show all"
+                btnColor="white"
+                fontSize={14}
+                bold
+                textColor={Colors.primaryColor}
+              />
+            )}
           </View>
           {/* BUTTONS */}
           <View style={styles.bottomContainer}>
             <IconButton
               title="Contacts"
               onPress={() => {
-                this.props.navigation.navigate("Contacts");
+                this.props.navigation.navigate("Contacts", {
+                  accepted: acceptedContacts,
+                  rejected: rejectedContacts,
+                });
               }}
               icon={
                 <MaterialIcons
@@ -180,7 +211,7 @@ const styles = StyleSheet.create({
     elevation: 11,
   },
   bottomContainer: {
-    flex: 0.4,
+    flex: 0.3,
     flexDirection: "row",
     justifyContent: "space-evenly",
     width: "100%",
