@@ -23,9 +23,9 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   checkbox: {
-    height: 30,
-    width: 30,
-    borderRadius: 15,
+    height: 28,
+    width: 28,
+    borderRadius: 14,
     borderWidth: 1.5,
     borderColor: Colors.secondary,
     justifyContent: "center",
