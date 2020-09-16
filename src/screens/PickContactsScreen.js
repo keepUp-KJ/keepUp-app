@@ -60,18 +60,12 @@ class PickContactsScreen extends React.Component {
       contact={itemData.item}
       onAccept={() => {
         this.setState({
-          acceptedContacts: [
-            ...this.state.acceptedContacts,
-            itemData.item.name,
-          ],
+          acceptedContacts: [...this.state.acceptedContacts, itemData.item],
         });
       }}
       onReject={() => {
         this.setState({
-          rejectedContacts: [
-            ...this.state.rejectedContacts,
-            itemData.item.name,
-          ],
+          rejectedContacts: [...this.state.rejectedContacts, itemData.item],
         });
       }}
     />
