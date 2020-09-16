@@ -19,23 +19,18 @@ const Contact = (props) => {
     >
       <Text style={styles.text}>{props.contact.name}</Text>
 
-      {accepted ? (
-        <Ionicons
-          style={{ position: "absolute" }}
-          name="ios-checkmark-circle"
-          size={60}
-          color={Colors.primaryColor}
-        />
-      ) : null}
-
-      {rejected ? (
-        <Ionicons
-          style={{ position: "absolute" }}
-          name="ios-close-circle"
-          size={60}
-          color="#990000"
-        />
-      ) : null}
+      <Ionicons
+        style={{ position: "absolute" }}
+        name={
+          accepted
+            ? "ios-checkmark-circle"
+            : rejected
+            ? "ios-close-circle"
+            : null
+        }
+        size={70}
+        color={accepted ? Colors.primaryColor : rejected ? "#990000" : null}
+      />
 
       {contactPressed ? (
         <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -44,26 +39,7 @@ const Contact = (props) => {
             size={50}
             color={Colors.primaryColor}
             onPress={() => {
-              fetch("https://keep-up-mock.herokuapp.com/api/contacts", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  first_name: props.contact.firstName,
-                  last_name: props.contact.lastName || "",
-                  mobile: props.contact.phoneNumbers[0].number,
-                  status: "Accepted",
-                  frequency: "Weekly",
-                  relation: "",
-                }),
-              })
-                .then((res) => res.json())
-                .then(async (json) => {
-                  if (json.response === "SUCCESS") {
-                    //Add field in Contact that indicates this contact is accepted
-                  }
-                });
+              props.onAccept();
               setAccepted(true);
               setContactPressed(false);
             }}
@@ -74,6 +50,7 @@ const Contact = (props) => {
             color="#990000"
             style={{ marginLeft: 5 }}
             onPress={() => {
+              props.onReject();
               setRejected(true);
               setContactPressed(false);
             }}
@@ -98,7 +75,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Futura",
     color: Colors.secondary,
-    fontSize: 12,
+    fontSize: 14,
     paddingHorizontal: 5,
   },
 });
