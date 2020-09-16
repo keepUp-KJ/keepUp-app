@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     elevation: 11,
   },
   bottomContainer: {
-    flex: 0.4,
+    flex: 0.3,
     flexDirection: "row",
     justifyContent: "space-evenly",
     width: "100%",

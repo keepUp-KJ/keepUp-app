@@ -15,13 +15,6 @@ import Input from "../components/Input";
 import Colors from "../constants/Colors";
 import * as Facebook from "expo-facebook";
 import * as Google from "expo-google-app-auth";
-import { Notifier } from "@airbrake/browser";
-
-const airbrake = new Notifier({
-  projectId: 297602,
-  projectKey: "c08de80cdcacbf61e9b1091b4590c1ae",
-  environment: "production",
-});
 
 class LoginScreen extends React.Component {
   state = {
@@ -33,8 +26,8 @@ class LoginScreen extends React.Component {
 
   loginWithGoogle = async () => {
     const { type, accessToken, user } = await Google.logInAsync({
-      clientId:
-        "185536610149-0a5l8ktbfqciapvko2mkf4dmisk4epq8.apps.googleusercontent.com",
+      iosClientId:
+        "185536610149-bcqhr252u7nldti82j9s14c7d1q58oca.apps.googleusercontent.com",
       language: "en-US",
     });
 
@@ -76,28 +69,24 @@ class LoginScreen extends React.Component {
 
   loginHandler = (email, password) => {
     this.setState({ loading: true });
-    try {
-      fetch("https://keep-up-mock.herokuapp.com/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          if (json.token) {
-            this.props.navigation.navigate("PickContacts");
-          } else {
-            this.setState({ error: json.error, loading: false });
-          }
-        });
-    } catch (err) {
-      airbrake.notify(err);
-    }
+    fetch("https://keep-up-mock.herokuapp.com/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.token) {
+          this.props.navigation.navigate("PickContacts");
+        } else {
+          this.setState({ error: json.error, loading: false });
+        }
+      });
   };
 
   render() {

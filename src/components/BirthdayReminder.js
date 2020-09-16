@@ -7,14 +7,14 @@ const BirthdayReminder = (props) => {
     <View
       style={{ flexDirection: "row", alignItems: "center", marginBottom: 15 }}
     >
-      <View style={{ flex: 0.2, alignItems: "flex-start" }}>
+      <View style={{ flex: 0.15, alignItems: "flex-start" }}>
         <Text
           style={{ ...styles.text, fontWeight: "700", textAlign: "center" }}
         >
           {props.date.toUpperCase()}
         </Text>
       </View>
-      <View style={{ flex: 0.6, alignItems: "flex-start" }}>
+      <View style={{ flex: 0.65, alignItems: "flex-start", marginLeft: 15 }}>
         <Text style={styles.text}>{props.contact}</Text>
       </View>
       <View style={{ flex: 0.2, alignItems: "flex-end" }}>
