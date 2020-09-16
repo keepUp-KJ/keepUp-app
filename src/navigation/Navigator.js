@@ -7,6 +7,7 @@ import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import RenewPasswordScreen from "../screens/RenewPasswordScreen";
 import VerifyEmailScreen from "../screens/VerifyEmailScreen";
 import HomeScreen from "../screens/HomeScreen";
+import CreateReminderScreen from "../screens/CreateReminderScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import ContactsScreen from "../screens/ContactsScreen";
 
@@ -19,11 +20,12 @@ const Navigator = createSwitchNavigator(
     RenewPassword: RenewPasswordScreen,
     VerifyEmail: VerifyEmailScreen,
     Home: HomeScreen,
+    CreateReminder: CreateReminderScreen,
     Settings: SettingsScreen,
     Contacts: ContactsScreen,
   },
   {
-    // initialRouteName: "Home",
+    initialRouteName: "CreateReminder",
   }
 );
 
