@@ -30,18 +30,18 @@ class HomeScreen extends React.Component {
       { text: "It's Khaled birthday! call him " },
     ];
     const BIRTHDAYS = [
-      // {
-      //   date: "30 SEP",
-      //   contact: "Yusuf Hamdy",
-      // },
-      // {
-      //   date: "15 OCT",
-      //   contact: "Noha Sabry",
-      // },
-      // {
-      //   date: "22 OCT",
-      //   contact: "John Doe",
-      // },
+      {
+        date: "30 SEP",
+        contact: "Yusuf Hamdy",
+      },
+      {
+        date: "15 OCT",
+        contact: "Noha Sabry",
+      },
+      {
+        date: "22 OCT",
+        contact: "John Doe",
+      },
     ];
 
     const acceptedContacts = this.props.navigation.getParam("accepted");
@@ -72,7 +72,7 @@ class HomeScreen extends React.Component {
         <View style={styles.body}>
           <Text style={styles.bodyText}>UPCOMING BIRTHDAYS</Text>
           {/* BIRTHDAYS */}
-          <View style={{ width: "80%", justifyContent: "center", flex: 0.4 }}>
+          <View style={{ width: "80%", justifyContent: "center", flex: 0.3 }}>
             <FlatList
               data={BIRTHDAYS}
               ListEmptyComponent={
@@ -110,7 +110,7 @@ class HomeScreen extends React.Component {
             />
           </View>
           {/* SHOW ALL BUTTON */}
-          <View style={{ ...styles.btn, width: "60%", flex: 0.2 }}>
+          <View style={{ ...styles.btn, width: "60%", flex: 0.3 }}>
             {BIRTHDAYS.length < 3 ? null : (
               <Btn
                 title="Show all"

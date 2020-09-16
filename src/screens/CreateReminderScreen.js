@@ -6,8 +6,10 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
   Keyboard,
+  YellowBox,
 } from "react-native";
 import DatePicker from "react-native-datepicker";
+import DropDownPicker from "react-native-dropdown-picker";
 import Colors from "../constants/Colors";
 import Btn from "../components/Btn";
 import Input from "../components/Input";
@@ -16,16 +18,17 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
-import moment from "moment";
 
 class CreateRemiderScreen extends React.Component {
   state = {
     date: new Date(),
   };
 
-  render() {
-    var today = moment().format("YYYY-MM-DD");
+  componentDidMount() {
+    YellowBox.ignoreWarnings(["Animated: `useNativeDriver`"]);
+  }
 
+  render() {
     return (
       <TouchableWithoutFeedback
         onPress={() => {
@@ -64,7 +67,7 @@ class CreateRemiderScreen extends React.Component {
                 <DatePicker
                   style={styles.input}
                   date={this.state.date}
-                  minDate={today}
+                  minDate={this.state.date}
                   maxDate="2050-06-01"
                   format="DD MMM YYYY"
                   confirmBtnText="Confirm"
@@ -115,7 +118,28 @@ class CreateRemiderScreen extends React.Component {
                 color={Colors.secondary}
               />
               <View style={{ width: "60%", marginHorizontal: 10 }}>
-                <Input placeholder="Enter alert" autoCorrect={false} />
+                <DropDownPicker
+                  items={[
+                    {
+                      label: "UK",
+                      value: "uk",
+                    },
+                    {
+                      label: "France",
+                      value: "france",
+                    },
+                  ]}
+                  defaultValue={this.state.country}
+                  containerStyle={{ height: 40, marginVertical: 15 }}
+                  itemStyle={{
+                    justifyContent: "flex-start",
+                  }}
+                  onChangeItem={(item) =>
+                    this.setState({
+                      country: item.value,
+                    })
+                  }
+                />
               </View>
             </View>
           </View>
