@@ -10,7 +10,11 @@ import {
 import Colors from "../constants/Colors";
 import Btn from "../components/Btn";
 import Input from "../components/Input";
-import { Ionicons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import moment from "moment";
 
 class CreateRemiderScreen extends React.Component {
@@ -47,20 +51,75 @@ class CreateRemiderScreen extends React.Component {
 
           {/* Inputs */}
           <View style={{ ...styles.container, flex: 0.5 }}>
-            <View style={{ width: "60%" }}>
-              <Input
-                value={today}
-                autoCapitalize="none"
-                autoCorrect={false}
-                style={{ color: Colors.secondary, fontWeight: "700" }}
+            <View style={styles.row}>
+              <MaterialCommunityIcons
+                name="calendar-range"
+                size={24}
+                color={Colors.secondary}
               />
-              <Input
-                placeholder="Enter contact name"
-                autoCapitalize="none"
-                autoCorrect={false}
+              <View style={{ width: "60%", marginHorizontal: 10 }}>
+                <Input
+                  value={today}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  style={{
+                    width: "100%",
+                    color: Colors.secondary,
+                    fontWeight: "700",
+                  }}
+                />
+              </View>
+            </View>
+            <View style={styles.row}>
+              <MaterialIcons name="people" size={24} color={Colors.secondary} />
+              <View style={{ width: "60%", marginHorizontal: 10 }}>
+                <Input
+                  placeholder="Enter contact name"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+              </View>
+            </View>
+            <View style={styles.row}>
+              <MaterialCommunityIcons
+                name="clipboard-check"
+                size={24}
+                color={Colors.secondary}
               />
-              <Input placeholder="Enter occasion" autoCorrect={false} />
-              <Input placeholder="On the same day" autoCorrect={false} />
+              <View style={{ width: "60%", marginHorizontal: 10 }}>
+                <Input placeholder="Enter occasion" autoCorrect={false} />
+              </View>
+            </View>
+            <View style={styles.row}>
+              <MaterialCommunityIcons
+                name="bell"
+                size={24}
+                color={Colors.secondary}
+              />
+
+              <View style={{ width: "60%", marginHorizontal: 10 }}>
+                <Input placeholder="On the same day" autoCorrect={false} />
+              </View>
+            </View>
+            <View style={{ ...styles.row, marginTop: 30 }}>
+              <MaterialIcons name="snooze" size={30} color={Colors.secondary} />
+              <View
+                style={{
+                  width: "30%",
+                  marginHorizontal: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 20,
+                    color: Colors.secondary,
+                    fontWeight: "700",
+                    fontFamily: "Futura",
+                  }}
+                >
+                  Snooze
+                </Text>
+              </View>
             </View>
           </View>
 
@@ -70,9 +129,8 @@ class CreateRemiderScreen extends React.Component {
               <Btn
                 title="Create"
                 btnColor={Colors.primaryColor}
-                fontSize={12}
+                fontSize={20}
                 loading={this.state.loading}
-                bold
                 textColor="white"
               />
             </View>
@@ -88,7 +146,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    justifyContent: "center",
     alignItems: "center",
   },
   title: {
@@ -102,6 +159,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     flex: 0.15,
+  },
+  row: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
 export default CreateRemiderScreen;
