@@ -7,6 +7,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import { Picker } from "@react-native-community/picker";
+import DatePicker from "react-native-datepicker";
 import Colors from "../constants/Colors";
 import Btn from "../components/Btn";
 import Input from "../components/Input";
@@ -14,10 +16,13 @@ import { Ionicons } from "@expo/vector-icons";
 import moment from "moment";
 
 class CreateRemiderScreen extends React.Component {
-  state = {};
+  state = {
+    date: new Date(),
+    notify: "2",
+  };
 
   render() {
-    var today = moment().format("MMMM DD");
+    var today = moment().format("MMMM DD YYYY");
 
     return (
       <TouchableWithoutFeedback
@@ -54,6 +59,7 @@ class CreateRemiderScreen extends React.Component {
                 autoCorrect={false}
                 style={{ color: Colors.secondary, fontWeight: "700" }}
               />
+<<<<<<< Updated upstream
               <Input
                 placeholder="Enter contact name"
                 autoCapitalize="none"
@@ -61,6 +67,73 @@ class CreateRemiderScreen extends React.Component {
               />
               <Input placeholder="Enter occasion" autoCorrect={false} />
               <Input placeholder="On the same day" autoCorrect={false} />
+=======
+              <View style={{ width: "60%", marginHorizontal: 10 }}>
+                <DatePicker
+                  style={styles.input}
+                  date={this.state.date}
+                  minDate="1900-05-01"
+                  maxDate="3016-06-01"
+                  mode="date"
+                  placeholder="select date"
+                  format="DD MMM YYYY"
+                  confirmBtnText="Confirm"
+                  cancelBtnText="Cancel"
+                  showIcon={false}
+                  use
+                  customStyles={{
+                    dateInput: {
+                      borderWidth: 0,
+                    },
+                    dateText: {
+                      color: Colors.secondary,
+                      fontWeight: "700",
+                    },
+
+                    // ... You can check the source to find the other keys.
+                  }}
+                  onDateChange={(date) => this.setState({ date })}
+                />
+              </View>
+            </View>
+            <View style={styles.row}>
+              <MaterialIcons name="people" size={30} color={Colors.secondary} />
+              <View style={{ width: "60%", marginHorizontal: 10 }}>
+                <Input
+                  placeholder="Enter contact name"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+              </View>
+            </View>
+            <View style={styles.row}>
+              <MaterialCommunityIcons
+                name="clipboard-check"
+                size={30}
+                color={Colors.secondary}
+              />
+              <View style={{ width: "60%", marginHorizontal: 10 }}>
+                <Input placeholder="Enter occasion" autoCorrect={false} />
+              </View>
+            </View>
+            <View style={styles.row}>
+              <MaterialCommunityIcons
+                name="bell"
+                size={30}
+                color={Colors.secondary}
+              />
+
+              <View style={{ width: "60%", marginHorizontal: 10 }}>
+                <Picker
+                  selectedValue={this.state.notify}
+                  style={styles.input}
+                  onValueChange={(notify) => this.setState({ notify })}
+                >
+                  <Picker.Item label="On the same day" value="1" />
+                  <Picker.Item label="One week before" value="2" />
+                </Picker>
+              </View>
+>>>>>>> Stashed changes
             </View>
           </View>
 
@@ -103,5 +176,21 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flex: 0.15,
   },
+<<<<<<< Updated upstream
+=======
+  row: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  input: {
+    borderWidth: 1,
+    borderRadius: 25,
+    paddingHorizontal: 20,
+    marginVertical: 2,
+    fontFamily: "Futura",
+    width: "100%",
+  },
+>>>>>>> Stashed changes
 });
 export default CreateRemiderScreen;
