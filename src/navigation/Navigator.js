@@ -23,7 +23,7 @@ const Navigator = createSwitchNavigator(
     Contacts: ContactsScreen,
   },
   {
-    initialRouteName: "Home",
+    // initialRouteName: "Home",
   }
 );
 

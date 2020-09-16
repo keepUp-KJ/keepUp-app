@@ -9,13 +9,26 @@ import moment from "moment";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 
 class HomeScreen extends React.Component {
+  renderEmpty = () => (
+    <View
+      style={{
+        justifyContent: "center",
+        alignItems: "center",
+        marginHorizontal: 20,
+      }}
+    >
+      <Text style={{ ...styles.bodyText, textAlign: "center" }}>
+        You have no reminders for today :)
+      </Text>
+    </View>
+  );
+
   render() {
     var today = moment().format("MMMM DD");
     const TASKS = [
-      { text: "Call Jana" },
-      { text: "It's Khaled birthday! call him " },
+      //   { text: "Call Jana" },
+      //   { text: "It's Khaled birthday! call him " },
     ];
-
     const BIRTHDAYS = [
       {
         date: "30 SEP",
@@ -42,6 +55,7 @@ class HomeScreen extends React.Component {
         {/*DAILY TASKS */}
         <View style={{ flex: 0.15 }}>
           <FlatList
+            ListEmptyComponent={this.renderEmpty}
             showsVerticalScrollIndicator={false}
             data={TASKS}
             renderItem={(itemData) => (
