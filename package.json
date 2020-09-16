@@ -15,7 +15,6 @@
     "expo-contacts": "~8.2.1",
     "expo-facebook": "~8.2.1",
     "expo-google-app-auth": "^8.1.2",
-    "expo-google-sign-in": "^8.2.1",
     "expo-permissions": "~9.0.1",
     "expo-status-bar": "^1.0.2",
     "moment": "^2.28.0",
