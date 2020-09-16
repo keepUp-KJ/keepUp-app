@@ -22,6 +22,7 @@ import {
 class CreateRemiderScreen extends React.Component {
   state = {
     date: new Date(),
+    notify: "",
   };
 
   componentDidMount() {
@@ -35,12 +36,16 @@ class CreateRemiderScreen extends React.Component {
         value: "1",
       },
       {
-        label: "One week before",
+        label: "One day before",
         value: "2",
       },
       {
-        label: "None",
+        label: "One week before",
         value: "3",
+      },
+      {
+        label: "None",
+        value: "4",
       },
     ];
     return (
@@ -135,23 +140,21 @@ class CreateRemiderScreen extends React.Component {
                 <DropDownPicker
                   style={{ borderWidth: 0 }}
                   items={dropdownItems}
-                  defaultValue={this.state.country}
+                  defaultValue={this.state.notify}
                   containerStyle={{
                     ...styles.input,
-                    height: 40,
+                    height: 45,
                     marginVertical: 15,
                   }}
-                  itemStyle={{
-                    justifyContent: "flex-start",
-                  }}
-                  labelStyle={{
-                    color: Colors.secondary,
-                  }}
+                  itemStyle={{ justifyContent: "flex-start" }}
+                  labelStyle={{ color: Colors.secondary, fontFamily: "Futura" }}
+                  selectedLabelStyle={{ fontWeight: "700" }}
+                  dropDownStyle={{ marginTop: 5, marginLeft: 20 }}
                   arrowSize={18}
                   arrowStyle={{ marginTop: -4 }}
                   onChangeItem={(item) =>
                     this.setState({
-                      country: item.value,
+                      notify: item.value,
                     })
                   }
                 />
@@ -193,8 +196,8 @@ const styles = StyleSheet.create({
   },
   footerContainer: {
     alignItems: "center",
-    justifyContent: "space-between",
-    flex: 0.15,
+    justifyContent: "flex-end",
+    flex: 0.2,
   },
   row: {
     alignItems: "center",
@@ -205,7 +208,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 25,
     paddingHorizontal: 20,
-    fontFamily: "Futura",
     width: "100%",
     marginVertical: 12,
     padding: 2,
