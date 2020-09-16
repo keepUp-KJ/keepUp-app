@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
   Keyboard,
+  Switch,
 } from "react-native";
 import Colors from "../constants/Colors";
 import Btn from "../components/Btn";
@@ -54,7 +55,7 @@ class CreateRemiderScreen extends React.Component {
             <View style={styles.row}>
               <MaterialCommunityIcons
                 name="calendar-range"
-                size={24}
+                size={30}
                 color={Colors.secondary}
               />
               <View style={{ width: "60%", marginHorizontal: 10 }}>
@@ -71,7 +72,7 @@ class CreateRemiderScreen extends React.Component {
               </View>
             </View>
             <View style={styles.row}>
-              <MaterialIcons name="people" size={24} color={Colors.secondary} />
+              <MaterialIcons name="people" size={30} color={Colors.secondary} />
               <View style={{ width: "60%", marginHorizontal: 10 }}>
                 <Input
                   placeholder="Enter contact name"
@@ -83,7 +84,7 @@ class CreateRemiderScreen extends React.Component {
             <View style={styles.row}>
               <MaterialCommunityIcons
                 name="clipboard-check"
-                size={24}
+                size={30}
                 color={Colors.secondary}
               />
               <View style={{ width: "60%", marginHorizontal: 10 }}>
@@ -93,32 +94,12 @@ class CreateRemiderScreen extends React.Component {
             <View style={styles.row}>
               <MaterialCommunityIcons
                 name="bell"
-                size={24}
+                size={30}
                 color={Colors.secondary}
               />
 
               <View style={{ width: "60%", marginHorizontal: 10 }}>
                 <Input placeholder="On the same day" autoCorrect={false} />
-              </View>
-            </View>
-            <View style={{ ...styles.row, marginTop: 30 }}>
-              <MaterialIcons name="snooze" size={30} color={Colors.secondary} />
-              <View
-                style={{
-                  width: "30%",
-                  marginHorizontal: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 20,
-                    color: Colors.secondary,
-                    fontWeight: "700",
-                    fontFamily: "Futura",
-                  }}
-                >
-                  Snooze
-                </Text>
               </View>
             </View>
           </View>
