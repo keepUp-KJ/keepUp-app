@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, SafeAreaView, View, Text, FlatList } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import Header from "../components/Header";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
@@ -15,7 +22,17 @@ class ContactsScreen extends React.Component {
     active: "Accepted",
   };
 
-  renderContact = (itemData) => <Contact contact={itemData.item} />;
+  renderContact = (itemData) => (
+    <TouchableOpacity
+      style={styles.card}
+      activeOpacity={0.6}
+      onPress={() => {
+        setContactPressed(true);
+      }}
+    >
+      <Text style={styles.text}>{itemData.item.name}</Text>
+    </TouchableOpacity>
+  );
 
   renderRejectedContact = (itemData) => (
     <RejectedContact contact={itemData.item} />
@@ -116,6 +133,22 @@ const styles = StyleSheet.create({
     fontFamily: "Futura",
     color: Colors.primaryColor,
     fontWeight: "700",
+  },
+  card: {
+    height: 100,
+    width: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 5,
+    borderRadius: 15,
+    backgroundColor: "#C3C4C4",
+  },
+  text: {
+    textAlign: "center",
+    fontFamily: "Futura",
+    color: Colors.secondary,
+    fontSize: 14,
+    paddingHorizontal: 5,
   },
 });
 

@@ -133,7 +133,7 @@ class PickContactsScreen extends React.Component {
                 btnColor={Colors.primaryColor}
                 style={{ position: "absolute", width: "50%", marginTop: -80 }}
                 onPress={() => {
-                  this.props.navigation.navigate("Home");
+                  this.props.navigation.navigate("Setup");
                 }}
               />
             </View>

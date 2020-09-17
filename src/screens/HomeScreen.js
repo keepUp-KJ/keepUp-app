@@ -30,10 +30,10 @@ class HomeScreen extends React.Component {
       { text: "It's Khaled birthday! call him " },
     ];
     const BIRTHDAYS = [
-      {
-        date: "30 SEP",
-        contact: "Yusuf Hamdy",
-      },
+      // {
+      //   date: "30 SEP",
+      //   contact: "Yusuf Hamdy",
+      // },
       {
         date: "15 OCT",
         contact: "Noha Sabry",

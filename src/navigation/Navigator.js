@@ -10,6 +10,7 @@ import HomeScreen from "../screens/HomeScreen";
 import CreateReminderScreen from "../screens/CreateReminderScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import ContactsScreen from "../screens/ContactsScreen";
+import SetupScreen from "../screens/SetupAccount";
 
 const Navigator = createSwitchNavigator(
   {
@@ -23,9 +24,10 @@ const Navigator = createSwitchNavigator(
     CreateReminder: CreateReminderScreen,
     Settings: SettingsScreen,
     Contacts: ContactsScreen,
+    Setup: SetupScreen,
   },
   {
-    // initialRouteName: "CreateReminder",
+    // initialRouteName: "Setup",
   }
 );
 
