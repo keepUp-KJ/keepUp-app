@@ -27,7 +27,15 @@ const Navigator = createSwitchNavigator(
     Setup: SetupScreen,
   },
   {
+<<<<<<< Updated upstream
     // initialRouteName: "Setup",
+=======
+<<<<<<< HEAD
+    initialRouteName: "Settings",
+=======
+    // initialRouteName: "Setup",
+>>>>>>> 3fc3b3924e26a3e180dad600a565da8a025150b6
+>>>>>>> Stashed changes
   }
 );
 
