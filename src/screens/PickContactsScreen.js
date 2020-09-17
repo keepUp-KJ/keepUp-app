@@ -14,14 +14,14 @@ import Colors from "../constants/Colors";
 import Input from "../components/Input";
 import Header from "../components/Header";
 import Btn from "../components/Btn";
+import { connect } from "react-redux";
+import { acceptContact, rejectContact } from "../store/actions/users";
 
 class PickContactsScreen extends React.Component {
   state = {
     contacts: [],
     filteredContacts: [],
     input: "",
-    acceptedContacts: [],
-    rejectedContacts: [],
   };
 
   async componentDidMount() {
@@ -58,16 +58,8 @@ class PickContactsScreen extends React.Component {
   renderContact = (itemData) => (
     <Contact
       contact={itemData.item}
-      onAccept={() => {
-        this.setState({
-          acceptedContacts: [...this.state.acceptedContacts, itemData.item],
-        });
-      }}
-      onReject={() => {
-        this.setState({
-          rejectedContacts: [...this.state.rejectedContacts, itemData.item],
-        });
-      }}
+      onAccept={() => this.props.accept(itemData.item)}
+      onReject={() => this.props.reject(itemData.item)}
     />
   );
 
@@ -91,7 +83,7 @@ class PickContactsScreen extends React.Component {
               <View>
                 <Text style={styles.text}>PICK CONTACTS</Text>
                 <Text style={{ ...styles.text, color: Colors.primaryColor }}>
-                  {this.state.acceptedContacts.length} CONTACTS SELECTED
+                  {this.props.acceptedContacts.length} CONTACTS SELECTED
                 </Text>
               </View>
             }
@@ -133,19 +125,15 @@ class PickContactsScreen extends React.Component {
             keyExtractor={(item) => item.id}
             renderItem={this.renderContact}
             numColumns={3}
-            ListHeaderComponent={this.renderHeader}
           />
-          {this.state.acceptedContacts.length === 0 ? null : (
+          {this.props.acceptedContacts.length === 0 ? null : (
             <View style={{ alignItems: "center" }}>
               <Btn
                 title="Done"
                 btnColor={Colors.primaryColor}
                 style={{ position: "absolute", width: "50%", marginTop: -80 }}
                 onPress={() => {
-                  this.props.navigation.navigate("Home", {
-                    accepted: this.state.acceptedContacts,
-                    rejected: this.state.rejectedContacts,
-                  });
+                  this.props.navigation.navigate("Home");
                 }}
               />
             </View>
@@ -182,4 +170,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PickContactsScreen;
+const mapStateToProps = (state) => ({
+  acceptedContacts: state.users.acceptedContacts,
+  rejectedContacts: state.users.rejectedContacts,
+});
+
+const mapDispatchToProps = {
+  accept: acceptContact,
+  reject: rejectContact,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PickContactsScreen);

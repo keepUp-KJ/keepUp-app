@@ -7,6 +7,7 @@ import Input from "../components/Input";
 import Contact from "../components/Contact";
 import Menu from "../components/Menu";
 import RejectedContact from "../components/RejectedContact";
+import { connect } from "react-redux";
 
 class ContactsScreen extends React.Component {
   state = {
@@ -21,9 +22,6 @@ class ContactsScreen extends React.Component {
   );
 
   render() {
-    const acceptedContacts = this.props.navigation.getParam("accepted");
-    const rejectedContacts = this.props.navigation.getParam("rejected");
-
     const accepted = this.state.active === "Accepted";
     const rejected = this.state.active === "Rejected";
 
@@ -80,7 +78,11 @@ class ContactsScreen extends React.Component {
           <FlatList
             key={accepted ? "1" : "0"}
             data={
-              accepted ? acceptedContacts : rejected ? rejectedContacts : null
+              accepted
+                ? this.props.acceptedContacts
+                : rejected
+                ? this.props.rejectedContacts
+                : null
             }
             renderItem={
               accepted ? this.renderContact : this.renderRejectedContact
@@ -117,4 +119,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ContactsScreen;
+const mapStateToProps = (state) => ({
+  acceptedContacts: state.users.acceptedContacts,
+  rejectedContacts: state.users.rejectedContacts,
+});
+
+export default connect(mapStateToProps)(ContactsScreen);

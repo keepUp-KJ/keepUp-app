@@ -44,9 +44,6 @@ class HomeScreen extends React.Component {
       },
     ];
 
-    const acceptedContacts = this.props.navigation.getParam("accepted");
-    const rejectedContacts = this.props.navigation.getParam("rejected");
-
     return (
       <SafeAreaView style={styles.screen}>
         {/* HEADER - DATE */}
@@ -126,10 +123,7 @@ class HomeScreen extends React.Component {
             <IconButton
               title="Contacts"
               onPress={() => {
-                this.props.navigation.navigate("Contacts", {
-                  accepted: acceptedContacts,
-                  rejected: rejectedContacts,
-                });
+                this.props.navigation.navigate("Contacts");
               }}
               icon={
                 <MaterialIcons
