@@ -5,23 +5,17 @@ import Colors from "../constants/Colors";
 
 const SettingsItem = (props) => {
   const [isEnabled, setIsEnabled] = useState(false);
+  const [notify, setNotify] = useState("");
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
-  const [notify, setNotify] = useState(false);
-  const notifySwitch = () => setNotify((previousState) => !previousState);
   return (
-    <View style={styles.container}>
+    <View style={{ ...styles.container, zIndex: props.zIndex }}>
       {/* text area */}
-      <View style={{ marginLeft: 20, flex: 0.55 }}>
+      <View style={{ marginHorizontal: 20, flex: 0.55 }}>
         <Text style={styles.text}>{props.text} </Text>
       </View>
       {/* dropdown or switch */}
-      <View
-        style={{
-          flex: 0.45,
-          alignItems: "center",
-        }}
-      >
+      <View style={{ flex: 0.45, alignItems: "center" }}>
         {props.switch ? (
           <View>
             <Switch
@@ -32,30 +26,30 @@ const SettingsItem = (props) => {
               }}
               thumbColor={"white"}
               ios_backgroundColor="white"
-              toggleSwi
               onValueChange={toggleSwitch}
               value={isEnabled}
             />
           </View>
         ) : null}
         {props.dropdown ? (
-          <View style={{ borderWidth: 0, width: "100%" }}>
+          <View style={{ width: "100%" }}>
             <DropDownPicker
-              style={{ borderWidth: 0, width: "100%" }}
+              style={{ borderWidth: 0 }}
               items={props.dropdownItems}
               defaultValue={notify}
-              containerStyle={{
-                ...styles.input,
-                height: 50,
-                width: "100%",
-              }}
+              containerStyle={{ height: 50 }}
               itemStyle={{ justifyContent: "flex-start" }}
-              labelStyle={{ color: Colors.secondary, fontFamily: "Futura" }}
+              labelStyle={{
+                color: Colors.secondary,
+                fontFamily: "Futura",
+                fontSize: 10,
+                textAlign: "center",
+              }}
+              showArrow={false}
               selectedLabelStyle={{ fontWeight: "700" }}
-              dropDownStyle={{ marginTop: 5, marginLeft: 20, width: "100%" }}
-              arrowSize={18}
-              arrowStyle={{ marginTop: -4 }}
-              onChangeItem={notifySwitch}
+              onChangeItem={(item) => {
+                setNotify(item.value);
+              }}
             />
           </View>
         ) : null}
@@ -70,14 +64,8 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Colors.secondary,
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: "Futura",
-  },
-  input: {
-    borderRadius: 25,
-    width: "100%",
-    borderColor: Colors.secondary,
-    marginRight: 10,
   },
 });
 

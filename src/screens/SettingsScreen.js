@@ -1,16 +1,10 @@
 import React from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
 import Colors from "../constants/Colors";
 import Header from "../components/Header";
 import SettingsItem from "../components/SettingsItem";
 import Btn from "../components/Btn";
-import Input from "../components/Input";
-import {
-  Ionicons,
-  MaterialCommunityIcons,
-  MaterialIcons,
-} from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 class SettingsScreen extends React.Component {
   state = {
@@ -24,11 +18,11 @@ class SettingsScreen extends React.Component {
         value: "1",
       },
       {
-        label: "One day before",
+        label: "1 day before",
         value: "2",
       },
       {
-        label: "One week before",
+        label: "1 week before",
         value: "3",
       },
       {
@@ -36,6 +30,21 @@ class SettingsScreen extends React.Component {
         value: "4",
       },
     ];
+    let incompleteOptions = [
+      {
+        label: "1 day after",
+        value: "1",
+      },
+      {
+        label: "1 week after",
+        value: "2",
+      },
+      {
+        label: "None",
+        value: "3",
+      },
+    ];
+
     return (
       <SafeAreaView style={styles.screen}>
         {/* back arrow */}
@@ -60,32 +69,34 @@ class SettingsScreen extends React.Component {
             }
           />
         </View>
-        <View style={styles.container}>
-          <Text style={styles.text2}>REMINDER</Text>
+        <View style={{ ...styles.container, flex: 0.04 }}>
+          <Text style={styles.headerText}>REMINDER</Text>
         </View>
-        <View style={{ borderWidth: 0, marginBottom: 50 }}>
+        <View style={{ borderWidth: 0, marginBottom: 50, flex: 0.3 }}>
           <SettingsItem
             text="Birthday reminder"
             dropdown
             dropdownItems={options}
+            zIndex={3}
           />
           <SettingsItem
             text="Calls reminder"
             dropdown
             dropdownItems={options}
+            zIndex={2}
           />
           <SettingsItem
             text="Incomplete task reminder"
             dropdown
-            dropdownItems={options}
+            dropdownItems={incompleteOptions}
+            zIndex={1}
           />
+          <View style={{ ...styles.container, marginTop: 80 }}>
+            <Text style={styles.headerText}>NOTIFICATIONS</Text>
+          </View>
         </View>
-        <View style={styles.container}>
-          <Text style={styles.text2}>NOTIFICATIONS</Text>
-        </View>
-        <View style={{ borderWidth: 0 }}>
+        <View style={{ flex: 0.35, justifyContent: "flex-end" }}>
           <SettingsItem text="Birthday Notifications" switch />
-
           <SettingsItem text="Daily calls Notifications" switch />
           <SettingsItem text="Incomplete task Notifications" switch />
         </View>
@@ -95,7 +106,7 @@ class SettingsScreen extends React.Component {
             <Btn
               title="Sign out"
               btnColor={Colors.primaryColor}
-              fontSize={20}
+              fontSize={16}
               loading={this.state.loading}
               textColor="white"
             />
@@ -116,10 +127,11 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   container: {
-    flex: 0.08,
     justifyContent: "center",
     backgroundColor: Colors.secondary,
     marginVertical: 20,
+    padding: 10,
+    zIndex: 0,
   },
   title: {
     fontSize: 28,
@@ -135,7 +147,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "700",
   },
-  text2: {
+  headerText: {
     fontSize: 18,
     fontFamily: "Futura",
     color: "white",
@@ -146,7 +158,7 @@ const styles = StyleSheet.create({
   footerContainer: {
     alignItems: "center",
     justifyContent: "flex-end",
-    flex: 0.3,
+    flex: 0.2,
     marginTop: 20,
   },
 });
