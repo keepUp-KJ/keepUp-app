@@ -27,7 +27,7 @@ const Navigator = createSwitchNavigator(
     Setup: SetupScreen,
   },
   {
-    initialRouteName: "Settings",
+    // initialRouteName: "Contacts",
   }
 );
 

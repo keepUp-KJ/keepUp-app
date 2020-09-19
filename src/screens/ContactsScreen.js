@@ -8,26 +8,52 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Header from "../components/Header";
+import * as Contacts from "expo-contacts";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import Input from "../components/Input";
-import Contact from "../components/Contact";
 import Menu from "../components/Menu";
 import RejectedContact from "../components/RejectedContact";
 import { connect } from "react-redux";
+import ContactCard from "../components/ContactCard";
 
 class ContactsScreen extends React.Component {
   state = {
     input: "",
     active: "Accepted",
+    pending: [],
+    visible: false,
+    contact: {},
   };
+
+  async componentDidMount() {
+    const { data } = await Contacts.getContactsAsync({
+      fields: [
+        Contacts.Fields.ID,
+        Contacts.Fields.Birthday,
+        Contacts.Fields.PhoneNumbers,
+      ],
+    });
+
+    this.setState({
+      pending: data.filter(
+        (item) =>
+          this.props.acceptedContacts.findIndex(
+            (contact) => contact.id === item.id
+          ) === -1 &&
+          this.props.rejectedContacts.findIndex(
+            (contact) => contact.id === item.id
+          ) === -1
+      ),
+    });
+  }
 
   renderContact = (itemData) => (
     <TouchableOpacity
       style={styles.card}
       activeOpacity={0.6}
       onPress={() => {
-        setContactPressed(true);
+        this.setState({ visible: true, contact: itemData.item });
       }}
     >
       <Text style={styles.text}>{itemData.item.name}</Text>
@@ -41,9 +67,17 @@ class ContactsScreen extends React.Component {
   render() {
     const accepted = this.state.active === "Accepted";
     const rejected = this.state.active === "Rejected";
+    const pending = this.state.active === "Pending";
 
     return (
       <SafeAreaView style={styles.screen}>
+        <ContactCard
+          pending={pending}
+          accepted={accepted}
+          visible={this.state.visible}
+          contact={this.state.contact}
+          close={() => this.setState({ visible: false, contact: {} })}
+        />
         <View style={{ ...styles.headerContainer, flex: rejected ? 0.1 : 0.2 }}>
           <Header
             leftComponent={
@@ -93,18 +127,20 @@ class ContactsScreen extends React.Component {
           }}
         >
           <FlatList
-            key={accepted ? "1" : "0"}
+            key={accepted || pending ? "1" : "0"}
             data={
               accepted
                 ? this.props.acceptedContacts
                 : rejected
                 ? this.props.rejectedContacts
+                : pending
+                ? this.state.pending
                 : null
             }
             renderItem={
-              accepted ? this.renderContact : this.renderRejectedContact
+              rejected ? this.renderRejectedContact : this.renderContact
             }
-            numColumns={accepted ? 3 : null}
+            numColumns={accepted || pending ? 3 : null}
             keyExtractor={(item) => item.id}
           />
         </View>
