@@ -6,6 +6,7 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import Header from "../components/Header";
 import * as Contacts from "expo-contacts";
@@ -16,6 +17,11 @@ import Menu from "../components/Menu";
 import RejectedContact from "../components/RejectedContact";
 import { connect } from "react-redux";
 import ContactCard from "../components/ContactCard";
+import {
+  unrejectContact,
+  acceptContact,
+  rejectContact,
+} from "../store/actions/users";
 
 class ContactsScreen extends React.Component {
   state = {
@@ -24,6 +30,9 @@ class ContactsScreen extends React.Component {
     pending: [],
     visible: false,
     contact: {},
+    contacts: [],
+    accepted: this.props.acceptedContacts,
+    rejected: this.props.rejectedContacts,
   };
 
   async componentDidMount() {
@@ -36,14 +45,14 @@ class ContactsScreen extends React.Component {
     });
 
     this.setState({
+      contacts: data,
       pending: data.filter(
         (item) =>
           this.props.acceptedContacts.findIndex(
             (contact) => contact.id === item.id
           ) === -1 &&
-          this.props.rejectedContacts.findIndex(
-            (contact) => contact.id === item.id
-          ) === -1
+          this.state.rejected.findIndex((contact) => contact.id === item.id) ===
+            -1
       ),
     });
   }
@@ -61,7 +70,40 @@ class ContactsScreen extends React.Component {
   );
 
   renderRejectedContact = (itemData) => (
-    <RejectedContact contact={itemData.item} />
+    <RejectedContact
+      contact={itemData.item}
+      onPress={() =>
+        Alert.alert(
+          "Are you sure?",
+          "By accepting to unreject, this contact will go back to your pending list",
+          [
+            {
+              text: "Okay",
+              onPress: () => {
+                this.props.unreject(itemData.item).then(() => {
+                  this.setState({
+                    rejected: this.props.rejectedContacts,
+                    pending: this.state.contacts.filter(
+                      (item) =>
+                        this.state.accepted.findIndex(
+                          (contact) => contact.id === item.id
+                        ) === -1 &&
+                        this.state.rejected.findIndex(
+                          (contact) => contact.id === item.id
+                        ) === -1
+                    ),
+                  });
+                });
+              },
+            },
+            {
+              text: "Cancel",
+              style: "destructive",
+            },
+          ]
+        )
+      }
+    />
   );
 
   render() {
@@ -72,6 +114,40 @@ class ContactsScreen extends React.Component {
     return (
       <SafeAreaView style={styles.screen}>
         <ContactCard
+          onAccept={() =>
+            this.props.accept(this.state.contact).then(() => {
+              this.setState({
+                accepted: this.props.acceptedContacts,
+                visible: false,
+                pending: this.state.contacts.filter(
+                  (item) =>
+                    this.props.acceptedContacts.findIndex(
+                      (contact) => contact.id === item.id
+                    ) === -1 &&
+                    this.state.rejected.findIndex(
+                      (contact) => contact.id === item.id
+                    ) === -1
+                ),
+              });
+            })
+          }
+          onReject={() =>
+            this.props.reject(this.state.contact).then(() => {
+              this.setState({
+                rejected: this.props.rejectedContacts,
+                pending: this.state.contacts.filter(
+                  (item) =>
+                    this.state.accepted.findIndex(
+                      (contact) => contact.id === item.id
+                    ) === -1 &&
+                    this.props.rejectedContacts.findIndex(
+                      (contact) => contact.id === item.id
+                    ) === -1
+                ),
+                visible: false,
+              });
+            })
+          }
           pending={pending}
           accepted={accepted}
           visible={this.state.visible}
@@ -130,9 +206,9 @@ class ContactsScreen extends React.Component {
             key={accepted || pending ? "1" : "0"}
             data={
               accepted
-                ? this.props.acceptedContacts
+                ? this.state.accepted
                 : rejected
-                ? this.props.rejectedContacts
+                ? this.state.rejected
                 : pending
                 ? this.state.pending
                 : null
@@ -193,4 +269,10 @@ const mapStateToProps = (state) => ({
   rejectedContacts: state.users.rejectedContacts,
 });
 
-export default connect(mapStateToProps)(ContactsScreen);
+const mapDispatchToProps = {
+  accept: acceptContact,
+  reject: rejectContact,
+  unreject: unrejectContact,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactsScreen);

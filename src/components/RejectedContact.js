@@ -16,7 +16,7 @@ const RejectedContact = (props) => {
       </View>
       <TouchableOpacity
         style={{ flex: 0.3, alignItems: "flex-end" }}
-        onPress={() => {}}
+        onPress={props.onPress}
       >
         <Text style={{ ...styles.text, color: "#990000" }}>Unreject</Text>
       </TouchableOpacity>

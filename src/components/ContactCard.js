@@ -91,14 +91,14 @@ const ContactCard = (props) => {
               name="ios-close-circle"
               size={80}
               color="#990000"
-              onPress={() => {}}
+              onPress={props.onReject}
             />
 
             <Ionicons
               name="ios-checkmark-circle"
               size={80}
               color={Colors.primaryColor}
-              onPress={() => {}}
+              onPress={props.onAccept}
             />
           </View>
         )}

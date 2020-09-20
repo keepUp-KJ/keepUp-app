@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   head: {
-    flex: 0.15,
+    flex: 0.14,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
     width: "100%",
-    alignItems: "flex-end",
+    alignItems: "center",
   },
 });
 

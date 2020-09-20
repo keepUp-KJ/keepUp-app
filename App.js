@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import usersReducer from "./src/store/reducers/users";
-import * as Font from "expo-font";
 
 const rootReducer = combineReducers({
   users: usersReducer,

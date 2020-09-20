@@ -1,4 +1,8 @@
-import { ACCEPT_CONTACT, REJECT_CONTACT } from "../actions/users.js";
+import {
+  ACCEPT_CONTACT,
+  REJECT_CONTACT,
+  UNREJECT_CONTACT,
+} from "../actions/users.js";
 
 const initialState = {
   user: {},
@@ -17,6 +21,14 @@ const usersReducers = (state = initialState, action) => {
       return {
         ...state,
         rejectedContacts: [action.contact, ...state.rejectedContacts],
+      };
+    case UNREJECT_CONTACT:
+      const index = state.rejectedContacts.indexOf(action.contact);
+      state.rejectedContacts.splice(index, 1);
+
+      return {
+        rejectedContacts: state.rejectedContacts,
+        acceptedContacts: state.acceptedContacts,
       };
     default:
       return state;
