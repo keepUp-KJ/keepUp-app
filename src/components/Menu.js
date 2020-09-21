@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Colors from "../constants/Colors";
 
@@ -8,7 +8,13 @@ const Menu = (props) => {
   return (
     <View style={styles.container}>
       {STATUS.map((item) => (
-        <View key={item} style={styles.menuItem}>
+        <View
+          key={item}
+          style={{
+            ...styles.menuItem,
+            borderRightWidth: item === "Rejected" ? 0 : 1,
+          }}
+        >
           <Text
             style={{
               ...styles.text,
@@ -29,19 +35,17 @@ const Menu = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.14,
     backgroundColor: Colors.primaryColor,
-    marginBottom: -40,
     flexDirection: "row",
     alignItems: "center",
+    paddingVertical: 20,
   },
   menuItem: {
     flex: 0.34,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
+    paddingVertical: 2,
     borderColor: "white",
-    borderRightWidth: 1,
   },
   text: {
     fontFamily: "Futura",

@@ -1,6 +1,7 @@
 import {
   ACCEPT_CONTACT,
   REJECT_CONTACT,
+  SKIP_PICK,
   UNREJECT_CONTACT,
 } from "../actions/users.js";
 
@@ -29,6 +30,12 @@ const usersReducers = (state = initialState, action) => {
       return {
         rejectedContacts: state.rejectedContacts,
         acceptedContacts: state.acceptedContacts,
+      };
+    case SKIP_PICK:
+      return {
+        ...state,
+        acceptedContacts: [],
+        rejectedContacts: [],
       };
     default:
       return state;

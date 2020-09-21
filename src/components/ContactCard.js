@@ -9,6 +9,7 @@ import {
 import { Overlay } from "react-native-elements";
 import Colors from "../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import Input from "../components/Input";
 
 const ContactCard = (props) => {
   return (
@@ -76,6 +77,7 @@ const ContactCard = (props) => {
             </Text>
             <Text style={{ ...styles.text, ...styles.input }}>WEEKLY</Text>
             <Text style={{ ...styles.text, ...styles.title }}>Relation</Text>
+            {/* <Input placeholder="FAMILY" /> */}
             <Text style={{ ...styles.text, ...styles.input }}>FAMILY</Text>
           </View>
         ) : (

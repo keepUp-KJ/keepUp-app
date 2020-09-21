@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navigator from "./src/navigation/Navigator";
 import { Notifier } from "@airbrake/browser";
 import { Provider } from "react-redux";
@@ -18,24 +18,23 @@ const airbrake = new Notifier({
   environment: "production",
 });
 
-class App extends React.Component {
-  componentDidMount() {
-    fetch("https://keep-up-mock.herokuapp.com/api");
-  }
+let App = () => {
+  new Error("Hello from Airbrake!");
+  useEffect(() => {
+    try {
+      fetch("https://keep-up-mock.herokuapp.com/api");
+    } catch (err) {
+      console.log(err);
+    }
+  });
 
-  // fetchFonts = async () =>
-  //   Font.loadAsync({
-  //     "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
-  //     "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
-  //   });
+  return (
+    <Provider store={store}>
+      <Navigator />
+    </Provider>
+  );
+};
 
-  render() {
-    return (
-      <Provider store={store}>
-        <Navigator />
-      </Provider>
-    );
-  }
-}
+App = airbrake.wrap(App);
 
 export default App;

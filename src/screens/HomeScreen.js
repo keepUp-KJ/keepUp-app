@@ -205,11 +205,11 @@ const styles = StyleSheet.create({
     elevation: 11,
   },
   bottomContainer: {
-    flex: 0.3,
+    flex: 0.25,
     flexDirection: "row",
     justifyContent: "space-evenly",
     width: "100%",
-    alignItems: "center",
+    alignItems: "flex-end",
   },
 });
 

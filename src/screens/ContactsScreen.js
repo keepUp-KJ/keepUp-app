@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
+  Dimensions,
 } from "react-native";
 import Header from "../components/Header";
 import * as Contacts from "expo-contacts";
@@ -199,7 +200,7 @@ class ContactsScreen extends React.Component {
         <View
           style={{
             flex: rejected ? 0.8 : 0.7,
-            marginHorizontal: rejected ? 0 : 20,
+            alignItems: rejected ? null : "center",
           }}
         >
           <FlatList
@@ -220,12 +221,25 @@ class ContactsScreen extends React.Component {
             keyExtractor={(item) => item.id}
           />
         </View>
-        <Menu
-          active={this.state.active}
-          onChange={(active) => {
-            this.setState({ active });
-          }}
-        />
+
+        <View style={{ flex: 0.1, justifyContent: "flex-end" }}>
+          <Menu
+            active={this.state.active}
+            onChange={(active) => {
+              this.setState({ active });
+            }}
+          />
+        </View>
+        {Dimensions.get("window").height > 850 ? (
+          <View
+            style={{
+              backgroundColor: Colors.primaryColor,
+              marginBottom: 0,
+              padding: 10,
+              marginBottom: -40,
+            }}
+          />
+        ) : null}
       </SafeAreaView>
     );
   }

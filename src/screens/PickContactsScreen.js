@@ -15,7 +15,11 @@ import Input from "../components/Input";
 import Header from "../components/Header";
 import Btn from "../components/Btn";
 import { connect } from "react-redux";
-import { acceptContact, rejectContact } from "../store/actions/users";
+import {
+  acceptContact,
+  rejectContact,
+  skipPicking,
+} from "../store/actions/users";
 
 class PickContactsScreen extends React.Component {
   state = {
@@ -49,7 +53,9 @@ class PickContactsScreen extends React.Component {
           text: "Skip",
           style: "cancel",
           onPress: () => {
-            this.props.navigation.navigate("Home");
+            this.props.skip().then(() => {
+              this.props.navigation.navigate("Home");
+            });
           },
         },
       ]
@@ -178,6 +184,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   accept: acceptContact,
   reject: rejectContact,
+  skip: skipPicking,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PickContactsScreen);
