@@ -26,22 +26,22 @@ class HomeScreen extends React.Component {
   render() {
     var today = moment().format("MMMM DD");
     const TASKS = [
-      { text: "Call Jana" },
-      { text: "It's Khaled birthday! call him " },
+      //   { text: "Call Jana" },
+      //   { text: "It's Khaled birthday! call him " },
     ];
     const BIRTHDAYS = [
       // {
       //   date: "30 SEP",
       //   contact: "Yusuf Hamdy",
       // },
-      {
-        date: "15 OCT",
-        contact: "Noha Sabry",
-      },
-      {
-        date: "22 OCT",
-        contact: "John Doe",
-      },
+      // {
+      //   date: "15 OCT",
+      //   contact: "Noha Sabry",
+      // },
+      // {
+      //   date: "22 OCT",
+      //   contact: "John Doe",
+      // },
     ];
 
     return (
@@ -73,9 +73,7 @@ class HomeScreen extends React.Component {
             <FlatList
               data={BIRTHDAYS}
               ListEmptyComponent={
-                <View
-                  style={{ justifyContent: "center", alignItems: "center" }}
-                >
+                <View style={{ alignItems: "center" }}>
                   <Text
                     style={{
                       ...styles.bodyText,
@@ -88,7 +86,7 @@ class HomeScreen extends React.Component {
                   <Btn
                     title="Add contacts"
                     btnColor={Colors.secondary}
-                    style={{ width: "60%" }}
+                    style={{ width: "80%", marginTop: 0 }}
                     onPress={() => {
                       this.props.navigation.navigate("Contacts");
                     }}

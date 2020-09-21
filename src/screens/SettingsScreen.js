@@ -95,7 +95,7 @@ class SettingsScreen extends React.Component {
             <Text style={styles.headerText}>NOTIFICATIONS</Text>
           </View>
         </View>
-        <View style={{ flex: 0.35, justifyContent: "flex-end" }}>
+        <View style={{ flex: 0.35, justifyContent: "center" }}>
           <SettingsItem text="Birthday Notifications" switch />
           <SettingsItem text="Daily calls Notifications" switch />
           <SettingsItem text="Incomplete task Notifications" switch />

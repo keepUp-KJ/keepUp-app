@@ -17,8 +17,8 @@ import * as Google from "expo-google-app-auth";
 
 class LoginScreen extends React.Component {
   state = {
-    email: "johndoe@gmail.com",
-    password: "mypass",
+    email: "",
+    password: "",
     error: "",
     loading: false,
   };

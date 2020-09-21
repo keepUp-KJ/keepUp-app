@@ -17,19 +17,17 @@ const SettingsItem = (props) => {
       {/* dropdown or switch */}
       <View style={{ flex: 0.45, alignItems: "center" }}>
         {props.switch ? (
-          <View>
-            <Switch
-              style={{ marginVertical: 10 }}
-              trackColor={{
-                false: Colors.secondary,
-                true: Colors.primaryColor,
-              }}
-              thumbColor={"white"}
-              ios_backgroundColor="white"
-              onValueChange={toggleSwitch}
-              value={isEnabled}
-            />
-          </View>
+          <Switch
+            style={{ marginVertical: 10 }}
+            trackColor={{
+              false: Colors.secondary,
+              true: Colors.primaryColor,
+            }}
+            thumbColor={"white"}
+            ios_backgroundColor="white"
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+          />
         ) : null}
         {props.dropdown ? (
           <View style={{ width: "100%" }}>

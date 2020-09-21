@@ -204,6 +204,7 @@ class ContactsScreen extends React.Component {
           }}
         >
           <FlatList
+            showsVerticalScrollIndicator={false}
             key={accepted || pending ? "1" : "0"}
             data={
               accepted
