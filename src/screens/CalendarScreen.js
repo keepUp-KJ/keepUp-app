@@ -3,106 +3,88 @@ import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import Colors from "../constants/Colors";
 import Header from "../components/Header";
 import { Ionicons } from "@expo/vector-icons";
-import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import moment from "moment";
+import MainCalendar from "../components/MainCalendar";
+
 class CalendarScreen extends React.Component {
   state = {
-    date: new Date(),
+    date: moment().format("DD MMMM YYYY"),
+    markedDates: {},
   };
-  render() {
-    var today = moment().format("DD MMMM YYYY");
 
+  getSelectedDayEvents = (date) => {
+    let markedDates = {};
+    markedDates[date] = {
+      selected: true,
+      color: Colors.primaryColor,
+      textColor: "black",
+    };
+    let serviceDate = moment(date);
+    this.setState({
+      date: serviceDate,
+      markedDates,
+    });
+  };
+
+  render() {
     return (
       <SafeAreaView style={styles.screen}>
         {/* Header */}
-        <View style={styles.top}>
+        <View style={styles.header}>
           <Header
-            centerComponent={
-              <View>
-                <Text style={styles.text}>CALENDAR</Text>
-              </View>
-            }
+            centerComponent={<Text style={styles.text}>CALENDAR</Text>}
             leftComponent={
-              <View>
-                <Ionicons
-                  name="md-arrow-back"
-                  size={30}
-                  color={Colors.secondary}
-                  onPress={() => {
-                    this.props.navigation.navigate("Home");
-                  }}
-                />
-              </View>
+              <Ionicons
+                name="md-arrow-back"
+                size={30}
+                color={Colors.secondary}
+                onPress={() => {
+                  this.props.navigation.navigate("Home");
+                }}
+              />
             }
           />
         </View>
+
         <View style={styles.calendar}>
-          <Calendar
-            enableSwipeMonths={true}
+          {/* CALENDAR */}
+          <MainCalendar
+            dates={this.state.markedDates}
             onDayPress={(day) => {
-              selected: true, console.log("selected day", day);
-            }}
-            style={{
-              height: 350,
-            }}
-            theme={{
-              calendarBackground: "#ededed",
-              textSectionTitleColor: "black",
-              selectedDayBackgroundColor: Colors.primaryColor,
-              selectedDayTextColor: "black",
-              todayTextColor: Colors.primaryColor,
-              dayTextColor: "black",
-              textDisabledColor: "#d9e1e8",
-              dotColor: Colors.primaryColor,
-              selectedDotColor: Colors.primaryColor,
-              arrowColor: "black",
-              disabledArrowColor: "#d9e1e8",
-              monthTextColor: "black",
-              indicatorColor: Colors.primaryColor,
-              textDayFontFamily: "Futura",
-              textMonthFontFamily: "Futura",
-              textDayHeaderFontFamily: "Futura",
-              textDayFontWeight: "300",
-              textDayHeaderFontWeight: "300",
-              textDayFontSize: 16,
-              textMonthFontSize: 16,
-              textDayHeaderFontSize: 16,
-            }}
-            // Collection of dates that have to be marked. Default = {}
-            markedDates={{
-              day: {
-                selected: true,
-                marked: true,
-              },
-              "2020-09-17": { marked: true },
+              const date = new Date(day.dateString);
+              date.getMonth();
+              this.getSelectedDayEvents(day.dateString);
+              this.setState({
+                date:
+                  day.day +
+                  " " +
+                  new Intl.DateTimeFormat("en-US", {
+                    month: "long",
+                  }).format(date) +
+                  " " +
+                  day.year,
+              });
             }}
           />
-        </View>
-        <View style={styles.bottom}>
-          <Header
-            centerComponent={
-              <View>
-                <Text style={styles.text2}>{today}</Text>
-              </View>
-            }
-          />
+
+          {/* DATE */}
+          <View style={{ marginTop: 15 }}>
+            <Text style={styles.date}>{this.state.date.toString()}</Text>
+          </View>
         </View>
       </SafeAreaView>
     );
   }
 }
+
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
-  top: {
+  header: {
     flex: 0.1,
     justifyContent: "center",
     paddingLeft: 15,
-  },
-  bottom: {
-    flex: 0.1,
-    justifyContent: "center",
   },
   text: {
     fontSize: 24,
@@ -111,15 +93,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "700",
   },
-  text2: {
+  date: {
     fontSize: 24,
     fontFamily: "Futura",
     color: Colors.secondary,
     textAlign: "center",
     fontWeight: "700",
   },
-  calendar: {
-    flex: 0.55,
-  },
 });
+
 export default CalendarScreen;
