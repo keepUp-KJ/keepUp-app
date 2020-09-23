@@ -37,6 +37,9 @@ class ContactsScreen extends React.Component {
   };
 
   async componentDidMount() {
+    const activePage = this.props.navigation.getParam("active");
+    this.setState({ active: activePage || "Accepted" });
+
     const { data } = await Contacts.getContactsAsync({
       fields: [
         Contacts.Fields.ID,

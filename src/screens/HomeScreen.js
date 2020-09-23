@@ -88,7 +88,9 @@ class HomeScreen extends React.Component {
                     btnColor={Colors.secondary}
                     style={{ width: "80%", marginTop: 0 }}
                     onPress={() => {
-                      this.props.navigation.navigate("Contacts");
+                      this.props.navigation.navigate("Contacts", {
+                        active: "Pending",
+                      });
                     }}
                   />
                 </View>
