@@ -7,8 +7,21 @@ import BirthdayReminder from "../components/BirthdayReminder.js";
 import IconButton from "../components/IconButton";
 import moment from "moment";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
+import { getReminders } from "../store/actions/reminders";
+import { connect } from "react-redux";
 
 class HomeScreen extends React.Component {
+  state = {
+    tasks: [],
+    birthdays: [],
+  };
+
+  componentDidMount() {
+    this.props.get().then(() => {
+      this.setState({ tasks: this.props.reminders });
+    });
+  }
+
   renderEmpty = () => (
     <View
       style={{
@@ -25,24 +38,6 @@ class HomeScreen extends React.Component {
 
   render() {
     var today = moment().format("MMMM DD");
-    const TASKS = [
-      //   { text: "Call Jana" },
-      //   { text: "It's Khaled birthday! call him " },
-    ];
-    const BIRTHDAYS = [
-      // {
-      //   date: "30 SEP",
-      //   contact: "Yusuf Hamdy",
-      // },
-      // {
-      //   date: "15 OCT",
-      //   contact: "Noha Sabry",
-      // },
-      // {
-      //   date: "22 OCT",
-      //   contact: "John Doe",
-      // },
-    ];
 
     return (
       <SafeAreaView style={styles.screen}>
@@ -57,7 +52,7 @@ class HomeScreen extends React.Component {
           <FlatList
             ListEmptyComponent={this.renderEmpty}
             showsVerticalScrollIndicator={false}
-            data={TASKS}
+            data={this.state.tasks.filter((task) => task.date === today)}
             renderItem={(itemData) => (
               <Task text={itemData.item.text.toUpperCase()} />
             )}
@@ -71,7 +66,7 @@ class HomeScreen extends React.Component {
           {/* BIRTHDAYS */}
           <View style={{ width: "80%", justifyContent: "center", flex: 0.3 }}>
             <FlatList
-              data={BIRTHDAYS}
+              data={this.state.birthdays}
               ListEmptyComponent={
                 <View style={{ alignItems: "center" }}>
                   <Text
@@ -108,7 +103,7 @@ class HomeScreen extends React.Component {
           </View>
           {/* SHOW ALL BUTTON */}
           <View style={{ ...styles.btn, width: "60%", flex: 0.3 }}>
-            {BIRTHDAYS.length < 3 ? null : (
+            {this.state.birthdays.length < 3 ? null : (
               <Btn
                 title="Show all"
                 btnColor="white"
@@ -213,4 +208,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+const mapStateToProps = (state) => ({
+  reminders: state.reminders.reminders,
+});
+
+const mapDispatchToProps = {
+  get: getReminders,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
