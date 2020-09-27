@@ -12,7 +12,12 @@ import Btn from "../components/Btn";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Input from "../components/Input";
 import Colors from "../constants/Colors";
-import * as Facebook from "expo-facebook";
+import {
+  login,
+  loginWithFacebook,
+  loginWithGoogle,
+} from "../store/actions/users";
+import { connect } from "react-redux";
 
 class LoginScreen extends React.Component {
   state = {
@@ -22,53 +27,26 @@ class LoginScreen extends React.Component {
     loading: false,
   };
 
-  loginWithGoogle = () => {};
+  loginWithGoogle = () => {
+    this.props.googleSignIn().then(() => {
+      this.props.navigation.navigate("PickContacts");
+    });
+  };
 
-  loginWithFacebook = async () => {
-    try {
-      await Facebook.initializeAsync("2720884158015038");
-      const {
-        type,
-        token,
-        expires,
-        permissions,
-        declinedPermissions,
-      } = await Facebook.logInWithReadPermissionsAsync({
-        permissions: ["public_profile"],
-      });
-      if (type === "success") {
-        // Get the user's name using Facebook's Graph API
-        await fetch(
-          `https://graph.facebook.com/me?access_token=${token}`
-        ).then(() => this.props.navigation.navigate("PickContacts"));
-      } else {
-        // type === 'cancel'
+  loginWithFacebook = () => {
+    this.props.facebookSignIn().then((res) => {
+      if (this.props.token) {
+        this.props.navigation.navigate("PickContacts");
       }
-    } catch ({ message }) {
-      alert(`Facebook Login Error: ${message}`);
-    }
+    });
   };
 
   loginHandler = (email, password) => {
     this.setState({ loading: true });
-    fetch("https://keep-up-mock.herokuapp.com/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.token) {
-          this.props.navigation.navigate("PickContacts");
-        } else {
-          this.setState({ error: json.error, loading: false });
-        }
-      });
+    this.props.login(email, password).then(() => {
+      if (this.props.error)
+        this.setState({ error: this.props.error, loading: false });
+    });
   };
 
   render() {
@@ -222,4 +200,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+const mapStateToProps = (state) => ({
+  token: state.users.token,
+  error: state.users.error,
+});
+
+const mapDispatchToProps = {
+  googleSignIn: loginWithGoogle,
+  facebookSignIn: loginWithFacebook,
+  login,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

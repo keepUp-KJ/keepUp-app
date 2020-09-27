@@ -7,6 +7,7 @@ import { combineReducers, createStore, applyMiddleware } from "redux";
 import usersReducer from "./src/store/reducers/users";
 import remindersReducer from "./src/store/reducers/reminders";
 import contactsReducer from "./src/store/reducers/contacts";
+import { setNavigator } from "./src/navigation/navigationRef";
 
 const rootReducer = combineReducers({
   contacts: contactsReducer,
@@ -34,7 +35,11 @@ let App = () => {
 
   return (
     <Provider store={store}>
-      <Navigator />
+      <Navigator
+        ref={(navigator) => {
+          setNavigator(navigator);
+        }}
+      />
     </Provider>
   );
 };

@@ -12,3 +12,9 @@ export const getReminders = () => async (dispatch) => {
       });
     });
 };
+
+export const addReminder = () => async (dispatch) => {
+  fetch("https://keep-up-mock.herokuapp.com/api/reminders", {
+    method: "POST",
+  });
+};

@@ -7,20 +7,13 @@ import BirthdayReminder from "../components/BirthdayReminder.js";
 import IconButton from "../components/IconButton";
 import moment from "moment";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
-import { getReminders } from "../store/actions/reminders";
 import { connect } from "react-redux";
 
 class HomeScreen extends React.Component {
   state = {
-    tasks: [],
+    tasks: this.props.reminders,
     birthdays: [],
   };
-
-  componentDidMount() {
-    this.props.get().then(() => {
-      this.setState({ tasks: this.props.reminders });
-    });
-  }
 
   renderEmpty = () => (
     <View
@@ -52,7 +45,7 @@ class HomeScreen extends React.Component {
           <FlatList
             ListEmptyComponent={this.renderEmpty}
             showsVerticalScrollIndicator={false}
-            data={this.state.tasks.filter((task) => task.date === today)}
+            data={this.state.tasks}
             renderItem={(itemData) => (
               <Task text={itemData.item.text.toUpperCase()} />
             )}
@@ -212,8 +205,4 @@ const mapStateToProps = (state) => ({
   reminders: state.reminders.reminders,
 });
 
-const mapDispatchToProps = {
-  get: getReminders,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+export default connect(mapStateToProps)(HomeScreen);

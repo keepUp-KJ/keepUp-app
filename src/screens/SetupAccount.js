@@ -1,11 +1,13 @@
 import React from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
+import { connect } from "react-redux";
+import { getReminders } from "../store/actions/reminders";
 
 class SetupAccount extends React.Component {
   componentDidMount() {
-    setTimeout(() => {
+    this.props.get().then(() => {
       this.props.navigation.navigate("Home");
-    }, 5000);
+    });
   }
 
   render() {
@@ -35,4 +37,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SetupAccount;
+const mapDispatchToProps = {
+  get: getReminders,
+};
+
+export default connect(null, mapDispatchToProps)(SetupAccount);

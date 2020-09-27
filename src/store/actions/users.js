@@ -1,14 +1,33 @@
-export default LOGIN = "LOGIN";
-export default SIGNUP = "SIGNUP";
-export default LOGIN_WITH_GOOGLE = "LOGIN_WITH_GOOGLE";
-export default LOGIN_WITH_FACEBOOK = "LOGIN_WITH_FACEBOOK";
+export const LOGIN = "LOGIN";
+export const SIGNUP = "SIGNUP";
+export const LOGIN_WITH_GOOGLE = "LOGIN_WITH_GOOGLE";
+export const LOGIN_ERROR = "LOGIN_ERROR";
 
 import * as Google from "expo-google-app-auth";
+import * as Facebook from "expo-facebook";
+import { navigate } from "../../navigation/navigationRef";
 
 export const login = (email, password) => async (dispatch) => {
-  dispatch({
-    type: LOGIN,
-  });
+  fetch("https://keep-up-mock.herokuapp.com/api/users/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      password,
+    }),
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.error) {
+        dispatch({
+          type: LOGIN_ERROR,
+          error: json.error,
+        });
+      }
+      navigate("PickContacts");
+    });
 };
 
 export const loginWithGoogle = () => async (dispatch) => {
@@ -24,19 +43,42 @@ export const loginWithGoogle = () => async (dispatch) => {
     // Then you can use the Google REST API
     await fetch("https://www.googleapis.com/userinfo/v2/me", {
       headers: { Authorization: `Bearer ${accessToken}` },
-    }).then(() => {
-      this.props.navigation.navigate("PickContacts");
     });
   }
   dispatch({
     type: LOGIN_WITH_GOOGLE,
+    user,
   });
 };
 
 export const loginWithFacebook = () => async (dispatch) => {
-  dispatch({
-    type: LOGIN_WITH_FACEBOOK,
-  });
+  try {
+    await Facebook.initializeAsync("2720884158015038");
+    const {
+      type,
+      token,
+      expires,
+      permissions,
+      declinedPermissions,
+    } = await Facebook.logInWithReadPermissionsAsync({
+      permissions: ["public_profile"],
+    });
+    if (type === "success") {
+      // Get the user's name using Facebook's Graph API
+      await fetch(`https://graph.facebook.com/me?access_token=${token}`).then(
+        () => {
+          dispatch({
+            type: LOGIN,
+            token,
+          });
+        }
+      );
+    } else {
+      // type === 'cancel'
+    }
+  } catch ({ message }) {
+    alert(`Facebook Login Error: ${message}`);
+  }
 };
 
 export const signup = (email, password, password_confirmation) => async (

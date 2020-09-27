@@ -22,7 +22,7 @@ import {
   unrejectContact,
   acceptContact,
   rejectContact,
-} from "../store/actions/users";
+} from "../store/actions/contacts";
 
 class ContactsScreen extends React.Component {
   state = {
@@ -283,8 +283,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  acceptedContacts: state.users.acceptedContacts,
-  rejectedContacts: state.users.rejectedContacts,
+  acceptedContacts: state.contacts.acceptedContacts,
+  rejectedContacts: state.contacts.rejectedContacts,
 });
 
 const mapDispatchToProps = {
