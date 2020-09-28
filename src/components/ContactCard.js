@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -12,6 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Input from "../components/Input";
 
 const ContactCard = (props) => {
+  const [pressed, setPressed] = useState(false);
   return (
     <Overlay
       isVisible={props.visible}
@@ -76,8 +77,11 @@ const ContactCard = (props) => {
               Frequency of Getting in Touch
             </Text>
             <Text style={{ ...styles.text, ...styles.input }}>WEEKLY</Text>
-            <Text style={{ ...styles.text, ...styles.title }}>Relation</Text>
-            {/* <Input placeholder="FAMILY" /> */}
+            {!pressed ? (
+              <Text style={{ ...styles.text, ...styles.title }}>Relation</Text>
+            ) : (
+              <Input placeholder="FAMILY" />
+            )}
             <Text style={{ ...styles.text, ...styles.input }}>FAMILY</Text>
           </View>
         ) : (
