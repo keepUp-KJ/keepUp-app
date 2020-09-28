@@ -29,7 +29,7 @@ const Navigator = createSwitchNavigator(
     Calendar: CalendarScreen,
   },
   {
-    // initialRouteName: "Home",
+    initialRouteName: "Settings",
   }
 );
 

@@ -7,12 +7,14 @@ import { combineReducers, createStore, applyMiddleware } from "redux";
 import usersReducer from "./src/store/reducers/users";
 import remindersReducer from "./src/store/reducers/reminders";
 import contactsReducer from "./src/store/reducers/contacts";
+import settingsReducer from "./src/store/reducers/settings";
 import { setNavigator } from "./src/navigation/navigationRef";
 
 const rootReducer = combineReducers({
   contacts: contactsReducer,
   reminders: remindersReducer,
   users: usersReducer,
+  settings: settingsReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

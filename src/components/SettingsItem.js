@@ -4,8 +4,6 @@ import DropDownPicker from "react-native-dropdown-picker";
 import Colors from "../constants/Colors";
 
 const SettingsItem = (props) => {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const [notify, setNotify] = useState("");
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   return (
@@ -25,8 +23,8 @@ const SettingsItem = (props) => {
             }}
             thumbColor={"white"}
             ios_backgroundColor="white"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
+            onValueChange={props.onValueChange}
+            value={props.value}
           />
         ) : null}
         {props.dropdown ? (
@@ -34,7 +32,7 @@ const SettingsItem = (props) => {
             <DropDownPicker
               style={{ borderWidth: 0 }}
               items={props.dropdownItems}
-              defaultValue={notify}
+              defaultValue={props.value}
               containerStyle={{ height: 50 }}
               itemStyle={{ justifyContent: "flex-start" }}
               labelStyle={{
@@ -45,9 +43,7 @@ const SettingsItem = (props) => {
               }}
               showArrow={false}
               selectedLabelStyle={{ fontWeight: "700" }}
-              onChangeItem={(item) => {
-                setNotify(item.value);
-              }}
+              onChangeItem={(item) => props.onChangeItem(item)}
             />
           </View>
         ) : null}

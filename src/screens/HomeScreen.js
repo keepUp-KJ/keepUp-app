@@ -11,9 +11,13 @@ import { connect } from "react-redux";
 
 class HomeScreen extends React.Component {
   state = {
-    tasks: this.props.reminders,
+    tasks: [],
     birthdays: [],
   };
+
+  componentDidMount() {
+    this.setState({ tasks: this.props.reminders });
+  }
 
   renderEmpty = () => (
     <View
@@ -46,10 +50,8 @@ class HomeScreen extends React.Component {
             ListEmptyComponent={this.renderEmpty}
             showsVerticalScrollIndicator={false}
             data={this.state.tasks}
-            renderItem={(itemData) => (
-              <Task text={itemData.item.text.toUpperCase()} />
-            )}
-            keyExtractor={(item) => item.text}
+            renderItem={(itemData) => <Task contact={itemData.item.contact} />}
+            keyExtractor={(item) => item.contact}
           />
         </View>
 

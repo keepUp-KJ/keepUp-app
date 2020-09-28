@@ -1,4 +1,4 @@
-import { SET_REMINDERS } from "../actions/reminders";
+import { SET_REMINDERS, CREATE_REMINDER } from "../actions/reminders";
 
 const initialState = {
   reminders: [],
@@ -9,6 +9,17 @@ const remindersReducer = (state = initialState, action) => {
     case SET_REMINDERS: {
       return {
         reminders: action.reminders,
+      };
+    }
+    case CREATE_REMINDER: {
+      var newReminder = {
+        date: action.date,
+        contact: action.contact,
+        occasion: action.occasion,
+        notify: action.notify,
+      };
+      return {
+        reminders: [newReminder, ...state.reminders],
       };
     }
     default:

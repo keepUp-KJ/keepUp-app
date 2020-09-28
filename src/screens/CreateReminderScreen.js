@@ -18,6 +18,8 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
+import { connect } from "react-redux";
+import { addReminder } from "../store/actions/reminders";
 
 class CreateRemiderScreen extends React.Component {
   state = {
@@ -171,6 +173,14 @@ class CreateRemiderScreen extends React.Component {
                 fontSize={20}
                 loading={this.state.loading}
                 textColor="white"
+                onPress={() => {
+                  this.props.add(
+                    this.state.date,
+                    "Jana",
+                    null,
+                    this.state.notify
+                  );
+                }}
               />
             </View>
           </View>
@@ -215,4 +225,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateRemiderScreen;
+const mapStateToProps = (state) => ({
+  reminders: state.reminders.reminders,
+});
+
+const mapDispatchToProps = {
+  add: addReminder,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreateRemiderScreen);

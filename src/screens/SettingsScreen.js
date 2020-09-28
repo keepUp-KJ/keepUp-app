@@ -5,11 +5,27 @@ import Header from "../components/Header";
 import SettingsItem from "../components/SettingsItem";
 import Btn from "../components/Btn";
 import { Ionicons } from "@expo/vector-icons";
+import { connect } from "react-redux";
+import { getSettings } from "../store/actions/settings";
 
 class SettingsScreen extends React.Component {
   state = {
-    enabled: true,
+    settings: [],
+    birthday_reminder: "",
+    calls_reminder: "",
+    incomplete_task_reminder: "",
+    birthday_notif: false,
+    daily_call_notif: false,
+    incomplete_task_notif: true,
   };
+
+  componentDidMount() {
+    this.props.get().then(() => {
+      this.setState({
+        settings: this.props.settings,
+      });
+    });
+  }
 
   render() {
     let options = [
@@ -78,27 +94,66 @@ class SettingsScreen extends React.Component {
             dropdown
             dropdownItems={options}
             zIndex={3}
+            value={this.state.birthday_reminder}
+            onChangeItem={(item) => {
+              this.setState({ birthday_notif: item.value });
+            }}
           />
           <SettingsItem
             text="Calls reminder"
             dropdown
             dropdownItems={options}
             zIndex={2}
+            value={this.state.calls_reminder}
+            onChangeItem={(item) => {
+              this.setState({ daily_call_notif: item.value });
+            }}
           />
           <SettingsItem
             text="Incomplete task reminder"
             dropdown
             dropdownItems={incompleteOptions}
             zIndex={1}
+            value={this.state.incomplete_task_reminder}
+            onChangeItem={(item) => {
+              this.setState({ incomplete_task_reminder: item.value });
+            }}
           />
           <View style={{ ...styles.container, marginTop: 80 }}>
             <Text style={styles.headerText}>NOTIFICATIONS</Text>
           </View>
         </View>
         <View style={{ flex: 0.35, justifyContent: "center" }}>
-          <SettingsItem text="Birthday Notifications" switch />
-          <SettingsItem text="Daily calls Notifications" switch />
-          <SettingsItem text="Incomplete task Notifications" switch />
+          <SettingsItem
+            text="Birthday Notifications"
+            switch
+            value={this.state.settings.birthday_notif}
+            onValueChange={() => {
+              this.setState({
+                settings: {
+                  birthday_notif: !this.state.settings.birthday_notif,
+                },
+              });
+            }}
+          />
+          <SettingsItem
+            text="Daily calls Notifications"
+            switch
+            value={this.state.daily_call_notif}
+            onValueChange={() => {
+              this.setState({ daily_call_notif: !this.state.daily_call_notif });
+            }}
+          />
+          <SettingsItem
+            text="Incomplete task Notifications"
+            switch
+            value={this.state.incomplete_task_notif}
+            onValueChange={() => {
+              this.setState({
+                incomplete_task_notif: !this.state.incomplete_task_notif,
+              });
+            }}
+          />
         </View>
         {/* Footer */}
         <View style={styles.footerContainer}>
@@ -163,4 +218,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SettingsScreen;
+const mapStateToProps = (state) => ({
+  settings: state.settings.settings,
+});
+
+const mapDispatchToProps = {
+  get: getSettings,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);
