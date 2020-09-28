@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderRadius: 25,
-    padding: 12,
+    padding: 10,
     paddingHorizontal: 20,
     marginVertical: 2,
     fontFamily: "Futura",

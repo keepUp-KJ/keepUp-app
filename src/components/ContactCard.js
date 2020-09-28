@@ -10,9 +10,26 @@ import { Overlay } from "react-native-elements";
 import Colors from "../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import Input from "../components/Input";
+import DropDownPicker from "react-native-dropdown-picker";
 
 const ContactCard = (props) => {
   const [pressed, setPressed] = useState(false);
+  const [value, setValue] = useState("");
+  const dropdownItems = [
+    {
+      label: "Daily",
+      value: "1",
+    },
+    {
+      label: "Weekly",
+      value: "2",
+    },
+    {
+      label: "Monthly",
+      value: "3",
+    },
+  ];
+
   return (
     <Overlay
       isVisible={props.visible}
@@ -24,10 +41,19 @@ const ContactCard = (props) => {
           ? Colors.secondary
           : null,
       }}
-      onBackdropPress={props.close}
+      onBackdropPress={() => {
+        setPressed(false);
+        props.close();
+      }}
     >
       <View>
-        <TouchableOpacity style={{ alignItems: "flex-end" }}>
+        <TouchableOpacity
+          style={{ alignItems: "flex-end" }}
+          onPress={() => {
+            setPressed(true);
+          }}
+        >
+          <Ionicons />
           <Text style={{ ...styles.text, color: "white" }}>Edit</Text>
         </TouchableOpacity>
 
@@ -76,13 +102,45 @@ const ContactCard = (props) => {
             <Text style={{ ...styles.text, ...styles.title }}>
               Frequency of Getting in Touch
             </Text>
-            <Text style={{ ...styles.text, ...styles.input }}>WEEKLY</Text>
             {!pressed ? (
-              <Text style={{ ...styles.text, ...styles.title }}>Relation</Text>
+              <Text style={{ ...styles.text, ...styles.input }}>WEEKLY</Text>
             ) : (
-              <Input placeholder="FAMILY" />
+              <DropDownPicker
+                style={{
+                  width: "70%",
+                  backgroundColor: null,
+                  borderWidth: 0,
+                }}
+                items={dropdownItems}
+                defaultValue={value}
+                containerStyle={{
+                  height: 40,
+                  borderWidth: 1,
+                  borderRadius: 30,
+                  borderColor: "white",
+                  marginVertical: 5,
+                }}
+                itemStyle={{ justifyContent: "center" }}
+                labelStyle={{
+                  color: "white",
+                  fontFamily: "Futura",
+                  fontSize: 14,
+                  textAlign: "center",
+                }}
+                arrowColor="white"
+                selectedLabelStyle={{ fontWeight: "700" }}
+                onChangeItem={(item) => setValue(item.value)}
+              />
             )}
-            <Text style={{ ...styles.text, ...styles.input }}>FAMILY</Text>
+            <Text style={{ ...styles.text, ...styles.title }}>Relation</Text>
+
+            {!pressed ? (
+              <Text style={{ ...styles.text, ...styles.input }}>FAMILY</Text>
+            ) : (
+              <View style={{ width: "70%" }}>
+                <Input placeholder="FAMILY" />
+              </View>
+            )}
           </View>
         ) : (
           <View

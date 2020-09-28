@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, StyleSheet, Text, Switch } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import Colors from "../constants/Colors";
 
 const SettingsItem = (props) => {
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
-
   return (
     <View style={{ ...styles.container, zIndex: props.zIndex }}>
       {/* text area */}

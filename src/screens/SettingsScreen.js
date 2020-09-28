@@ -11,12 +11,6 @@ import { getSettings } from "../store/actions/settings";
 class SettingsScreen extends React.Component {
   state = {
     settings: [],
-    birthday_reminder: "",
-    calls_reminder: "",
-    incomplete_task_reminder: "",
-    birthday_notif: false,
-    daily_call_notif: false,
-    incomplete_task_notif: true,
   };
 
   componentDidMount() {
@@ -31,11 +25,11 @@ class SettingsScreen extends React.Component {
     let options = [
       {
         label: "On the same day",
-        value: "1",
+        value: "On the same day",
       },
       {
         label: "1 day before",
-        value: "2",
+        value: "1 day before",
       },
       {
         label: "1 week before",
@@ -94,9 +88,13 @@ class SettingsScreen extends React.Component {
             dropdown
             dropdownItems={options}
             zIndex={3}
-            value={this.state.birthday_reminder}
+            value={this.state.settings.birthday_reminder}
             onChangeItem={(item) => {
-              this.setState({ birthday_notif: item.value });
+              this.setState({
+                settings: {
+                  birthday_notif: item.value,
+                },
+              });
             }}
           />
           <SettingsItem
@@ -104,9 +102,13 @@ class SettingsScreen extends React.Component {
             dropdown
             dropdownItems={options}
             zIndex={2}
-            value={this.state.calls_reminder}
+            value={this.state.settings.calls_reminder}
             onChangeItem={(item) => {
-              this.setState({ daily_call_notif: item.value });
+              this.setState({
+                settings: {
+                  daily_call_notif: item.value,
+                },
+              });
             }}
           />
           <SettingsItem
@@ -114,9 +116,13 @@ class SettingsScreen extends React.Component {
             dropdown
             dropdownItems={incompleteOptions}
             zIndex={1}
-            value={this.state.incomplete_task_reminder}
+            value={this.state.settings.incomplete_task_reminder}
             onChangeItem={(item) => {
-              this.setState({ incomplete_task_reminder: item.value });
+              this.setState({
+                settings: {
+                  incomplete_task_reminder: item.value,
+                },
+              });
             }}
           />
           <View style={{ ...styles.container, marginTop: 80 }}>
@@ -131,6 +137,7 @@ class SettingsScreen extends React.Component {
             onValueChange={() => {
               this.setState({
                 settings: {
+                  ...this.state.settings,
                   birthday_notif: !this.state.settings.birthday_notif,
                 },
               });
@@ -139,18 +146,27 @@ class SettingsScreen extends React.Component {
           <SettingsItem
             text="Daily calls Notifications"
             switch
-            value={this.state.daily_call_notif}
+            value={this.state.settings.daily_call_notif}
             onValueChange={() => {
-              this.setState({ daily_call_notif: !this.state.daily_call_notif });
+              this.setState({
+                settings: {
+                  ...this.state.settings,
+                  daily_call_notif: !this.state.settings.daily_call_notif,
+                },
+              });
             }}
           />
           <SettingsItem
             text="Incomplete task Notifications"
             switch
-            value={this.state.incomplete_task_notif}
+            value={this.state.settings.incomplete_task_notif}
             onValueChange={() => {
               this.setState({
-                incomplete_task_notif: !this.state.incomplete_task_notif,
+                settings: {
+                  ...this.state.settings,
+                  incomplete_task_notif: !this.state.settings
+                    .incomplete_task_notif,
+                },
               });
             }}
           />
