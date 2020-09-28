@@ -32,8 +32,8 @@ class ContactsScreen extends React.Component {
     visible: false,
     contact: {},
     contacts: [],
-    accepted: this.props.acceptedContacts,
-    rejected: this.props.rejectedContacts,
+    accepted: [],
+    rejected: [],
   };
 
   async componentDidMount() {
@@ -45,6 +45,7 @@ class ContactsScreen extends React.Component {
         Contacts.Fields.ID,
         Contacts.Fields.Birthday,
         Contacts.Fields.PhoneNumbers,
+        Contacts.Fields.PhoneticFirstName,
       ],
     });
 
@@ -52,12 +53,11 @@ class ContactsScreen extends React.Component {
       contacts: data,
       pending: data.filter(
         (item) =>
-          this.props.acceptedContacts.findIndex(
-            (contact) => contact.id === item.id
-          ) === -1 &&
-          this.state.rejected.findIndex((contact) => contact.id === item.id) ===
-            -1
+          item.phoneticFirstName !== "accepted" &&
+          item.phoneticFirstName !== "rejected"
       ),
+      accepted: data.filter((item) => item.phoneticFirstName === "accepted"),
+      rejected: data.filter((item) => item.phoneticFirstName === "rejected"),
     });
   }
 
