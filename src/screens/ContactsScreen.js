@@ -19,9 +19,10 @@ import RejectedContact from "../components/RejectedContact";
 import { connect } from "react-redux";
 import ContactCard from "../components/ContactCard";
 import {
-  unrejectContact,
+  moveToPending,
   acceptContact,
   rejectContact,
+  unrejectContact,
 } from "../store/actions/contacts";
 
 class ContactsScreen extends React.Component {
@@ -92,7 +93,7 @@ class ContactsScreen extends React.Component {
                         this.state.accepted.findIndex(
                           (contact) => contact.id === item.id
                         ) === -1 &&
-                        this.state.rejected.findIndex(
+                        this.props.rejectedContacts.findIndex(
                           (contact) => contact.id === item.id
                         ) === -1
                     ),
@@ -157,6 +158,23 @@ class ContactsScreen extends React.Component {
           visible={this.state.visible}
           contact={this.state.contact}
           close={() => this.setState({ visible: false, contact: {} })}
+          remove={() => {
+            this.props.move(this.state.contact).then(() => {
+              this.setState({
+                accepted: this.props.acceptedContacts,
+                pending: this.state.contacts.filter(
+                  (item) =>
+                    this.props.acceptedContacts.findIndex(
+                      (contact) => contact.id === item.id
+                    ) === -1 &&
+                    this.state.rejected.findIndex(
+                      (contact) => contact.id === item.id
+                    ) === -1
+                ),
+                visible: false,
+              });
+            });
+          }}
         />
         <View style={{ ...styles.headerContainer, flex: rejected ? 0.1 : 0.2 }}>
           <Header
@@ -290,6 +308,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   accept: acceptContact,
   reject: rejectContact,
+  move: moveToPending,
   unreject: unrejectContact,
 };
 

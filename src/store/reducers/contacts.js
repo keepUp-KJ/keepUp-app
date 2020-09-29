@@ -3,6 +3,7 @@ import {
   REJECT_CONTACT,
   SKIP_PICK,
   UNREJECT_CONTACT,
+  MOVE_TO_PENDING,
 } from "../actions/contacts.js";
 
 const initialState = {
@@ -28,7 +29,14 @@ const contactsReducer = (state = initialState, action) => {
       state.rejectedContacts.splice(index, 1);
 
       return {
+        ...state,
         rejectedContacts: state.rejectedContacts,
+      };
+    case MOVE_TO_PENDING:
+      const id = state.acceptedContacts.indexOf(action.contact);
+      state.acceptedContacts.splice(id, 1);
+      return {
+        ...state,
         acceptedContacts: state.acceptedContacts,
       };
     case SKIP_PICK:

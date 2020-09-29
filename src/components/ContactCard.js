@@ -5,11 +5,10 @@ import {
   Dimensions,
   Text,
   TouchableOpacity,
-  KeyboardAvoidingView,
 } from "react-native";
 import { Overlay } from "react-native-elements";
 import Colors from "../constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Entypo } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
 import { TextInput } from "react-native-gesture-handler";
 
@@ -48,18 +47,32 @@ const ContactCard = (props) => {
         props.close();
       }}
     >
-      <View>
-        <TouchableOpacity
-          style={{ alignItems: "flex-end" }}
-          onPress={() => {
-            !pressed ? setPressed(true) : setPressed(false);
-          }}
-        >
-          <Ionicons />
-          <Text style={{ ...styles.text, color: "white" }}>
-            {pressed ? "Done" : "Edit"}
-          </Text>
-        </TouchableOpacity>
+      <View style={{ flex: 1, width: "95%", justifyContent: "center" }}>
+        {props.accepted ? (
+          <View
+            style={{
+              alignItems: "center",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Entypo
+              name="circle-with-minus"
+              size={30}
+              color="#990000"
+              onPress={props.remove}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                !pressed ? setPressed(true) : setPressed(false);
+              }}
+            >
+              <Text style={{ ...styles.text, color: "white" }}>
+                {pressed ? "Done" : "Edit"}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
 
         <View style={{ alignItems: "center" }}>
           <View style={styles.circle}>

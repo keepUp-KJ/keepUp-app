@@ -33,11 +33,11 @@ class SettingsScreen extends React.Component {
       },
       {
         label: "1 week before",
-        value: "3",
+        value: "1 week before",
       },
       {
         label: "None",
-        value: "4",
+        value: "None",
       },
     ];
     let incompleteOptions = [
