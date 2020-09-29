@@ -27,6 +27,10 @@ export const rejectContact = (contact) => async (dispatch) => {
 };
 
 export const unrejectContact = (contact) => async (dispatch) => {
+  await Contacts.updateContactAsync({
+    id: contact.id,
+    [Contacts.Fields.PhoneticFirstName]: "pending",
+  });
   dispatch({
     type: UNREJECT_CONTACT,
     contact,

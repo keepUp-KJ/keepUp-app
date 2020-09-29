@@ -25,6 +25,8 @@ class CreateRemiderScreen extends React.Component {
   state = {
     date: new Date(),
     notify: "",
+    contact: "",
+    occasion: "",
   };
 
   componentDidMount() {
@@ -114,6 +116,10 @@ class CreateRemiderScreen extends React.Component {
               <MaterialIcons name="people" size={30} color={Colors.secondary} />
               <View style={{ width: "60%", marginHorizontal: 10 }}>
                 <Input
+                  value={this.state.contact}
+                  onChangeText={(contact) => {
+                    this.setState({ contact });
+                  }}
                   placeholder="Enter contact name"
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -128,7 +134,14 @@ class CreateRemiderScreen extends React.Component {
                 color={Colors.secondary}
               />
               <View style={{ width: "60%", marginHorizontal: 10 }}>
-                <Input placeholder="Enter occasion" autoCorrect={false} />
+                <Input
+                  placeholder="Enter occasion"
+                  autoCorrect={false}
+                  value={this.state.occasion}
+                  onChangeText={(occasion) => {
+                    this.setState({ occasion });
+                  }}
+                />
               </View>
             </View>
 
@@ -176,8 +189,8 @@ class CreateRemiderScreen extends React.Component {
                 onPress={() => {
                   this.props.add(
                     this.state.date,
-                    "Jana",
-                    null,
+                    this.state.contact,
+                    this.state.occasion,
                     this.state.notify
                   );
                 }}

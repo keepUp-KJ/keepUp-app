@@ -5,28 +5,30 @@ import {
   Dimensions,
   Text,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from "react-native";
 import { Overlay } from "react-native-elements";
 import Colors from "../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import Input from "../components/Input";
 import DropDownPicker from "react-native-dropdown-picker";
+import { TextInput } from "react-native-gesture-handler";
 
 const ContactCard = (props) => {
   const [pressed, setPressed] = useState(false);
-  const [value, setValue] = useState("");
+  const [relation, setRelation] = useState("NOT SPECIFIED");
+  const [value, setValue] = useState("WEEKLY");
   const dropdownItems = [
     {
-      label: "Daily",
-      value: "1",
+      label: "DAILY",
+      value: "DAILY",
     },
     {
-      label: "Weekly",
-      value: "2",
+      label: "WEEKLY",
+      value: "WEEKLY",
     },
     {
-      label: "Monthly",
-      value: "3",
+      label: "MONTHLY",
+      value: "MONTHLY",
     },
   ];
 
@@ -50,11 +52,13 @@ const ContactCard = (props) => {
         <TouchableOpacity
           style={{ alignItems: "flex-end" }}
           onPress={() => {
-            setPressed(true);
+            !pressed ? setPressed(true) : setPressed(false);
           }}
         >
           <Ionicons />
-          <Text style={{ ...styles.text, color: "white" }}>Edit</Text>
+          <Text style={{ ...styles.text, color: "white" }}>
+            {pressed ? "Done" : "Edit"}
+          </Text>
         </TouchableOpacity>
 
         <View style={{ alignItems: "center" }}>
@@ -98,49 +102,68 @@ const ContactCard = (props) => {
         </View>
 
         {props.accepted ? (
-          <View style={{ alignItems: "center", marginTop: 20 }}>
-            <Text style={{ ...styles.text, ...styles.title }}>
-              Frequency of Getting in Touch
-            </Text>
-            {!pressed ? (
-              <Text style={{ ...styles.text, ...styles.input }}>WEEKLY</Text>
-            ) : (
-              <DropDownPicker
-                style={{
-                  width: "70%",
-                  backgroundColor: null,
-                  borderWidth: 0,
-                }}
-                items={dropdownItems}
-                defaultValue={value}
-                containerStyle={{
-                  height: 40,
-                  borderWidth: 1,
-                  borderRadius: 30,
-                  borderColor: "white",
-                  marginVertical: 5,
-                }}
-                itemStyle={{ justifyContent: "center" }}
-                labelStyle={{
-                  color: "white",
-                  fontFamily: "Futura",
-                  fontSize: 14,
-                  textAlign: "center",
-                }}
-                arrowColor="white"
-                selectedLabelStyle={{ fontWeight: "700" }}
-                onChangeItem={(item) => setValue(item.value)}
-              />
-            )}
-            <Text style={{ ...styles.text, ...styles.title }}>Relation</Text>
+          <View
+            style={{
+              marginTop: 20,
+              flex: 1,
+              justifyContent: "space-evenly",
+            }}
+          >
+            <View style={{ alignItems: "center", zIndex: 1 }}>
+              <Text style={{ ...styles.text, ...styles.title }}>
+                Frequency of Getting in Touch
+              </Text>
+              {!pressed ? (
+                <Text style={{ ...styles.text, ...styles.label }}>{value}</Text>
+              ) : (
+                <DropDownPicker
+                  style={{
+                    width: "70%",
+                    backgroundColor: null,
+                    borderWidth: 0,
+                  }}
+                  items={dropdownItems}
+                  defaultValue={value}
+                  containerStyle={{
+                    height: 40,
+                    borderWidth: 1,
+                    borderRadius: 30,
+                    borderColor: "white",
+                    marginVertical: 5,
+                  }}
+                  itemStyle={{ justifyContent: "center" }}
+                  labelStyle={{
+                    fontFamily: "Futura",
+                    fontSize: 14,
+                    textAlign: "center",
+                  }}
+                  arrowColor="white"
+                  selectedLabelStyle={{ fontWeight: "700", color: "white" }}
+                  onChangeItem={(item) => setValue(item.value)}
+                />
+              )}
+            </View>
 
-            {!pressed ? (
-              <Text style={{ ...styles.text, ...styles.input }}>FAMILY</Text>
-            ) : (
-              <View style={{ width: "70%" }}>
-                <Input placeholder="FAMILY" />
-              </View>
-            )}
+            <View style={{ alignItems: "center", zIndex: 0 }}>
+              <Text style={{ ...styles.text, ...styles.title }}>Relation</Text>
+
+              {!pressed ? (
+                <Text style={{ ...styles.text, ...styles.label }}>
+                  {relation.toUpperCase()}
+                </Text>
+              ) : (
+                <View style={{ width: "70%" }}>
+                  <TextInput
+                    placeholder="eg. family"
+                    style={styles.input}
+                    value={relation}
+                    onChangeText={(text) => {
+                      setRelation(text);
+                    }}
+                  />
+                </View>
+              )}
+            </View>
           </View>
         ) : (
           <View
@@ -206,10 +229,19 @@ const styles = StyleSheet.create({
     borderRadius: 35,
     alignItems: "center",
   },
-  input: {
+  label: {
     color: "white",
     marginBottom: 10,
     marginTop: 2,
+  },
+  input: {
+    borderWidth: 1,
+    padding: 10,
+    borderColor: "white",
+    marginVertical: 5,
+    borderRadius: 30,
+    textAlign: "center",
+    color: "white",
   },
   title: {
     color: "white",

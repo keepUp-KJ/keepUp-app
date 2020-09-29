@@ -12,7 +12,11 @@ import { connect } from "react-redux";
 class HomeScreen extends React.Component {
   state = {
     tasks: [],
-    birthdays: [],
+    birthdays: [
+      { date: "30 SEP", contact: "Yusuf Hamdy" },
+      { date: "15 OCT", contact: "John Doe" },
+      { date: "19 OCT", contact: "Smith" },
+    ],
   };
 
   componentDidMount() {
@@ -50,7 +54,12 @@ class HomeScreen extends React.Component {
             ListEmptyComponent={this.renderEmpty}
             showsVerticalScrollIndicator={false}
             data={this.state.tasks}
-            renderItem={(itemData) => <Task contact={itemData.item.contact} />}
+            renderItem={(itemData) => (
+              <Task
+                contact={itemData.item.contact}
+                occasion={itemData.item.occasion}
+              />
+            )}
             keyExtractor={(item) => item.contact}
           />
         </View>
@@ -105,6 +114,9 @@ class HomeScreen extends React.Component {
                 fontSize={14}
                 bold
                 textColor={Colors.primaryColor}
+                onPress={() => {
+                  this.props.navigation.navigate("Calendar");
+                }}
               />
             )}
           </View>
