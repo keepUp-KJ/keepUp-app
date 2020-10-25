@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     color: "#990000",
     fontFamily: "Futura",
-    fontSize: 12,
+    fontSize: 10,
   },
 });
 

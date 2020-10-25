@@ -1,14 +1,18 @@
 export const LOGIN = "LOGIN";
 export const SIGNUP = "SIGNUP";
 export const LOGIN_WITH_GOOGLE = "LOGIN_WITH_GOOGLE";
+
+export const ERROR = "ERROR";
 export const LOGIN_ERROR = "LOGIN_ERROR";
+export const HIDE_ERROR = "HIDE_ERROR";
+export const HIDE_LOGIN_ERROR = "HIDE_LOGIN_ERROR";
 
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 import { navigate } from "../../navigation/navigationRef";
 
 export const login = (email, password) => async (dispatch) => {
-  fetch("https://keep-up-mock.herokuapp.com/api/users/login", {
+  fetch("http://192.168.1.150:3000/users/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -25,8 +29,9 @@ export const login = (email, password) => async (dispatch) => {
           type: LOGIN_ERROR,
           error: json.error,
         });
+      } else {
+        navigate("PickContacts");
       }
-      navigate("PickContacts");
     });
 };
 
@@ -81,10 +86,45 @@ export const loginWithFacebook = () => async (dispatch) => {
   }
 };
 
-export const signup = (email, password, password_confirmation) => async (
-  dispatch
-) => {
+export const signup = (email, password, confPassword) => async (dispatch) => {
+  fetch("http://192.168.1.150:3000/users", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      password,
+      confPassword,
+    }),
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      console.log(json);
+      if (json.user) {
+        dispatch({
+          type: SIGNUP,
+          payload: json.user,
+        });
+        navigate("VerifyEmail");
+      }
+
+      dispatch({
+        type: ERROR,
+        payload: json.errors,
+      });
+    });
+};
+
+export const hideError = (error) => async (dispatch) => {
   dispatch({
-    type: SIGNUP,
+    type: HIDE_ERROR,
+    payload: error,
+  });
+};
+
+export const hideLoginError = () => async (dispatch) => {
+  dispatch({
+    type: HIDE_LOGIN_ERROR,
   });
 };

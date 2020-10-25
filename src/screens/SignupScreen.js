@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import {
   View,
   StyleSheet,
@@ -11,6 +11,8 @@ import Colors from "../constants/Colors";
 import Btn from "../components/Btn";
 import Input from "../components/Input";
 import { Ionicons } from "@expo/vector-icons";
+import { connect } from "react-redux";
+import { signup, hideError } from "../store/actions/users";
 
 class SignupScreen extends React.Component {
   state = {
@@ -18,46 +20,12 @@ class SignupScreen extends React.Component {
     password: "",
     confPassword: "",
     loading: false,
-    emailError: "",
-    passwordError: "",
-    confPasswordError: "",
+    errors: {},
   };
 
-  signupHandler = (email, password, confPassword) => {
-    this.setState({ loading: true });
-    fetch("https://keep-up-mock.herokuapp.com/api/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-        confPassword,
-      }),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        this.setState({ loading: false });
-        if (json.token) {
-          this.props.navigation.navigate("VerifyEmail");
-        } else {
-          if (json.errors.email) {
-            this.setState({ emailError: "Invalid email" });
-          }
-          if (json.errors.password) {
-            this.setState({
-              passwordError: "Password must be at least 6 characters",
-            });
-          }
-          if (json.errors.password_confirmation) {
-            this.setState({
-              confPasswordError: "Password does not match",
-            });
-          }
-        }
-      });
-  };
+  componentDidMount() {
+    this.props.hideError("all");
+  }
 
   render() {
     return (
@@ -92,35 +60,38 @@ class SignupScreen extends React.Component {
               <Input
                 value={this.state.email}
                 onChangeText={(email) => {
-                  this.setState({ email, emailError: "" });
+                  this.props.hideError("email");
+                  this.setState({ email });
                 }}
                 title="Email"
                 placeholder="Email"
                 autoCapitalize="none"
                 autoCorrect={false}
-                error={this.state.emailError}
+                error={this.props.errors.email}
               />
               <Input
                 value={this.state.password}
                 onChangeText={(password) => {
-                  this.setState({ password, passwordError: "" });
+                  this.props.hideError("password");
+                  this.setState({ password });
                 }}
                 title="Password"
                 secureTextEntry
                 placeholder="Password"
                 autoCorrect={false}
-                error={this.state.passwordError}
+                error={this.props.errors.password}
               />
               <Input
                 value={this.state.confPassword}
                 onChangeText={(confPassword) => {
-                  this.setState({ confPassword, confPasswordError: "" });
+                  this.props.hideError("confPassword");
+                  this.setState({ confPassword });
                 }}
                 title="Confirm Password"
                 secureTextEntry
                 placeholder="Confirm Password"
                 autoCorrect={false}
-                error={this.state.confPasswordError}
+                error={this.props.errors.confPassword}
               />
             </View>
           </View>
@@ -134,13 +105,22 @@ class SignupScreen extends React.Component {
                 fontSize={12}
                 loading={this.state.loading}
                 bold
-                onPress={() =>
-                  this.signupHandler(
-                    this.state.email,
-                    this.state.password,
-                    this.state.confPassword
-                  )
-                }
+                onPress={() => {
+                  this.setState({ loading: true });
+                  this.props
+                    .signup(
+                      this.state.email,
+                      this.state.password,
+                      this.state.confPassword
+                    )
+                    .then(() => {
+                      console.log(this.props.errors);
+                      this.setState({
+                        errors: this.props.errors,
+                        loading: false,
+                      });
+                    });
+                }}
               />
             </View>
 
@@ -190,4 +170,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignupScreen;
+const mapStateToProps = (state) => ({
+  errors: state.users.errors,
+});
+
+const mapDispatchToProps = {
+  signup,
+  hideError,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignupScreen);

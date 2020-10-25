@@ -16,6 +16,7 @@ import {
   login,
   loginWithFacebook,
   loginWithGoogle,
+  hideLoginError,
 } from "../store/actions/users";
 import { connect } from "react-redux";
 
@@ -23,9 +24,12 @@ class LoginScreen extends React.Component {
   state = {
     email: "",
     password: "",
-    error: "",
     loading: false,
   };
+
+  componentDidMount() {
+    this.props.hide();
+  }
 
   loginWithGoogle = () => {
     this.props.googleSignIn().then(() => {
@@ -38,14 +42,6 @@ class LoginScreen extends React.Component {
       if (this.props.token) {
         this.props.navigation.navigate("PickContacts");
       }
-    });
-  };
-
-  loginHandler = (email, password) => {
-    this.setState({ loading: true });
-    this.props.login(email, password).then(() => {
-      if (this.props.error)
-        this.setState({ error: this.props.error, loading: false });
     });
   };
 
@@ -68,18 +64,22 @@ class LoginScreen extends React.Component {
           <View style={{ flex: 0.25, justifyContent: "center", width: "80%" }}>
             <Input
               value={this.state.email}
-              onChangeText={(email) => this.setState({ email })}
+              onChangeText={(email) => {
+                this.props.hide();
+                this.setState({ email });
+              }}
               placeholder="Email"
-              style={styles.input}
               autoCapitalize="none"
               autoCorrect={false}
             />
             <Input
               value={this.state.password}
-              onChangeText={(password) => this.setState({ password })}
+              onChangeText={(password) => {
+                this.props.hide();
+                this.setState({ password });
+              }}
               secureTextEntry
               placeholder="Password"
-              style={styles.input}
               autoCorrect={false}
             />
             <TouchableOpacity
@@ -98,7 +98,7 @@ class LoginScreen extends React.Component {
                 <Text style={{ fontFamily: "Arial" }}>?</Text>
               </Text>
             </TouchableOpacity>
-            <Text style={styles.errorText}>{this.state.error}</Text>
+            <Text style={styles.errorText}>{this.props.error}</Text>
           </View>
 
           {/* Buttons */}
@@ -110,7 +110,12 @@ class LoginScreen extends React.Component {
               bold
               loading={this.state.loading}
               onPress={() => {
-                this.loginHandler(this.state.email, this.state.password);
+                this.setState({ loading: true });
+                this.props
+                  .login(this.state.email, this.state.password)
+                  .then(() => {
+                    this.setState({ loading: false });
+                  });
               }}
             />
 
@@ -183,9 +188,6 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
     fontFamily: "Futura",
   },
-  input: {
-    marginHorizontal: 7,
-  },
   footerContainer: {
     flex: 0.25,
     justifyContent: "center",
@@ -202,13 +204,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   token: state.users.token,
-  error: state.users.error,
+  error: state.users.loginError,
 });
 
 const mapDispatchToProps = {
   googleSignIn: loginWithGoogle,
   facebookSignIn: loginWithFacebook,
   login,
+  hide: hideLoginError,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
