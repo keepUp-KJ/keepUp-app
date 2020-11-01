@@ -11,32 +11,13 @@ import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import Btn from "../components/Btn";
+import { connect } from "react-redux";
+import { verifyEmail } from "../store/actions/users";
 
 class VerifyEmailScreen extends React.Component {
   state = {
-    code: "1234",
+    code: "",
     error: "",
-  };
-
-  verifyHandler = (code) => {
-    fetch("https://keep-up-mock.herokuapp.com/api/users/verify-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        code,
-      }),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        this.setState({ loading: false });
-        if (json.response) {
-          this.props.navigation.navigate("PickContacts");
-        } else {
-          this.setState({ error: json.error });
-        }
-      });
   };
 
   render() {
@@ -70,8 +51,10 @@ class VerifyEmailScreen extends React.Component {
           <View style={{ ...styles.container, flex: 0.2 }}>
             <Text style={styles.body}>
               Thank you for choosing KeepUp! {"\n\n"}Please confirm that{" "}
-              <Text style={{ fontWeight: "bold" }}>johndoe@gmail.com</Text> is
-              your email address by entering the code sent to your inbox
+              <Text style={{ fontWeight: "bold" }}>
+                {this.props.user.email}
+              </Text>{" "}
+              is your email address by entering the code sent to your inbox
             </Text>
           </View>
 
@@ -87,14 +70,17 @@ class VerifyEmailScreen extends React.Component {
                 onCodeFilled={(code) => {
                   this.setState({ code });
                 }}
+                onCodeChanged={(code) => {
+                  this.setState({ code });
+                }}
               />
-              <Text style={styles.errorStyle}>{this.state.error}</Text>
+              <Text style={styles.errorStyle}>{this.props.error}</Text>
               <Btn
                 title="VERIFY"
                 btnColor={Colors.primaryColor}
                 fontSize={12}
                 bold
-                onPress={() => this.verifyHandler(this.state.code)}
+                onPress={() => this.props.verify(this.state.code)}
               />
             </View>
           </View>
@@ -147,4 +133,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VerifyEmailScreen;
+const mapStateToProps = (state) => ({
+  user: state.users.user,
+  error: state.users.loginError,
+});
+
+const mapDispatchToProps = {
+  verify: verifyEmail,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(VerifyEmailScreen);

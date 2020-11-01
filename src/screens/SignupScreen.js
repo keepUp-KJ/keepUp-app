@@ -114,7 +114,6 @@ class SignupScreen extends React.Component {
                       this.state.confPassword
                     )
                     .then(() => {
-                      console.log(this.props.errors);
                       this.setState({
                         errors: this.props.errors,
                         loading: false,

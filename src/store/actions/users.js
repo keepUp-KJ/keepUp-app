@@ -12,7 +12,7 @@ import * as Facebook from "expo-facebook";
 import { navigate } from "../../navigation/navigationRef";
 
 export const login = (email, password) => async (dispatch) => {
-  fetch("http://192.168.1.150:3000/users/login", {
+  fetch("http://172.20.10.6:3000/users/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -87,7 +87,7 @@ export const loginWithFacebook = () => async (dispatch) => {
 };
 
 export const signup = (email, password, confPassword) => async (dispatch) => {
-  fetch("http://192.168.1.150:3000/users", {
+  fetch("http://localhost:3000/users", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -100,7 +100,6 @@ export const signup = (email, password, confPassword) => async (dispatch) => {
   })
     .then((res) => res.json())
     .then((json) => {
-      console.log(json);
       if (json.user) {
         dispatch({
           type: SIGNUP,
@@ -127,4 +126,27 @@ export const hideLoginError = () => async (dispatch) => {
   dispatch({
     type: HIDE_LOGIN_ERROR,
   });
+};
+
+export const verifyEmail = (code) => async (dispatch) => {
+  fetch("http://localhost:3000/users/verify-email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      code,
+    }),
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.error)
+        dispatch({
+          type: LOGIN_ERROR,
+          error: json.error,
+        });
+      else {
+        navigate("PickContacts");
+      }
+    });
 };
