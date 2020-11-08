@@ -12,7 +12,7 @@ import * as Facebook from "expo-facebook";
 import { navigate } from "../../navigation/navigationRef";
 
 export const login = (email, password) => async (dispatch) => {
-  fetch("http://172.20.10.6:3000/users/login", {
+  fetch("http://localhost:3000/users/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -128,13 +128,14 @@ export const hideLoginError = () => async (dispatch) => {
   });
 };
 
-export const verifyEmail = (code) => async (dispatch) => {
+export const verifyEmail = (email, code) => async (dispatch) => {
   fetch("http://localhost:3000/users/verify-email", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
+      email,
       code,
     }),
   })

@@ -46,10 +46,18 @@ const usersReducer = (state = initialState, action) => {
       return {
         ...state,
         errors: {
-          email: action.payload === "email" ? "" : state.errors.email,
-          password: action.payload === "password" ? "" : state.errors.password,
+          email:
+            action.payload === "email" || action.payload === "all"
+              ? ""
+              : state.errors.email,
+          password:
+            action.payload === "password" || action.payload === "all"
+              ? ""
+              : state.errors.password,
           confPassword:
-            action.payload === "confPassword" ? "" : state.errors.confPassword,
+            action.payload === "confPassword" || action.payload === "all"
+              ? ""
+              : state.errors.confPassword,
         },
       };
     case HIDE_LOGIN_ERROR:

@@ -6,8 +6,8 @@ import {
   TouchableWithoutFeedback,
   SafeAreaView,
   Keyboard,
+  TouchableOpacity,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import Btn from "../components/Btn";
@@ -32,14 +32,15 @@ class VerifyEmailScreen extends React.Component {
           <View
             style={{ flex: 0.1, justifyContent: "center", paddingLeft: 15 }}
           >
-            <Ionicons
-              name="md-arrow-back"
-              size={30}
-              color={Colors.secondary}
+            <TouchableOpacity
               onPress={() => {
-                this.props.navigation.navigate("SignUp");
+                this.props.navigation.navigate("Login");
               }}
-            />
+            >
+              <Text style={{ color: Colors.secondary, fontFamily: "Futura" }}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
           </View>
 
           {/* Header */}
@@ -80,7 +81,9 @@ class VerifyEmailScreen extends React.Component {
                 btnColor={Colors.primaryColor}
                 fontSize={12}
                 bold
-                onPress={() => this.props.verify(this.state.code)}
+                onPress={() =>
+                  this.props.verify(this.props.user.email, this.state.code)
+                }
               />
             </View>
           </View>
