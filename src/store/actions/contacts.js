@@ -5,14 +5,28 @@ export const SKIP_PICK = "SKIP_PICK";
 export const MOVE_TO_PENDING = "MOVE_TO_PENDING";
 import * as Contacts from "expo-contacts";
 
-export const acceptContact = (contact) => async (dispatch) => {
-  await Contacts.updateContactAsync({
-    id: contact.id,
-    [Contacts.Fields.PhoneticFirstName]: "accepted",
-  });
-  dispatch({
-    type: ACCEPT_CONTACT,
-    contact,
+export const acceptContact = (userId, contact) => async (dispatch) => {
+  var bDate =
+    contact.birthday.day +
+    "/" +
+    contact.birthday.month +
+    "/" +
+    contact.birthday.year;
+  fetch("http://localhost:3000/contacts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userId,
+      firstName: contact.firstName,
+      lastName: contact.lastName,
+      mobile: "100",
+      birthday: bDate,
+      status: "Accepted",
+      frequency: "Daily",
+      relation: "Friend",
+    }),
   });
 };
 

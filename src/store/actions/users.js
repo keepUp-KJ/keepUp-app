@@ -1,4 +1,3 @@
-export const LOGIN = "LOGIN";
 export const SIGNUP = "SIGNUP";
 export const LOGIN_WITH_GOOGLE = "LOGIN_WITH_GOOGLE";
 
@@ -30,6 +29,10 @@ export const login = (email, password) => async (dispatch) => {
           error: json.error,
         });
       } else {
+        dispatch({
+          type: SIGNUP,
+          payload: json.user,
+        });
         navigate("PickContacts");
       }
     });

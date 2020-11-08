@@ -1,5 +1,4 @@
 import {
-  LOGIN,
   LOGIN_WITH_GOOGLE,
   ERROR,
   SIGNUP,
@@ -21,11 +20,6 @@ const usersReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.user,
-      };
-    case LOGIN:
-      return {
-        ...state,
-        token: action.token,
       };
     case SIGNUP:
       return {

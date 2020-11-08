@@ -64,8 +64,8 @@ class PickContactsScreen extends React.Component {
   renderContact = (itemData) => (
     <Contact
       contact={itemData.item}
-      onAccept={() => this.props.accept(itemData.item)}
-      onReject={() => this.props.reject(itemData.item)}
+      onAccept={() => this.props.accept(this.props.user._id, itemData.item)}
+      onReject={() => this.props.reject(this.props.user._id, itemData.item)}
     />
   );
 
@@ -177,6 +177,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
+  user: state.users.user,
   acceptedContacts: state.contacts.acceptedContacts,
   rejectedContacts: state.contacts.rejectedContacts,
 });
