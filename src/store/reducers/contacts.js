@@ -4,6 +4,7 @@ import {
   SKIP_PICK,
   UNREJECT_CONTACT,
   MOVE_TO_PENDING,
+  SET_CONTACTS,
 } from "../actions/contacts.js";
 
 const initialState = {
@@ -44,6 +45,15 @@ const contactsReducer = (state = initialState, action) => {
         ...state,
         acceptedContacts: [],
         rejectedContacts: [],
+      };
+    case SET_CONTACTS:
+      return {
+        acceptedContacts: action.payload.filter(
+          (contact) => contact.status === "Accepted"
+        ),
+        rejectedContacts: action.payload.filter(
+          (contact) => contact.status === "Rejected"
+        ),
       };
     default:
       return state;

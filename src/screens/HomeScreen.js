@@ -12,16 +12,8 @@ import { connect } from "react-redux";
 class HomeScreen extends React.Component {
   state = {
     tasks: [],
-    birthdays: [
-      { date: "30 SEP", contact: "Yusuf Hamdy" },
-      { date: "15 OCT", contact: "John Doe" },
-      { date: "19 OCT", contact: "Smith" },
-    ],
+    birthdays: [],
   };
-
-  componentDidMount() {
-    this.setState({ tasks: this.props.reminders });
-  }
 
   renderEmpty = () => (
     <View

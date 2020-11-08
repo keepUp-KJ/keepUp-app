@@ -23,23 +23,20 @@ import {
   acceptContact,
   rejectContact,
   unrejectContact,
+  getContacts,
 } from "../store/actions/contacts";
 
 class ContactsScreen extends React.Component {
   state = {
-    input: "",
-    active: "Accepted",
-    pending: [],
+    searchInput: "",
+    activeTab: "Accepted",
     visible: false,
-    contact: {},
     contacts: [],
-    accepted: [],
-    rejected: [],
+    activeContact: {},
   };
 
   async componentDidMount() {
-    const activePage = this.props.navigation.getParam("active");
-    this.setState({ active: activePage || "Accepted" });
+    this.props.get(this.props.user._id);
 
     const { data } = await Contacts.getContactsAsync({
       fields: [
@@ -50,16 +47,7 @@ class ContactsScreen extends React.Component {
       ],
     });
 
-    this.setState({
-      contacts: data,
-      pending: data.filter(
-        (item) =>
-          item.phoneticFirstName !== "accepted" &&
-          item.phoneticFirstName !== "rejected"
-      ),
-      accepted: data.filter((item) => item.phoneticFirstName === "accepted"),
-      rejected: data.filter((item) => item.phoneticFirstName === "rejected"),
-    });
+    this.setState({ contacts: data });
   }
 
   renderContact = (itemData) => (
@@ -67,10 +55,12 @@ class ContactsScreen extends React.Component {
       style={styles.card}
       activeOpacity={0.6}
       onPress={() => {
-        this.setState({ visible: true, contact: itemData.item });
+        this.setState({ visible: true, activeContact: itemData.item });
       }}
     >
-      <Text style={styles.text}>{itemData.item.name}</Text>
+      <Text style={styles.text}>
+        {itemData.item.firstName + " " + itemData.item.lastName}
+      </Text>
     </TouchableOpacity>
   );
 
@@ -112,69 +102,20 @@ class ContactsScreen extends React.Component {
   );
 
   render() {
-    const accepted = this.state.active === "Accepted";
-    const rejected = this.state.active === "Rejected";
-    const pending = this.state.active === "Pending";
+    const accepted = this.state.activeTab === "Accepted";
+    const rejected = this.state.activeTab === "Rejected";
+    const pending = this.state.activeTab === "Pending";
 
     return (
       <SafeAreaView style={styles.screen}>
         <ContactCard
-          onAccept={() =>
-            this.props.accept(this.state.contact).then(() => {
-              this.setState({
-                accepted: this.props.acceptedContacts,
-                visible: false,
-                pending: this.state.contacts.filter(
-                  (item) =>
-                    this.props.acceptedContacts.findIndex(
-                      (contact) => contact.id === item.id
-                    ) === -1 &&
-                    this.state.rejected.findIndex(
-                      (contact) => contact.id === item.id
-                    ) === -1
-                ),
-              });
-            })
-          }
-          onReject={() =>
-            this.props.reject(this.state.contact).then(() => {
-              this.setState({
-                rejected: this.props.rejectedContacts,
-                pending: this.state.contacts.filter(
-                  (item) =>
-                    this.state.accepted.findIndex(
-                      (contact) => contact.id === item.id
-                    ) === -1 &&
-                    this.props.rejectedContacts.findIndex(
-                      (contact) => contact.id === item.id
-                    ) === -1
-                ),
-                visible: false,
-              });
-            })
-          }
+          onAccept={() => {}}
+          onReject={() => {}}
           pending={pending}
           accepted={accepted}
           visible={this.state.visible}
-          contact={this.state.contact}
+          contact={this.state.activeContact}
           close={() => this.setState({ visible: false, contact: {} })}
-          remove={() => {
-            this.props.move(this.state.contact).then(() => {
-              this.setState({
-                accepted: this.props.acceptedContacts,
-                pending: this.state.contacts.filter(
-                  (item) =>
-                    this.props.acceptedContacts.findIndex(
-                      (contact) => contact.id === item.id
-                    ) === -1 &&
-                    this.state.rejected.findIndex(
-                      (contact) => contact.id === item.id
-                    ) === -1
-                ),
-                visible: false,
-              });
-            });
-          }}
         />
         <View style={{ ...styles.headerContainer, flex: rejected ? 0.1 : 0.2 }}>
           <Header
@@ -194,7 +135,7 @@ class ContactsScreen extends React.Component {
             <View style={{ width: "85%" }}>
               <Input
                 placeholder="Search..."
-                value={this.state.input}
+                value={this.state.searchInput}
                 onChangeText={(text) => {
                   const updatedContacts = this.state.contacts.filter(
                     (contact) => {
@@ -210,7 +151,7 @@ class ContactsScreen extends React.Component {
                   );
                   this.setState({
                     filteredContacts: updatedContacts,
-                    input: text,
+                    searchInput: text,
                   });
                 }}
               />
@@ -229,11 +170,11 @@ class ContactsScreen extends React.Component {
             key={accepted || pending ? "1" : "0"}
             data={
               accepted
-                ? this.state.accepted
+                ? this.props.acceptedContacts
                 : rejected
-                ? this.state.rejected
+                ? this.props.rejectedContacts
                 : pending
-                ? this.state.pending
+                ? this.state.contacts
                 : null
             }
             renderItem={
@@ -246,9 +187,9 @@ class ContactsScreen extends React.Component {
 
         <View style={{ flex: 0.1, justifyContent: "flex-end" }}>
           <Menu
-            active={this.state.active}
-            onChange={(active) => {
-              this.setState({ active });
+            active={this.state.activeTab}
+            onChange={(activeTab) => {
+              this.setState({ activeTab });
             }}
           />
         </View>
@@ -301,6 +242,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
+  user: state.users.user,
   acceptedContacts: state.contacts.acceptedContacts,
   rejectedContacts: state.contacts.rejectedContacts,
 });
@@ -308,6 +250,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   accept: acceptContact,
   reject: rejectContact,
+  get: getContacts,
   move: moveToPending,
   unreject: unrejectContact,
 };

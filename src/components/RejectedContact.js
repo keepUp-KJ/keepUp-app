@@ -12,7 +12,9 @@ const RejectedContact = (props) => {
         </View>
       </View>
       <View style={{ flex: 0.5 }}>
-        <Text style={styles.text}>{props.contact.name}</Text>
+        <Text style={styles.text}>
+          {props.contact.firstName + " " + props.contact.lastName}
+        </Text>
       </View>
       <TouchableOpacity
         style={{ flex: 0.3, alignItems: "flex-end" }}

@@ -89,11 +89,10 @@ const ContactCard = (props) => {
             ...styles.text,
             marginTop: -60,
             fontSize: 32,
-            textAlign: "center",
             color: props.pending ? "white" : Colors.secondary,
           }}
         >
-          {props.contact.name}
+          {props.contact.firstName + " " + props.contact.lastName}
         </Text>
 
         <View style={styles.container}>
@@ -227,6 +226,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "Futura",
     fontWeight: "700",
+    textAlign: "center",
   },
   photo: {
     width: 100,

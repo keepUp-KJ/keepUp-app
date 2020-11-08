@@ -7,6 +7,7 @@ import Btn from "../components/Btn";
 import { Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { getSettings } from "../store/actions/settings";
+import { signout } from "../store/actions/users";
 
 class SettingsScreen extends React.Component {
   state = {
@@ -180,6 +181,9 @@ class SettingsScreen extends React.Component {
               fontSize={16}
               loading={this.state.loading}
               textColor="white"
+              onPress={() => {
+                this.props.signout();
+              }}
             />
           </View>
         </View>
@@ -240,6 +244,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   get: getSettings,
+  signout,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);

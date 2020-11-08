@@ -12,9 +12,11 @@ import SettingsScreen from "../screens/SettingsScreen";
 import ContactsScreen from "../screens/ContactsScreen";
 import SetupScreen from "../screens/SetupAccount";
 import CalendarScreen from "../screens/CalendarScreen";
+import LoadingScreen from "../screens/LoadingScreen";
 
 const Navigator = createSwitchNavigator(
   {
+    Loading: LoadingScreen,
     Login: LoginScreen,
     SignUp: SignupScreen,
     PickContacts: PickContactsScreen,
@@ -29,7 +31,7 @@ const Navigator = createSwitchNavigator(
     Calendar: CalendarScreen,
   },
   {
-    initialRouteName: "Login",
+    initialRouteName: "Loading",
   }
 );
 

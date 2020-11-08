@@ -67,7 +67,7 @@ class SignupScreen extends React.Component {
                 placeholder="Email"
                 autoCapitalize="none"
                 autoCorrect={false}
-                error={this.props.errors.email}
+                error={this.props.errors.email || ""}
               />
               <Input
                 value={this.state.password}
@@ -79,7 +79,7 @@ class SignupScreen extends React.Component {
                 secureTextEntry
                 placeholder="Password"
                 autoCorrect={false}
-                error={this.props.errors.password}
+                error={this.props.errors.password || ""}
               />
               <Input
                 value={this.state.confPassword}
@@ -91,7 +91,7 @@ class SignupScreen extends React.Component {
                 secureTextEntry
                 placeholder="Confirm Password"
                 autoCorrect={false}
-                error={this.props.errors.confPassword}
+                error={this.props.errors.confPassword || ""}
               />
             </View>
           </View>

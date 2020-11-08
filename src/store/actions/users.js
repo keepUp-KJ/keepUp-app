@@ -5,10 +5,12 @@ export const ERROR = "ERROR";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 export const HIDE_ERROR = "HIDE_ERROR";
 export const HIDE_LOGIN_ERROR = "HIDE_LOGIN_ERROR";
+export const SIGNOUT = "SIGNOUT";
 
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 import { navigate } from "../../navigation/navigationRef";
+import { AsyncStorage } from "react-native";
 
 export const login = (email, password) => async (dispatch) => {
   fetch("http://localhost:3000/users/login", {
@@ -33,6 +35,74 @@ export const login = (email, password) => async (dispatch) => {
           type: SIGNUP,
           payload: json.user,
         });
+        AsyncStorage.setItem("user", JSON.stringify(json.user));
+        navigate("PickContacts");
+      }
+    });
+};
+
+export const signup = (email, password, confPassword) => async (dispatch) => {
+  fetch("http://localhost:3000/users", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      password,
+      confPassword,
+    }),
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.user) {
+        dispatch({
+          type: SIGNUP,
+          payload: json.user,
+        });
+        AsyncStorage.setItem("user", JSON.stringify(json.user));
+        navigate("VerifyEmail");
+      }
+
+      dispatch({
+        type: ERROR,
+        payload: json.errors,
+      });
+    });
+};
+
+export const tryLocalSignin = () => async (dispatch) => {
+  const user = JSON.parse(await AsyncStorage.getItem("user"));
+  if (user) {
+    dispatch({
+      type: SIGNUP,
+      payload: user,
+    });
+    navigate("Home");
+  } else {
+    navigate("Login");
+  }
+};
+
+export const verifyEmail = (email, code) => async (dispatch) => {
+  fetch("http://localhost:3000/users/verify-email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      code,
+    }),
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.error)
+        dispatch({
+          type: LOGIN_ERROR,
+          error: json.error,
+        });
+      else {
         navigate("PickContacts");
       }
     });
@@ -89,35 +159,6 @@ export const loginWithFacebook = () => async (dispatch) => {
   }
 };
 
-export const signup = (email, password, confPassword) => async (dispatch) => {
-  fetch("http://localhost:3000/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email,
-      password,
-      confPassword,
-    }),
-  })
-    .then((res) => res.json())
-    .then((json) => {
-      if (json.user) {
-        dispatch({
-          type: SIGNUP,
-          payload: json.user,
-        });
-        navigate("VerifyEmail");
-      }
-
-      dispatch({
-        type: ERROR,
-        payload: json.errors,
-      });
-    });
-};
-
 export const hideError = (error) => async (dispatch) => {
   dispatch({
     type: HIDE_ERROR,
@@ -131,26 +172,10 @@ export const hideLoginError = () => async (dispatch) => {
   });
 };
 
-export const verifyEmail = (email, code) => async (dispatch) => {
-  fetch("http://localhost:3000/users/verify-email", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email,
-      code,
-    }),
-  })
-    .then((res) => res.json())
-    .then((json) => {
-      if (json.error)
-        dispatch({
-          type: LOGIN_ERROR,
-          error: json.error,
-        });
-      else {
-        navigate("PickContacts");
-      }
-    });
+export const signout = () => async (dispatch) => {
+  await AsyncStorage.removeItem("user");
+  navigate("Loading");
+  dispatch({
+    type: SIGNOUT,
+  });
 };

@@ -5,6 +5,7 @@ import {
   LOGIN_ERROR,
   HIDE_ERROR,
   HIDE_LOGIN_ERROR,
+  SIGNOUT,
 } from "../actions/users";
 
 const initialState = {
@@ -58,6 +59,11 @@ const usersReducer = (state = initialState, action) => {
       return {
         ...state,
         loginError: "",
+      };
+    case SIGNOUT:
+      return {
+        user: {},
+        errors: {},
       };
     default:
       return state;
