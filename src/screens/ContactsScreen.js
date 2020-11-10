@@ -10,7 +10,6 @@ import {
   Dimensions,
 } from "react-native";
 import Header from "../components/Header";
-import * as Contacts from "expo-contacts";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import Input from "../components/Input";
@@ -19,35 +18,30 @@ import RejectedContact from "../components/RejectedContact";
 import { connect } from "react-redux";
 import ContactCard from "../components/ContactCard";
 import {
-  moveToPending,
   acceptContact,
   rejectContact,
-  unrejectContact,
-  getContacts,
+  getContactDecisions,
+  syncContacts,
 } from "../store/actions/contacts";
+
+const mapStateToProps = (state) => ({
+  user: state.users.user,
+  contacts: state.contacts.contacts,
+  accepted: state.contacts.accepted,
+  rejected: state.contacts.rejected,
+});
 
 class ContactsScreen extends React.Component {
   state = {
     searchInput: "",
     activeTab: "Accepted",
     visible: false,
-    contacts: [],
     activeContact: {},
   };
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.props.sync();
     this.props.get(this.props.user._id);
-
-    const { data } = await Contacts.getContactsAsync({
-      fields: [
-        Contacts.Fields.ID,
-        Contacts.Fields.Birthday,
-        Contacts.Fields.PhoneNumbers,
-        Contacts.Fields.PhoneticFirstName,
-      ],
-    });
-
-    this.setState({ contacts: data });
   }
 
   renderContact = (itemData) => (
@@ -170,11 +164,11 @@ class ContactsScreen extends React.Component {
             key={accepted || pending ? "1" : "0"}
             data={
               accepted
-                ? this.props.acceptedContacts
+                ? this.props.accepted
                 : rejected
-                ? this.props.rejectedContacts
+                ? this.props.rejected
                 : pending
-                ? this.state.contacts
+                ? this.props.contacts
                 : null
             }
             renderItem={
@@ -241,18 +235,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => ({
-  user: state.users.user,
-  acceptedContacts: state.contacts.acceptedContacts,
-  rejectedContacts: state.contacts.rejectedContacts,
-});
-
 const mapDispatchToProps = {
   accept: acceptContact,
   reject: rejectContact,
-  get: getContacts,
-  move: moveToPending,
-  unreject: unrejectContact,
+  get: getContactDecisions,
+  sync: syncContacts,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactsScreen);

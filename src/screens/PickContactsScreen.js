@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import * as Contacts from "expo-contacts";
 import Contact from "../components/Contact";
 import Colors from "../constants/Colors";
 import Input from "../components/Input";
@@ -18,29 +17,24 @@ import { connect } from "react-redux";
 import {
   acceptContact,
   rejectContact,
-  skipPicking,
+  syncContacts,
 } from "../store/actions/contacts";
+
+const mapStateToProps = (state) => ({
+  user: state.users.user,
+  contacts: state.contacts.contacts,
+  acceptedContacts: state.contacts.acceptedContacts,
+  rejectedContacts: state.contacts.rejectedContacts,
+});
 
 class PickContactsScreen extends React.Component {
   state = {
-    contacts: [],
     filteredContacts: [],
     input: "",
   };
 
-  async componentDidMount() {
-    const { status } = await Contacts.requestPermissionsAsync();
-
-    if (status === "granted") {
-      const { data } = await Contacts.getContactsAsync({
-        fields: [
-          Contacts.Fields.ID,
-          Contacts.Fields.Birthday,
-          Contacts.Fields.PhoneNumbers,
-        ],
-      });
-      this.setState({ contacts: data });
-    }
+  componentDidMount() {
+    this.props.sync();
   }
 
   alert = () =>
@@ -53,9 +47,7 @@ class PickContactsScreen extends React.Component {
           text: "Skip",
           style: "cancel",
           onPress: () => {
-            this.props.skip().then(() => {
-              this.props.navigation.navigate("Home");
-            });
+            this.props.navigation.navigate("Home");
           },
         },
       ]
@@ -63,6 +55,16 @@ class PickContactsScreen extends React.Component {
 
   renderContact = (itemData) => (
     <Contact
+      accepted={
+        this.props.acceptedContacts.findIndex(
+          (contact) => contact.id === itemData.item.id
+        ) >= 0
+      }
+      rejected={
+        this.props.rejectedContacts.findIndex(
+          (contact) => contact.id === itemData.item.id
+        ) >= 0
+      }
       contact={itemData.item}
       onAccept={() => this.props.accept(this.props.user._id, itemData.item)}
       onReject={() => this.props.reject(this.props.user._id, itemData.item)}
@@ -71,7 +73,7 @@ class PickContactsScreen extends React.Component {
 
   render() {
     const contacts = !this.state.input
-      ? this.state.contacts.sort((a, b) => {
+      ? this.props.contacts.sort((a, b) => {
           if (a.firstName < b.firstName) return -1;
           if (a.firstName > b.firstName) return 1;
         })
@@ -104,7 +106,7 @@ class PickContactsScreen extends React.Component {
               placeholder="Search..."
               value={this.state.input}
               onChangeText={(text) => {
-                const updatedContacts = this.state.contacts.filter(
+                const updatedContacts = this.props.contacts.filter(
                   (contact) => {
                     const name = String.prototype.toUpperCase.call(
                       (contact.firstName || "") + " " + (contact.lastName || "")
@@ -123,7 +125,7 @@ class PickContactsScreen extends React.Component {
           </View>
         </View>
 
-        {/* CONTACTS + DONE BUTTON*/}
+        {/* CONTACTS + DONE BUTTON */}
         <View style={{ flex: 0.9 }}>
           <FlatList
             showsVerticalScrollIndicator={false}
@@ -132,19 +134,19 @@ class PickContactsScreen extends React.Component {
             renderItem={this.renderContact}
             numColumns={3}
           />
-          {this.props.acceptedContacts.length === 0 ? null : (
-            <View style={{ alignItems: "center" }}>
-              <Btn
-                title="Done"
-                btnColor={Colors.primaryColor}
-                style={{ position: "absolute", width: "50%", marginTop: -80 }}
-                onPress={() => {
-                  this.props.navigation.navigate("Setup");
-                }}
-              />
-            </View>
-          )}
         </View>
+        {this.props.acceptedContacts.length === 0 ? null : (
+          <View style={{ alignItems: "center" }}>
+            <Btn
+              title="Done"
+              btnColor={Colors.primaryColor}
+              style={{ position: "absolute", width: "50%", marginTop: -80 }}
+              onPress={() => {
+                this.props.navigation.navigate("Setup");
+              }}
+            />
+          </View>
+        )}
       </SafeAreaView>
     );
   }
@@ -176,16 +178,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => ({
-  user: state.users.user,
-  acceptedContacts: state.contacts.acceptedContacts,
-  rejectedContacts: state.contacts.rejectedContacts,
-});
-
 const mapDispatchToProps = {
   accept: acceptContact,
   reject: rejectContact,
-  skip: skipPicking,
+  sync: syncContacts,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PickContactsScreen);

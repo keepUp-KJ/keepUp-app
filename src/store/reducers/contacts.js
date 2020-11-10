@@ -1,16 +1,17 @@
 import {
   ACCEPT_CONTACT,
   REJECT_CONTACT,
-  SKIP_PICK,
-  UNREJECT_CONTACT,
-  MOVE_TO_PENDING,
+  SYNC_CONTACTS,
   SET_CONTACTS,
 } from "../actions/contacts.js";
 
 const initialState = {
   user: {},
+  contacts: [],
   acceptedContacts: [],
   rejectedContacts: [],
+  accepted: [],
+  rejected: [],
 };
 
 const contactsReducer = (state = initialState, action) => {
@@ -25,33 +26,19 @@ const contactsReducer = (state = initialState, action) => {
         ...state,
         rejectedContacts: [action.contact, ...state.rejectedContacts],
       };
-    case UNREJECT_CONTACT:
-      const index = state.rejectedContacts.indexOf(action.contact);
-      state.rejectedContacts.splice(index, 1);
-
+    case SYNC_CONTACTS:
       return {
-        ...state,
-        rejectedContacts: state.rejectedContacts,
-      };
-    case MOVE_TO_PENDING:
-      const id = state.acceptedContacts.indexOf(action.contact);
-      state.acceptedContacts.splice(id, 1);
-      return {
-        ...state,
-        acceptedContacts: state.acceptedContacts,
-      };
-    case SKIP_PICK:
-      return {
-        ...state,
         acceptedContacts: [],
         rejectedContacts: [],
+        contacts: action.payload,
       };
     case SET_CONTACTS:
       return {
-        acceptedContacts: action.payload.filter(
+        ...state,
+        accepted: action.payload.filter(
           (contact) => contact.status === "Accepted"
         ),
-        rejectedContacts: action.payload.filter(
+        rejected: action.payload.filter(
           (contact) => contact.status === "Rejected"
         ),
       };

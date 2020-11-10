@@ -1,12 +1,29 @@
 export const ACCEPT_CONTACT = "ACCEPT_CONTACT";
 export const REJECT_CONTACT = "REJECT_CONTACT";
-export const UNREJECT_CONTACT = "UNREJECT_CONTACT";
-export const SKIP_PICK = "SKIP_PICK";
-export const MOVE_TO_PENDING = "MOVE_TO_PENDING";
+export const SYNC_CONTACTS = "SYNC_CONTACTS";
 export const SET_CONTACTS = "SET_CONTACTS";
+
 import * as Contacts from "expo-contacts";
 
-export const acceptContact = (userId, contact) => async () => {
+export const syncContacts = () => async (dispatch) => {
+  const { status } = await Contacts.requestPermissionsAsync();
+
+  if (status === "granted") {
+    const { data } = await Contacts.getContactsAsync({
+      fields: [
+        Contacts.Fields.ID,
+        Contacts.Fields.Birthday,
+        Contacts.Fields.PhoneNumbers,
+      ],
+    });
+    dispatch({
+      type: SYNC_CONTACTS,
+      payload: data,
+    });
+  }
+};
+
+export const acceptContact = (userId, contact) => async (dispatch) => {
   fetch("http://localhost:3000/contacts", {
     method: "POST",
     headers: {
@@ -22,10 +39,16 @@ export const acceptContact = (userId, contact) => async () => {
       frequency: "Daily",
       relation: "Friend",
     }),
-  });
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (!json.error) {
+        dispatch({ type: ACCEPT_CONTACT, contact });
+      }
+    });
 };
 
-export const rejectContact = (userId, contact) => async () => {
+export const rejectContact = (userId, contact) => async (dispatch) => {
   fetch("http://localhost:3000/contacts", {
     method: "POST",
     headers: {
@@ -39,38 +62,16 @@ export const rejectContact = (userId, contact) => async () => {
       mobile: contact.phoneNumbers[0].number,
       status: "Rejected",
     }),
-  });
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (!json.error) {
+        dispatch({ type: REJECT_CONTACT, contact });
+      }
+    });
 };
 
-export const unrejectContact = (contact) => async (dispatch) => {
-  await Contacts.updateContactAsync({
-    id: contact.id,
-    [Contacts.Fields.PhoneticFirstName]: "pending",
-  });
-  dispatch({
-    type: UNREJECT_CONTACT,
-    contact,
-  });
-};
-
-export const moveToPending = (contact) => async (dispatch) => {
-  await Contacts.updateContactAsync({
-    id: contact.id,
-    [Contacts.Fields.PhoneticFirstName]: "pending",
-  });
-  dispatch({
-    type: MOVE_TO_PENDING,
-    contact,
-  });
-};
-
-export const skipPicking = () => async (dispatch) => {
-  dispatch({
-    type: SKIP_PICK,
-  });
-};
-
-export const getContacts = (userId) => async (dispatch) => {
+export const getContactDecisions = (userId) => async (dispatch) => {
   fetch("http://localhost:3000/contacts", {
     method: "GET",
   })

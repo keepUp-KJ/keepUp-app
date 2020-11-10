@@ -5,14 +5,12 @@ import { Ionicons } from "@expo/vector-icons";
 
 const Contact = (props) => {
   const [contactPressed, setContactPressed] = useState(false);
-  const [accepted, setAccepted] = useState(false);
-  const [rejected, setRejected] = useState(false);
 
   return (
     <TouchableOpacity
       style={styles.card}
       activeOpacity={0.6}
-      disabled={contactPressed || accepted || rejected}
+      disabled={contactPressed || props.accepted || props.rejected}
       onPress={() => {
         setContactPressed(true);
       }}
@@ -22,14 +20,20 @@ const Contact = (props) => {
       <Ionicons
         style={{ position: "absolute" }}
         name={
-          accepted
+          props.accepted
             ? "ios-checkmark-circle"
-            : rejected
+            : props.rejected
             ? "ios-close-circle"
             : null
         }
         size={70}
-        color={accepted ? Colors.primaryColor : rejected ? "#990000" : null}
+        color={
+          props.accepted
+            ? Colors.primaryColor
+            : props.rejected
+            ? "#990000"
+            : null
+        }
       />
 
       {contactPressed ? (
@@ -40,7 +44,6 @@ const Contact = (props) => {
             color={Colors.primaryColor}
             onPress={() => {
               props.onAccept();
-              setAccepted(true);
               setContactPressed(false);
             }}
           />
@@ -51,7 +54,6 @@ const Contact = (props) => {
             style={{ marginLeft: 5 }}
             onPress={() => {
               props.onReject();
-              setRejected(true);
               setContactPressed(false);
             }}
           />
