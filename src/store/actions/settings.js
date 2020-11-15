@@ -1,7 +1,7 @@
 export const GET_SETTINGS = "GET_SETTINGS";
 
-export const getSettings = () => async (dispatch) => {
-  fetch("https://keep-up-mock.herokuapp.com/api/settings", {
+export const getSettings = (id) => async (dispatch) => {
+  fetch(`http://localhost:3000/users/${id}/settings`, {
     method: "GET",
   })
     .then((res) => res.json())
