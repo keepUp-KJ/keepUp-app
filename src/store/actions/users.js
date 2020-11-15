@@ -13,7 +13,7 @@ import { navigate } from "../../navigation/navigationRef";
 import { AsyncStorage } from "react-native";
 
 export const login = (email, password) => async (dispatch) => {
-  fetch("http://localhost:3000/users/login", {
+  fetch("http://192.168.1.10:3000/users/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

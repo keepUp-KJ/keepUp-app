@@ -12,6 +12,7 @@ const initialState = {
   rejectedContacts: [],
   accepted: [],
   rejected: [],
+  pending: [],
 };
 
 const contactsReducer = (state = initialState, action) => {
@@ -40,6 +41,10 @@ const contactsReducer = (state = initialState, action) => {
         ),
         rejected: action.payload.filter(
           (contact) => contact.status === "Rejected"
+        ),
+        pending: state.contacts.filter(
+          (contact) =>
+            !action.payload.find((item) => item.contactId === contact.id)
         ),
       };
     default:

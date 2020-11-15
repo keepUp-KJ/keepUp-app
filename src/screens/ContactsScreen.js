@@ -29,6 +29,7 @@ const mapStateToProps = (state) => ({
   contacts: state.contacts.contacts,
   accepted: state.contacts.accepted,
   rejected: state.contacts.rejected,
+  pending: state.contacts.pending,
 });
 
 class ContactsScreen extends React.Component {
@@ -53,7 +54,7 @@ class ContactsScreen extends React.Component {
       }}
     >
       <Text style={styles.text}>
-        {itemData.item.firstName + " " + itemData.item.lastName}
+        {itemData.item.firstName + " " + (itemData.item.lastName || "")}
       </Text>
     </TouchableOpacity>
   );
@@ -69,20 +70,7 @@ class ContactsScreen extends React.Component {
             {
               text: "Okay",
               onPress: () => {
-                this.props.unreject(itemData.item).then(() => {
-                  this.setState({
-                    rejected: this.props.rejectedContacts,
-                    pending: this.state.contacts.filter(
-                      (item) =>
-                        this.state.accepted.findIndex(
-                          (contact) => contact.id === item.id
-                        ) === -1 &&
-                        this.props.rejectedContacts.findIndex(
-                          (contact) => contact.id === item.id
-                        ) === -1
-                    ),
-                  });
-                });
+                this.props.unreject(itemData.item);
               },
             },
             {
@@ -168,7 +156,7 @@ class ContactsScreen extends React.Component {
                 : rejected
                 ? this.props.rejected
                 : pending
-                ? this.props.contacts
+                ? this.props.pending
                 : null
             }
             renderItem={

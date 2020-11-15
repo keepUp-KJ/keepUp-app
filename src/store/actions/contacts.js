@@ -24,7 +24,7 @@ export const syncContacts = () => async (dispatch) => {
 };
 
 export const acceptContact = (userId, contact) => async (dispatch) => {
-  fetch("http://localhost:3000/contacts", {
+  fetch("http://192.168.1.10:3000/contacts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
