@@ -9,17 +9,18 @@ import { connect } from "react-redux";
 import { getSettings } from "../store/actions/settings";
 import { signout } from "../store/actions/users";
 
+const mapStateToProps = (state) => ({
+  settings: state.settings.settings,
+  user: state.users.user,
+});
+
 class SettingsScreen extends React.Component {
   state = {
-    settings: [],
+    settings: this.props.settings,
   };
 
   componentDidMount() {
-    this.props.get().then(() => {
-      this.setState({
-        settings: this.props.settings,
-      });
-    });
+    this.props.getSettings(this.props.user._id);
   }
 
   render() {
@@ -29,12 +30,12 @@ class SettingsScreen extends React.Component {
         value: "On the same day",
       },
       {
-        label: "1 day before",
-        value: "1 day before",
+        label: "One day before",
+        value: "One day before",
       },
       {
-        label: "1 week before",
-        value: "1 week before",
+        label: "One week before",
+        value: "One week before",
       },
       {
         label: "None",
@@ -43,16 +44,16 @@ class SettingsScreen extends React.Component {
     ];
     let incompleteOptions = [
       {
-        label: "1 day after",
-        value: "1",
+        label: "One day after",
+        value: "One day after",
       },
       {
-        label: "1 week after",
-        value: "2",
+        label: "One week after",
+        value: "One week after",
       },
       {
         label: "None",
-        value: "3",
+        value: "None",
       },
     ];
 
@@ -89,11 +90,11 @@ class SettingsScreen extends React.Component {
             dropdown
             dropdownItems={options}
             zIndex={3}
-            value={this.state.settings.birthday_reminder}
+            value={this.props.settings.birthdayReminder}
             onChangeItem={(item) => {
               this.setState({
                 settings: {
-                  birthday_notif: item.value,
+                  birthdayReminder: item.value,
                 },
               });
             }}
@@ -103,11 +104,11 @@ class SettingsScreen extends React.Component {
             dropdown
             dropdownItems={options}
             zIndex={2}
-            value={this.state.settings.calls_reminder}
+            value={this.props.settings.callReminder}
             onChangeItem={(item) => {
               this.setState({
                 settings: {
-                  daily_call_notif: item.value,
+                  callReminder: item.value,
                 },
               });
             }}
@@ -117,11 +118,11 @@ class SettingsScreen extends React.Component {
             dropdown
             dropdownItems={incompleteOptions}
             zIndex={1}
-            value={this.state.settings.incomplete_task_reminder}
+            value={this.props.settings.incompleteTaskReminder}
             onChangeItem={(item) => {
               this.setState({
                 settings: {
-                  incomplete_task_reminder: item.value,
+                  incompleteTaskReminder: item.value,
                 },
               });
             }}
@@ -134,12 +135,13 @@ class SettingsScreen extends React.Component {
           <SettingsItem
             text="Birthday Notifications"
             switch
-            value={this.state.settings.birthday_notif}
+            value={this.props.settings.birthdayNotification}
             onValueChange={() => {
               this.setState({
                 settings: {
                   ...this.state.settings,
-                  birthday_notif: !this.state.settings.birthday_notif,
+                  birthdayNotification: !this.state.settings
+                    .birthdayNotification,
                 },
               });
             }}
@@ -147,12 +149,13 @@ class SettingsScreen extends React.Component {
           <SettingsItem
             text="Daily calls Notifications"
             switch
-            value={this.state.settings.daily_call_notif}
+            value={this.props.settings.dailyCallNotification}
             onValueChange={() => {
               this.setState({
                 settings: {
                   ...this.state.settings,
-                  daily_call_notif: !this.state.settings.daily_call_notif,
+                  dailyCallNotification: !this.state.settings
+                    .dailyCallNotification,
                 },
               });
             }}
@@ -160,13 +163,13 @@ class SettingsScreen extends React.Component {
           <SettingsItem
             text="Incomplete task Notifications"
             switch
-            value={this.state.settings.incomplete_task_notif}
+            value={this.props.settings.incompleteTaskNotification}
             onValueChange={() => {
               this.setState({
                 settings: {
                   ...this.state.settings,
-                  incomplete_task_notif: !this.state.settings
-                    .incomplete_task_notif,
+                  incompleteTaskNotification: !this.state.settings
+                    .incompleteTaskNotification,
                 },
               });
             }}
@@ -238,12 +241,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => ({
-  settings: state.settings.settings,
-});
-
 const mapDispatchToProps = {
-  get: getSettings,
+  getSettings,
   signout,
 };
 
