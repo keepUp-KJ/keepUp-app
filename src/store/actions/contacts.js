@@ -4,6 +4,7 @@ export const SYNC_CONTACTS = "SYNC_CONTACTS";
 export const SET_CONTACTS = "SET_CONTACTS";
 
 import * as Contacts from "expo-contacts";
+import { AsyncStorage } from "react-native";
 
 export const syncContacts = () => async (dispatch) => {
   const { status } = await Contacts.requestPermissionsAsync();
@@ -24,7 +25,40 @@ export const syncContacts = () => async (dispatch) => {
 };
 
 export const acceptContact = (userId, contact) => async (dispatch) => {
-  fetch("http://192.168.1.10:3000/contacts", {
+  const contacts = await AsyncStorage.getItem("@KeepUp:AcceptedContacts");
+  if (contacts !== null) {
+    const obj = JSON.parse(contacts);
+    obj.contacts.push({
+      userId,
+      contactId: contact.id,
+      firstName: contact.firstName,
+      lastName: contact.lastName,
+      mobile: contact.phoneNumbers[0].number,
+      status: "Accepted",
+      frequency: "Daily",
+      relation: "Friend",
+    });
+  } else {
+    AsyncStorage.setItem(
+      "@KeepUp:AcceptedContacts",
+      JSON.stringify({
+        contacts: [
+          {
+            userId,
+            contactId: contact.id,
+            firstName: contact.firstName,
+            lastName: contact.lastName,
+            mobile: contact.phoneNumbers[0].number,
+            status: "Accepted",
+            frequency: "Daily",
+            relation: "Friend",
+          },
+        ],
+      })
+    );
+  }
+
+  fetch("http://localhost:3000/contacts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -49,6 +83,35 @@ export const acceptContact = (userId, contact) => async (dispatch) => {
 };
 
 export const rejectContact = (userId, contact) => async (dispatch) => {
+  const contacts = await AsyncStorage.getItem("@KeepUp:RejectedContacts");
+  if (contacts !== null) {
+    const obj = JSON.parse(contacts);
+    obj.contacts.push({
+      userId,
+      contactId: contact.id,
+      firstName: contact.firstName,
+      lastName: contact.lastName,
+      mobile: contact.phoneNumbers[0].number,
+      status: "Rejected",
+    });
+  } else {
+    AsyncStorage.setItem(
+      "@KeepUp:RejectedContacts",
+      JSON.stringify({
+        contacts: [
+          {
+            userId,
+            contactId: contact.id,
+            firstName: contact.firstName,
+            lastName: contact.lastName,
+            mobile: contact.phoneNumbers[0].number,
+            status: "Rejected",
+          },
+        ],
+      })
+    );
+  }
+
   fetch("http://localhost:3000/contacts", {
     method: "POST",
     headers: {

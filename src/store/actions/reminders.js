@@ -45,3 +45,5 @@ export const addReminder = (date, contact, occasion, notify) => async (
       }
     });
 };
+
+export const generateReminders = (contacts) => async (dispatch) => {};
