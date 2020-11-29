@@ -12,55 +12,18 @@ import Btn from "../components/Btn";
 import Input from "../components/Input";
 import { Ionicons } from "@expo/vector-icons";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
+import { connect } from "react-redux";
+import { forgotPassword, renewPassword } from "../store/actions/users";
+
+const mapStateToProps = (state) => ({
+  confirm: state.users.confirm,
+});
 
 class ForgotPasswordScreen extends React.Component {
   state = {
-    email: "johndoe@gmail.com",
+    email: "",
     error: "",
-    confirm: false,
-    code: "1234",
-  };
-
-  confirmHandler = (email) => {
-    fetch("https://keep-up-mock.herokuapp.com/api/users/forgot-password", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-      }),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.response) {
-          this.setState({ confirm: true, error: "" });
-        } else {
-          this.setState({ error: json.error });
-        }
-      });
-  };
-
-  verifyHandler = (code) => {
-    fetch("https://keep-up-mock.herokuapp.com/api/users/verify-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        code,
-      }),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        this.setState({ loading: false });
-        console.log(json);
-        if (json.response) {
-          this.props.navigation.navigate("RenewPassword");
-        } else {
-          this.setState({ error: json.error });
-        }
-      });
+    code: "",
   };
 
   render() {
@@ -89,7 +52,7 @@ class ForgotPasswordScreen extends React.Component {
           <View style={{ ...styles.container, flex: 0.2 }}>
             <Text style={styles.title}>FORGOT YOUR PASSWORD?</Text>
             <Text style={styles.body}>
-              {this.state.confirm
+              {this.props.confirm
                 ? `An email was sent to ${this.state.email} with the instructions. Enter the code sent to your inbox to proceed with the password renewal for your account.`
                 : "Confirm your email and we'll send the instructions"}
             </Text>
@@ -99,11 +62,11 @@ class ForgotPasswordScreen extends React.Component {
           <View style={{ ...styles.container, flex: 0.05, paddingBottom: 30 }}>
             <View
               style={{
-                width: this.state.confirm ? "50%" : "80%",
+                width: this.props.confirm ? "50%" : "80%",
                 alignItem: "center",
               }}
             >
-              {this.state.confirm ? (
+              {this.props.confirm ? (
                 <View>
                   <OTPInputView
                     style={{ marginTop: 10 }}
@@ -125,6 +88,7 @@ class ForgotPasswordScreen extends React.Component {
                   value={this.state.email}
                   onChangeText={(email) => this.setState({ email })}
                   error={this.state.error}
+                  autoCapitalize="none"
                 />
               )}
             </View>
@@ -139,9 +103,9 @@ class ForgotPasswordScreen extends React.Component {
                 fontSize={14}
                 bold
                 onPress={() => {
-                  !this.state.confirm
-                    ? this.confirmHandler(this.state.email)
-                    : this.verifyHandler(this.state.code);
+                  !this.props.confirm
+                    ? this.props.forgot(this.state.email)
+                    : this.props.renew(this.state.code);
                 }}
               />
             </View>
@@ -195,4 +159,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForgotPasswordScreen;
+const mapDispatchToProps = {
+  forgot: forgotPassword,
+  renew: renewPassword,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ForgotPasswordScreen);

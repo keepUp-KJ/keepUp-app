@@ -6,6 +6,7 @@ export const LOGIN_ERROR = "LOGIN_ERROR";
 export const HIDE_ERROR = "HIDE_ERROR";
 export const HIDE_LOGIN_ERROR = "HIDE_LOGIN_ERROR";
 export const SIGNOUT = "SIGNOUT";
+export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
 
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
@@ -179,3 +180,25 @@ export const signout = () => async (dispatch) => {
     type: SIGNOUT,
   });
 };
+
+export const forgotPassword = (email) => async (dispatch) => {
+  fetch("http://localhost:3000/users/forgot-password", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+    }),
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.response) {
+        dispatch({
+          type: FORGOT_PASSWORD,
+        });
+      }
+    });
+};
+
+export const renewPassword = () => async (dispatch) => {};
