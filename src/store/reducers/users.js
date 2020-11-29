@@ -7,6 +7,7 @@ import {
   HIDE_LOGIN_ERROR,
   SIGNOUT,
   FORGOT_PASSWORD,
+  RESET,
 } from "../actions/users";
 
 const initialState = {
@@ -71,6 +72,10 @@ const usersReducer = (state = initialState, action) => {
       return {
         ...state,
         confirm: true,
+      };
+    case RESET:
+      return {
+        confirm: false,
       };
     default:
       return state;

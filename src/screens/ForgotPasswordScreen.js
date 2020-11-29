@@ -13,7 +13,7 @@ import Input from "../components/Input";
 import { Ionicons } from "@expo/vector-icons";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import { connect } from "react-redux";
-import { forgotPassword, renewPassword } from "../store/actions/users";
+import { forgotPassword, verifyEmail } from "../store/actions/users";
 
 const mapStateToProps = (state) => ({
   confirm: state.users.confirm,
@@ -75,7 +75,7 @@ class ForgotPasswordScreen extends React.Component {
                     autoFocusOnLoad
                     codeInputFieldStyle={styles.underlineStyleBase}
                     codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                    onCodeFilled={(code) => {
+                    onCodeChanged={(code) => {
                       this.setState({ code });
                     }}
                   />
@@ -105,7 +105,13 @@ class ForgotPasswordScreen extends React.Component {
                 onPress={() => {
                   !this.props.confirm
                     ? this.props.forgot(this.state.email)
-                    : this.props.renew(this.state.code);
+                    : this.props
+                        .verify(this.state.email, this.state.code)
+                        .then(() => {
+                          this.props.navigation.navigate("RenewPassword", {
+                            email: this.state.email,
+                          });
+                        });
                 }}
               />
             </View>
@@ -161,7 +167,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = {
   forgot: forgotPassword,
-  renew: renewPassword,
+  verify: verifyEmail,
 };
 
 export default connect(

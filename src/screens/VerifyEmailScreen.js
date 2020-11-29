@@ -82,7 +82,11 @@ class VerifyEmailScreen extends React.Component {
                 fontSize={12}
                 bold
                 onPress={() =>
-                  this.props.verify(this.props.user.email, this.state.code)
+                  this.props
+                    .verify(this.props.user.email, this.state.code)
+                    .then(() => {
+                      this.props.navigation.navigate("PickContacts");
+                    })
                 }
               />
             </View>

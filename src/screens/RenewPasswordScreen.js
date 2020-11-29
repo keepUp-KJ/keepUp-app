@@ -11,10 +11,18 @@ import {
 import Colors from "../constants/Colors";
 import Btn from "../components/Btn";
 import Input from "../components/Input";
-import { Ionicons } from "@expo/vector-icons";
+import { connect } from "react-redux";
+import { renewPassword } from "../store/actions/users";
 
 class RenewPasswordScreen extends React.Component {
+  state = {
+    password: "",
+    confPassword: "",
+  };
+
   render() {
+    const email = this.props.navigation.getParam("email");
+
     return (
       <TouchableWithoutFeedback
         onPress={() => {
@@ -52,13 +60,28 @@ class RenewPasswordScreen extends React.Component {
           {/* Input */}
           <View style={{ ...styles.container, flex: 0.15, paddingBottom: 30 }}>
             <View style={{ ...styles.input, width: "80%" }}>
-              <Input placeholder="Password" style={{ ...styles.input }} />
+              <Input
+                placeholder="Password"
+                secureTextEntry
+                style={{ ...styles.input }}
+                value={this.state.password}
+                autoCorrect={false}
+                onChangeText={(password) => {
+                  this.setState({ password });
+                }}
+              />
             </View>
 
             <View style={{ ...styles.input, width: "80%" }}>
               <Input
+                autoCorrect={false}
                 placeholder="Confirm Password"
+                secureTextEntry
                 style={{ ...styles.input }}
+                value={this.state.confPassword}
+                onChangeText={(confPassword) => {
+                  this.setState({ confPassword });
+                }}
               />
             </View>
           </View>
@@ -72,7 +95,11 @@ class RenewPasswordScreen extends React.Component {
                 fontSize={14}
                 bold
                 onPress={() => {
-                  this.props.navigation.navigate("Login");
+                  this.props.renew(
+                    email,
+                    this.state.password,
+                    this.state.confPassword
+                  );
                 }}
               />
             </View>
@@ -118,4 +145,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RenewPasswordScreen;
+const mapDispatchToProps = {
+  renew: renewPassword,
+};
+
+export default connect(null, mapDispatchToProps)(RenewPasswordScreen);

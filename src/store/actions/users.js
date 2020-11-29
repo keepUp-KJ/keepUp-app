@@ -1,6 +1,7 @@
 export const SIGNUP = "SIGNUP";
 export const LOGIN_WITH_GOOGLE = "LOGIN_WITH_GOOGLE";
 
+export const RESET = "RESET";
 export const ERROR = "ERROR";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 export const HIDE_ERROR = "HIDE_ERROR";
@@ -103,9 +104,70 @@ export const verifyEmail = (email, code) => async (dispatch) => {
           type: LOGIN_ERROR,
           error: json.error,
         });
-      else {
-        navigate("PickContacts");
+      dispatch({
+        type: RESET,
+      });
+    });
+};
+
+export const hideError = (error) => async (dispatch) => {
+  dispatch({
+    type: HIDE_ERROR,
+    payload: error,
+  });
+};
+
+export const hideLoginError = () => async (dispatch) => {
+  dispatch({
+    type: HIDE_LOGIN_ERROR,
+  });
+};
+
+export const signout = () => async (dispatch) => {
+  await AsyncStorage.removeItem("user");
+  navigate("Loading");
+  dispatch({
+    type: SIGNOUT,
+  });
+};
+
+export const forgotPassword = (email) => async (dispatch) => {
+  fetch("http://localhost:3000/users/forgot-password", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+    }),
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.response) {
+        dispatch({
+          type: FORGOT_PASSWORD,
+        });
       }
+    });
+};
+
+export const renewPassword = (email, password, confPassword) => async (
+  dispatch
+) => {
+  fetch(`http://localhost:3000/users/renew-password`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      password,
+      confPassword,
+    }),
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.response) navigate("Login");
     });
 };
 
@@ -159,46 +221,3 @@ export const loginWithFacebook = () => async (dispatch) => {
     alert(`Facebook Login Error: ${message}`);
   }
 };
-
-export const hideError = (error) => async (dispatch) => {
-  dispatch({
-    type: HIDE_ERROR,
-    payload: error,
-  });
-};
-
-export const hideLoginError = () => async (dispatch) => {
-  dispatch({
-    type: HIDE_LOGIN_ERROR,
-  });
-};
-
-export const signout = () => async (dispatch) => {
-  await AsyncStorage.removeItem("user");
-  navigate("Loading");
-  dispatch({
-    type: SIGNOUT,
-  });
-};
-
-export const forgotPassword = (email) => async (dispatch) => {
-  fetch("http://localhost:3000/users/forgot-password", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email,
-    }),
-  })
-    .then((res) => res.json())
-    .then((json) => {
-      if (json.response) {
-        dispatch({
-          type: FORGOT_PASSWORD,
-        });
-      }
-    });
-};
-
-export const renewPassword = () => async (dispatch) => {};
