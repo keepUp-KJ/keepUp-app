@@ -38,7 +38,7 @@ export const login = (email, password) => async (dispatch) => {
           payload: json.user,
         });
         AsyncStorage.setItem("user", JSON.stringify(json.user));
-        navigate("PickContacts");
+        navigate("Home");
       }
     });
 };
