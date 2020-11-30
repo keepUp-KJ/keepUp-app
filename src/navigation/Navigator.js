@@ -31,7 +31,7 @@ const Navigator = createSwitchNavigator(
     Calendar: CalendarScreen,
   },
   {
-    initialRouteName: "Loading",
+    // initialRouteName: "Se",
   }
 );
 

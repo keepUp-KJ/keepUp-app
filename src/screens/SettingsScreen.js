@@ -6,7 +6,7 @@ import SettingsItem from "../components/SettingsItem";
 import Btn from "../components/Btn";
 import { Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
-import { getSettings } from "../store/actions/settings";
+import { getSettings, updateSettings } from "../store/actions/settings";
 import { signout } from "../store/actions/users";
 
 const mapStateToProps = (state) => ({
@@ -16,13 +16,15 @@ const mapStateToProps = (state) => ({
 
 class SettingsScreen extends React.Component {
   state = {
-    settings: this.props.settings,
+    settings: {},
   };
 
   componentDidMount() {
     this.props.getSettings(this.props.user._id);
   }
-
+  shouldComponentUpdate() {
+    return true;
+  }
   render() {
     let options = [
       {
@@ -74,6 +76,10 @@ class SettingsScreen extends React.Component {
                   size={30}
                   color={Colors.secondary}
                   onPress={() => {
+                    this.props.updateSettings(
+                      this.props.user._id,
+                      this.state.settings
+                    );
                     this.props.navigation.navigate("Home");
                   }}
                 />
@@ -90,10 +96,11 @@ class SettingsScreen extends React.Component {
             dropdown
             dropdownItems={options}
             zIndex={3}
-            value={this.props.settings.birthdayReminder}
+            value={this.state.settings.birthdayReminder}
             onChangeItem={(item) => {
               this.setState({
                 settings: {
+                  ...this.state.settings,
                   birthdayReminder: item.value,
                 },
               });
@@ -104,10 +111,11 @@ class SettingsScreen extends React.Component {
             dropdown
             dropdownItems={options}
             zIndex={2}
-            value={this.props.settings.callReminder}
+            value={this.state.settings.callReminder}
             onChangeItem={(item) => {
               this.setState({
                 settings: {
+                  ...this.state.settings,
                   callReminder: item.value,
                 },
               });
@@ -118,10 +126,11 @@ class SettingsScreen extends React.Component {
             dropdown
             dropdownItems={incompleteOptions}
             zIndex={1}
-            value={this.props.settings.incompleteTaskReminder}
+            value={this.state.settings.incompleteTaskReminder}
             onChangeItem={(item) => {
               this.setState({
                 settings: {
+                  ...this.state.settings,
                   incompleteTaskReminder: item.value,
                 },
               });
@@ -135,7 +144,7 @@ class SettingsScreen extends React.Component {
           <SettingsItem
             text="Birthday Notifications"
             switch
-            value={this.props.settings.birthdayNotification}
+            value={this.state.settings.birthdayNotification}
             onValueChange={() => {
               this.setState({
                 settings: {
@@ -149,7 +158,7 @@ class SettingsScreen extends React.Component {
           <SettingsItem
             text="Daily calls Notifications"
             switch
-            value={this.props.settings.dailyCallNotification}
+            value={this.state.settings.dailyCallNotification}
             onValueChange={() => {
               this.setState({
                 settings: {
@@ -163,7 +172,7 @@ class SettingsScreen extends React.Component {
           <SettingsItem
             text="Incomplete task Notifications"
             switch
-            value={this.props.settings.incompleteTaskNotification}
+            value={this.state.settings.incompleteTaskNotification}
             onValueChange={() => {
               this.setState({
                 settings: {
@@ -244,6 +253,7 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = {
   getSettings,
   signout,
+  updateSettings,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);
