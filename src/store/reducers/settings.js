@@ -1,7 +1,7 @@
 import { GET_SETTINGS, UPDATE_SETTINGS } from "../actions/settings";
 
 const initialState = {
-  settings: [],
+  settings: {},
 };
 
 const settingsReducer = (state = initialState, action) => {
@@ -13,8 +13,10 @@ const settingsReducer = (state = initialState, action) => {
     }
     case UPDATE_SETTINGS:
       return {
+        ...state,
         settings: action.settings,
       };
+
     default:
       return state;
   }

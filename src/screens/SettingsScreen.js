@@ -9,22 +9,36 @@ import { connect } from "react-redux";
 import { getSettings, updateSettings } from "../store/actions/settings";
 import { signout } from "../store/actions/users";
 
-const mapStateToProps = (state) => ({
-  settings: state.settings.settings,
-  user: state.users.user,
-});
-
 class SettingsScreen extends React.Component {
   state = {
-    settings: {},
+    settings: {
+      birthdayReminder: "None",
+      callReminder: "None",
+      incompleteTaskReminder: "None",
+      birthdayNotification: true,
+      dailyCallNotification: true,
+      incompleteTaskNotification: true,
+    },
   };
 
   componentDidMount() {
-    this.props.getSettings(this.props.user._id);
+    this.props.getSettings(this.props.user._id).then(() => {
+      this.setState({
+        settings: {
+          ...this.state.settings,
+          birthdayReminder: this.props.settings.birthdayReminder,
+          callReminder: this.props.settings.callReminder,
+          incompleteTaskReminder: this.props.settings.incompleteTaskReminder,
+        },
+      });
+    });
   }
-  shouldComponentUpdate() {
-    return true;
+
+  componentWillUnmount() {
+    console.log("Updated settings");
+    this.props.updateSettings(this.props.user._id, this.state.settings);
   }
+
   render() {
     let options = [
       {
@@ -76,10 +90,6 @@ class SettingsScreen extends React.Component {
                   size={30}
                   color={Colors.secondary}
                   onPress={() => {
-                    this.props.updateSettings(
-                      this.props.user._id,
-                      this.state.settings
-                    );
                     this.props.navigation.navigate("Home");
                   }}
                 />
@@ -184,7 +194,7 @@ class SettingsScreen extends React.Component {
             }}
           />
         </View>
-        {/* Footer */}
+
         <View style={styles.footerContainer}>
           <View style={{ width: "40%" }}>
             <Btn
@@ -248,6 +258,11 @@ const styles = StyleSheet.create({
     flex: 0.2,
     marginTop: 20,
   },
+});
+
+const mapStateToProps = (state) => ({
+  settings: state.settings.settings,
+  user: state.users.user,
 });
 
 const mapDispatchToProps = {
