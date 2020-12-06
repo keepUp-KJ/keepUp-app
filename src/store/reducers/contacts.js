@@ -27,6 +27,8 @@ const contactsReducer = (state = initialState, action) => {
     case SYNC_CONTACTS:
       return {
         contacts: action.payload,
+        acceptedContacts: [],
+        rejectedContacts: [],
       };
 
     case SET_CONTACTS:
