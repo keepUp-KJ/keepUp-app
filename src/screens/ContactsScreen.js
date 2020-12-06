@@ -24,14 +24,6 @@ import {
   syncContacts,
 } from "../store/actions/contacts";
 
-const mapStateToProps = (state) => ({
-  user: state.users.user,
-  contacts: state.contacts.contacts,
-  accepted: state.contacts.accepted,
-  rejected: state.contacts.rejected,
-  pending: state.contacts.pending,
-});
-
 class ContactsScreen extends React.Component {
   state = {
     searchInput: "",
@@ -221,6 +213,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingHorizontal: 5,
   },
+});
+
+const mapStateToProps = (state) => ({
+  user: state.users.user,
+  contacts: state.contacts.contacts,
+  accepted: state.contacts.acceptedContacts,
+  rejected: state.contacts.rejectedContacts,
+  pending: state.contacts.pendingContacts,
 });
 
 const mapDispatchToProps = {

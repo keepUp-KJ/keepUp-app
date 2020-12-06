@@ -6,13 +6,10 @@ import {
 } from "../actions/contacts.js";
 
 const initialState = {
-  user: {},
-  contacts: [],
-  acceptedContacts: [],
-  rejectedContacts: [],
-  accepted: [],
-  rejected: [],
-  pending: [],
+  contacts: [], //Contacts synced from the device
+  acceptedContacts: [], //Accepted Contacts in PickContacts screen
+  rejectedContacts: [], //Rejected Contacts in PickContacts screen
+  pendingContacts: [],
 };
 
 const contactsReducer = (state = initialState, action) => {
@@ -29,24 +26,23 @@ const contactsReducer = (state = initialState, action) => {
       };
     case SYNC_CONTACTS:
       return {
-        acceptedContacts: [],
-        rejectedContacts: [],
         contacts: action.payload,
       };
+
     case SET_CONTACTS:
       return {
-        ...state,
-        accepted: action.payload.filter(
+        acceptedContacts: action.payload.filter(
           (contact) => contact.status === "Accepted"
         ),
-        rejected: action.payload.filter(
+        rejectedContacts: action.payload.filter(
           (contact) => contact.status === "Rejected"
         ),
-        pending: state.contacts.filter(
+        pendingContacts: state.contacts.filter(
           (contact) =>
             !action.payload.find((item) => item.contactId === contact.id)
         ),
       };
+
     default:
       return state;
   }

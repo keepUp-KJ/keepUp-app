@@ -20,7 +20,6 @@ class SignupScreen extends React.Component {
     password: "",
     confPassword: "",
     loading: false,
-    errors: {},
   };
 
   componentDidMount() {
@@ -115,7 +114,6 @@ class SignupScreen extends React.Component {
                     )
                     .then(() => {
                       this.setState({
-                        errors: this.props.errors,
                         loading: false,
                       });
                     });

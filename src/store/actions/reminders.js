@@ -52,7 +52,7 @@ export const generateReminders = (contacts) => async (dispatch) => {
   contacts.map((contact) => {
     const reminder = {
       start: moment().format("DD-MMM-YYYY"),
-      text: `Call ${contact}`,
+      text: `Call ${contact.firstName + " " + contact.lastName}`,
       frequency: contact.frequency,
       completed: false,
     };
@@ -60,9 +60,5 @@ export const generateReminders = (contacts) => async (dispatch) => {
       `@KeepUp:Contacts/${contact._id}`,
       JSON.stringify({ reminder })
     );
-    dispatch({
-      type: SET_REMINDERS,
-      reminder,
-    });
   });
 };

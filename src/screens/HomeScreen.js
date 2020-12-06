@@ -45,9 +45,7 @@ class HomeScreen extends React.Component {
             ListEmptyComponent={this.renderEmpty}
             showsVerticalScrollIndicator={false}
             data={this.props.reminders}
-            renderItem={(itemData) => (
-              <Task reminder={itemData.item.reminder} />
-            )}
+            renderItem={(itemData) => <Task reminder={itemData.item.text} />}
             keyExtractor={(item) => item.contact}
           />
         </View>

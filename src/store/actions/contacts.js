@@ -134,15 +134,15 @@ export const rejectContact = (userId, contact) => async (dispatch) => {
     });
 };
 
-export const getContactDecisions = (userId) => async (dispatch) => {
-  fetch("http://localhost:3000/contacts", {
+export const getContactDecisions = (id) => async (dispatch) => {
+  fetch(`http://localhost:3000/users/${id}/contacts`, {
     method: "GET",
   })
     .then((res) => res.json())
     .then((json) => {
       dispatch({
         type: SET_CONTACTS,
-        payload: json.contacts.filter((contact) => contact.userId === userId),
+        payload: json.contacts,
       });
     });
 };

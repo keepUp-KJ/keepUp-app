@@ -20,13 +20,6 @@ import {
   syncContacts,
 } from "../store/actions/contacts";
 
-const mapStateToProps = (state) => ({
-  user: state.users.user,
-  contacts: state.contacts.contacts,
-  acceptedContacts: state.contacts.acceptedContacts,
-  rejectedContacts: state.contacts.rejectedContacts,
-});
-
 class PickContactsScreen extends React.Component {
   state = {
     filteredContacts: [],
@@ -176,6 +169,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "700",
   },
+});
+
+const mapStateToProps = (state) => ({
+  user: state.users.user,
+  contacts: state.contacts.contacts,
+  acceptedContacts: state.contacts.acceptedContacts,
+  rejectedContacts: state.contacts.rejectedContacts,
 });
 
 const mapDispatchToProps = {

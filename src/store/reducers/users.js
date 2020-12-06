@@ -12,7 +12,6 @@ import {
 
 const initialState = {
   user: {},
-  token: "",
   errors: {},
   loginError: "",
   confirm: false,
