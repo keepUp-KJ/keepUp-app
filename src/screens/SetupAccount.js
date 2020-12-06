@@ -1,17 +1,20 @@
 import React from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 import { connect } from "react-redux";
-import { getReminders } from "../store/actions/reminders";
+import { generateReminders } from "../store/actions/reminders";
 
 class SetupAccount extends React.Component {
+  state = { loading: true };
+
   componentDidMount() {
-    this.props.get().then(() => {
+    this.props.generate(this.props.contacts).then(() => {
+      this.setState({ loading: false });
       this.props.navigation.navigate("Home");
     });
   }
 
   render() {
-    return (
+    return this.props.loading ? (
       <View style={styles.screen}>
         <Image
           source={require("../../assets/giphy-2.gif")}
@@ -19,7 +22,7 @@ class SetupAccount extends React.Component {
         />
         <Text style={styles.text}>Setting Up Your Account</Text>
       </View>
-    );
+    ) : null;
   }
 }
 const styles = StyleSheet.create({
@@ -37,8 +40,12 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = (state) => ({
+  contacts: state.contacts.acceptedContacts,
+});
+
 const mapDispatchToProps = {
-  get: getReminders,
+  generate: generateReminders,
 };
 
-export default connect(null, mapDispatchToProps)(SetupAccount);
+export default connect(mapStateToProps, mapDispatchToProps)(SetupAccount);

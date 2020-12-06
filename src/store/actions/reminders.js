@@ -1,7 +1,9 @@
 export const SET_REMINDERS = "SET_REMINDERS";
 export const CREATE_REMINDER = "CREATE_REMINDER";
 
+import { AsyncStorage } from "react-native";
 import { navigate } from "../../navigation/navigationRef";
+import moment from "moment";
 
 export const getReminders = () => async (dispatch) => {
   fetch("https://keep-up-mock.herokuapp.com/api/reminders", {
@@ -46,4 +48,21 @@ export const addReminder = (date, contact, occasion, notify) => async (
     });
 };
 
-export const generateReminders = (contacts) => async (dispatch) => {};
+export const generateReminders = (contacts) => async (dispatch) => {
+  contacts.map((contact) => {
+    const reminder = {
+      start: moment().format("DD-MMM-YYYY"),
+      text: `Call ${contact}`,
+      frequency: contact.frequency,
+      completed: false,
+    };
+    AsyncStorage.setItem(
+      `@KeepUp:Contacts/${contact._id}`,
+      JSON.stringify({ reminder })
+    );
+    dispatch({
+      type: SET_REMINDERS,
+      reminder,
+    });
+  });
+};

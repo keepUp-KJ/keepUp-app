@@ -11,7 +11,6 @@ import { connect } from "react-redux";
 
 class HomeScreen extends React.Component {
   state = {
-    tasks: [],
     birthdays: [],
   };
 
@@ -45,12 +44,9 @@ class HomeScreen extends React.Component {
           <FlatList
             ListEmptyComponent={this.renderEmpty}
             showsVerticalScrollIndicator={false}
-            data={this.state.tasks}
+            data={this.props.reminders}
             renderItem={(itemData) => (
-              <Task
-                contact={itemData.item.contact}
-                occasion={itemData.item.occasion}
-              />
+              <Task reminder={itemData.item.reminder} />
             )}
             keyExtractor={(item) => item.contact}
           />
