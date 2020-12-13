@@ -14,6 +14,7 @@ export const getSettings = (id) => async (dispatch) => {
     });
 };
 export const updateSettings = (id, settings) => async (dispatch) => {
+  console.log(settings);
   fetch(`http://localhost:3000/users/${id}/settings`, {
     method: "PATCH",
     body: JSON.stringify({

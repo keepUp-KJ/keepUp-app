@@ -11,26 +11,24 @@ import { signout } from "../store/actions/users";
 
 class SettingsScreen extends React.Component {
   state = {
-    settings: {
-      birthdayReminder: "None",
-      callReminder: "None",
-      incompleteTaskReminder: "None",
-      birthdayNotification: true,
-      dailyCallNotification: true,
-      incompleteTaskNotification: true,
-    },
+    settings: {},
   };
 
   componentDidMount() {
     this.props.getSettings(this.props.user._id).then(() => {
-      this.setState({
-        settings: {
-          ...this.state.settings,
-          birthdayReminder: this.props.settings.birthdayReminder,
-          callReminder: this.props.settings.callReminder,
-          incompleteTaskReminder: this.props.settings.incompleteTaskReminder,
-        },
-      });
+      setTimeout(() => {
+        this.setState({
+          settings: {
+            birthdayReminder: this.props.settings.birthdayReminder,
+            callReminder: this.props.settings.callReminder,
+            incompleteTaskReminder: this.props.settings.incompleteTaskReminder,
+            birthdayNotification: this.props.settings.birthdayNotification,
+            dailyCallNotification: this.props.settings.dailyCallNotification,
+            incompleteTaskNotification: this.props.settings
+              .incompleteTaskNotification,
+          },
+        });
+      }, 200);
     });
   }
 
