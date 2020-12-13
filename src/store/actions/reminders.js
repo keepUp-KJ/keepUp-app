@@ -5,17 +5,26 @@ import { AsyncStorage } from "react-native";
 import { navigate } from "../../navigation/navigationRef";
 import moment from "moment";
 
-export const getReminders = () => async (dispatch) => {
-  fetch("https://keep-up-mock.herokuapp.com/api/reminders", {
-    method: "GET",
-  })
-    .then((res) => res.json())
-    .then((json) => {
+export const getReminders = (userId) => async (dispatch) => {
+  await AsyncStorage.getItem(
+    `@KeepUp:${userId}/ContactReminders`,
+    (err, result) => {
       dispatch({
         type: SET_REMINDERS,
-        reminders: json.reminders,
+        reminders: JSON.parse(result),
       });
-    });
+    }
+  );
+  // fetch("https://keep-up-mock.herokuapp.com/api/reminders", {
+  //   method: "GET",
+  // })
+  //   .then((res) => res.json())
+  //   .then((json) => {
+  //     dispatch({
+  //       type: SET_REMINDERS,
+  //       reminders: json.reminders,
+  //     });
+  //   });
 };
 
 export const addReminder = (date, contact, occasion, notify) => async (
@@ -48,17 +57,20 @@ export const addReminder = (date, contact, occasion, notify) => async (
     });
 };
 
-export const generateReminders = (contacts) => async (dispatch) => {
+export const generateReminders = (contacts, userId) => async (dispatch) => {
+  const contactReminders = [];
   contacts.map((contact) => {
     const reminder = {
       start: moment().format("DD-MMM-YYYY"),
+      contactId: contact.id,
       text: `Call ${contact.firstName + " " + contact.lastName}`,
       frequency: contact.frequency,
       completed: false,
     };
-    AsyncStorage.setItem(
-      `@KeepUp:Contacts/${contact._id}`,
-      JSON.stringify({ reminder })
-    );
+    contactReminders.push(reminder);
   });
+  AsyncStorage.setItem(
+    `@KeepUp:${userId}/ContactReminders`,
+    JSON.stringify(contactReminders)
+  );
 };

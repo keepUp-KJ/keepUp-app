@@ -7,9 +7,11 @@ class SetupAccount extends React.Component {
   state = { loading: true };
 
   componentDidMount() {
-    this.props.generate(this.props.contacts).then(() => {
+    const userId = this.props.navigation.getParam("userId");
+
+    this.props.generate(this.props.contacts, userId).then(() => {
       this.setState({ loading: false });
-      this.props.navigation.navigate("Home");
+      this.props.navigation.navigate("Home", { userId });
     });
   }
 
@@ -41,6 +43,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
+  user: state.users.user,
   contacts: state.contacts.acceptedContacts,
 });
 

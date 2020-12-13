@@ -8,6 +8,7 @@ const remindersReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_REMINDERS: {
       return {
+        ...state,
         reminders: action.reminders,
       };
     }

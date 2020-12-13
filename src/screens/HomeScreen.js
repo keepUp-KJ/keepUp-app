@@ -8,11 +8,17 @@ import IconButton from "../components/IconButton";
 import moment from "moment";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 import { connect } from "react-redux";
+import { getReminders } from "../store/actions/reminders";
 
 class HomeScreen extends React.Component {
   state = {
     birthdays: [],
   };
+
+  componentDidMount() {
+    // const userId = this.props.navigation.getParam("userId");
+    this.props.get(this.props.user._id);
+  }
 
   renderEmpty = () => (
     <View
@@ -40,13 +46,13 @@ class HomeScreen extends React.Component {
         </View>
 
         {/*DAILY TASKS */}
-        <View style={{ flex: 0.15 }}>
+        <View style={{ flex: 0.25 }}>
           <FlatList
             ListEmptyComponent={this.renderEmpty}
             showsVerticalScrollIndicator={false}
             data={this.props.reminders}
-            renderItem={(itemData) => <Task reminder={itemData.item.text} />}
-            keyExtractor={(item) => item.contact}
+            renderItem={(itemData) => <Task reminder={itemData.item} />}
+            keyExtractor={(item) => item.text}
           />
         </View>
 
@@ -54,7 +60,7 @@ class HomeScreen extends React.Component {
         <View style={styles.body}>
           <Text style={styles.bodyText}>UPCOMING BIRTHDAYS</Text>
           {/* BIRTHDAYS */}
-          <View style={{ width: "80%", justifyContent: "center", flex: 0.3 }}>
+          <View style={{ width: "80%", justifyContent: "center", flex: 0.5 }}>
             <FlatList
               data={this.state.birthdays}
               ListEmptyComponent={
@@ -84,7 +90,7 @@ class HomeScreen extends React.Component {
                 itemData.index < 2 ? (
                   <BirthdayReminder
                     date={itemData.item.date}
-                    contact={itemData.item.contact}
+                    contact={itemData.item}
                   />
                 ) : null
               }
@@ -92,7 +98,7 @@ class HomeScreen extends React.Component {
             />
           </View>
           {/* SHOW ALL BUTTON */}
-          <View style={{ ...styles.btn, width: "60%", flex: 0.3 }}>
+          <View style={{ ...styles.btn, width: "60%", flex: 0.1 }}>
             {this.state.birthdays.length < 3 ? null : (
               <Btn
                 title="Show all"
@@ -159,7 +165,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   head: {
-    flex: 0.14,
+    flex: 0.15,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -202,7 +208,12 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
+  user: state.users.user,
   reminders: state.reminders.reminders,
 });
 
-export default connect(mapStateToProps)(HomeScreen);
+const mapDispatchToProps = {
+  get: getReminders,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

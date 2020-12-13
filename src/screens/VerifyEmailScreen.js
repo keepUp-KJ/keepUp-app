@@ -85,7 +85,9 @@ class VerifyEmailScreen extends React.Component {
                   this.props
                     .verify(this.props.user.email, this.state.code)
                     .then(() => {
-                      this.props.navigation.navigate("PickContacts");
+                      this.props.navigation.navigate("PickContacts", {
+                        userId: this.props.user._id,
+                      });
                     })
                 }
               />

@@ -11,7 +11,7 @@ const Task = (props) => {
     <View style={styles.task}>
       <View style={{ ...styles.container, flex: 0.8 }}>
         <Octicons name="primitive-dot" size={20} color={Colors.secondary} />
-        <Text style={styles.taskText}>{props.reminder}</Text>
+        <Text style={styles.taskText}>{props.reminder.text}</Text>
       </View>
       <View
         style={{

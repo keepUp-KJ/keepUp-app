@@ -46,25 +46,9 @@ class PickContactsScreen extends React.Component {
       ]
     );
 
-  renderContact = (itemData) => (
-    <Contact
-      accepted={
-        this.props.acceptedContacts.findIndex(
-          (contact) => contact.id === itemData.item.id
-        ) >= 0
-      }
-      rejected={
-        this.props.rejectedContacts.findIndex(
-          (contact) => contact.id === itemData.item.id
-        ) >= 0
-      }
-      contact={itemData.item}
-      onAccept={() => this.props.accept(this.props.user._id, itemData.item)}
-      onReject={() => this.props.reject(this.props.user._id, itemData.item)}
-    />
-  );
-
   render() {
+    const userId = this.props.navigation.getParam("userId");
+
     const contacts = !this.state.input
       ? this.props.contacts.sort((a, b) => {
           if (a.firstName < b.firstName) return -1;
@@ -124,7 +108,33 @@ class PickContactsScreen extends React.Component {
             showsVerticalScrollIndicator={false}
             data={contacts}
             keyExtractor={(item) => item.id}
-            renderItem={this.renderContact}
+            renderItem={(itemData) => (
+              <Contact
+                accepted={
+                  this.props.acceptedContacts.findIndex(
+                    (contact) => contact.id === itemData.item.id
+                  ) >= 0
+                }
+                rejected={
+                  this.props.rejectedContacts.findIndex(
+                    (contact) => contact.id === itemData.item.id
+                  ) >= 0
+                }
+                contact={itemData.item}
+                onAccept={() =>
+                  this.props.accept(
+                    userId || this.props.user._id,
+                    itemData.item
+                  )
+                }
+                onReject={() =>
+                  this.props.reject(
+                    userId || this.props.user._id,
+                    itemData.item
+                  )
+                }
+              />
+            )}
             numColumns={3}
           />
         </View>
@@ -135,7 +145,7 @@ class PickContactsScreen extends React.Component {
               btnColor={Colors.primaryColor}
               style={{ position: "absolute", width: "50%", marginTop: -80 }}
               onPress={() => {
-                this.props.navigation.navigate("Setup");
+                this.props.navigation.navigate("Setup", { userId });
               }}
             />
           </View>
