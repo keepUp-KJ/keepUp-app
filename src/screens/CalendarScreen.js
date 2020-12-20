@@ -2,9 +2,9 @@ import React from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import Colors from "../constants/Colors";
 import Header from "../components/Header";
-import { Ionicons } from "@expo/vector-icons";
 import moment from "moment";
 import MainCalendar from "../components/MainCalendar";
+import TabNav from "../components/TabNav";
 
 class CalendarScreen extends React.Component {
   state = {
@@ -31,21 +31,8 @@ class CalendarScreen extends React.Component {
       <SafeAreaView style={styles.screen}>
         {/* Header */}
         <View style={styles.header}>
-          <Header
-            centerComponent={<Text style={styles.text}>CALENDAR</Text>}
-            leftComponent={
-              <Ionicons
-                name="md-arrow-back"
-                size={30}
-                color={Colors.secondary}
-                onPress={() => {
-                  this.props.navigation.navigate("Home");
-                }}
-              />
-            }
-          />
+          <Header centerComponent={<Text style={styles.text}>CALENDAR</Text>} />
         </View>
-
         <View style={styles.calendar}>
           {/* CALENDAR */}
           <MainCalendar
@@ -68,10 +55,11 @@ class CalendarScreen extends React.Component {
           />
 
           {/* DATE */}
-          <View style={{ marginTop: 15 }}>
-            <Text style={styles.date}>{this.state.date.toString()}</Text>
-          </View>
         </View>
+        <View style={{ flex: 0.3 }}>
+          <Text style={styles.date}>{this.state.date.toString()}</Text>
+        </View>
+        <TabNav active="calendar" />
       </SafeAreaView>
     );
   }
@@ -82,12 +70,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flex: 0.15,
+    flex: 0.07,
     justifyContent: "center",
-    paddingLeft: 15,
+  },
+  calendar: {
+    flex: 0.55,
   },
   text: {
-    fontSize: 24,
+    fontSize: 20,
     fontFamily: "Futura",
     color: Colors.primaryColor,
     textAlign: "center",

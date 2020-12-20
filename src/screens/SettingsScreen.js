@@ -3,12 +3,9 @@ import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import Colors from "../constants/Colors";
 import Header from "../components/Header";
 import SettingsItem from "../components/SettingsItem";
-import Btn from "../components/Btn";
-import { Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { getSettings, updateSettings } from "../store/actions/settings";
-import { signout } from "../store/actions/users";
-
+import TabNav from "../components/TabNav";
 class SettingsScreen extends React.Component {
   state = {
     settings: {},
@@ -33,7 +30,6 @@ class SettingsScreen extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log("Updated settings");
     this.props.updateSettings(this.props.user._id, this.state.settings);
   }
 
@@ -75,30 +71,12 @@ class SettingsScreen extends React.Component {
       <SafeAreaView style={styles.screen}>
         {/* back arrow */}
         <View style={styles.top}>
-          <Header
-            centerComponent={
-              <View>
-                <Text style={styles.text}>SETTINGS</Text>
-              </View>
-            }
-            leftComponent={
-              <View>
-                <Ionicons
-                  name="md-arrow-back"
-                  size={30}
-                  color={Colors.secondary}
-                  onPress={() => {
-                    this.props.navigation.navigate("Home");
-                  }}
-                />
-              </View>
-            }
-          />
+          <Header centerComponent={<Text style={styles.text}>SETTINGS</Text>} />
         </View>
-        <View style={{ ...styles.container, flex: 0.04 }}>
+        <View style={{ ...styles.container, flex: 0.05 }}>
           <Text style={styles.headerText}>REMINDER</Text>
         </View>
-        <View style={{ borderWidth: 0, marginBottom: 50, flex: 0.3 }}>
+        <View style={{ flex: 0.35 }}>
           <SettingsItem
             text="Birthday reminder"
             dropdown
@@ -144,11 +122,11 @@ class SettingsScreen extends React.Component {
               });
             }}
           />
-          <View style={{ ...styles.container, marginTop: 80 }}>
-            <Text style={styles.headerText}>NOTIFICATIONS</Text>
-          </View>
         </View>
-        <View style={{ flex: 0.35, justifyContent: "center" }}>
+        <View style={{ ...styles.container, flex: 0.05 }}>
+          <Text style={styles.headerText}>NOTIFICATIONS</Text>
+        </View>
+        <View style={{ flex: 0.4 }}>
           <SettingsItem
             text="Birthday Notifications"
             switch
@@ -192,21 +170,7 @@ class SettingsScreen extends React.Component {
             }}
           />
         </View>
-
-        <View style={styles.footerContainer}>
-          <View style={{ width: "40%" }}>
-            <Btn
-              title="Sign out"
-              btnColor={Colors.primaryColor}
-              fontSize={16}
-              loading={this.state.loading}
-              textColor="white"
-              onPress={() => {
-                this.props.signout();
-              }}
-            />
-          </View>
-        </View>
+        <TabNav active="settings" />
       </SafeAreaView>
     );
   }
@@ -217,26 +181,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   top: {
-    flex: 0.1,
+    flex: 0.07,
     justifyContent: "center",
-    paddingLeft: 15,
   },
   container: {
     justifyContent: "center",
     backgroundColor: Colors.secondary,
-    marginVertical: 20,
-    padding: 10,
     zIndex: 0,
   },
-  title: {
-    fontSize: 28,
-    textAlign: "center",
-    fontWeight: "700",
-    color: Colors.primaryColor,
-    fontFamily: "Futura",
-  },
   text: {
-    fontSize: 24,
+    fontSize: 20,
     fontFamily: "Futura",
     color: Colors.primaryColor,
     textAlign: "center",
@@ -250,12 +204,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     fontWeight: "700",
   },
-  footerContainer: {
-    alignItems: "center",
-    justifyContent: "flex-end",
-    flex: 0.2,
-    marginTop: 20,
-  },
 });
 
 const mapStateToProps = (state) => ({
@@ -265,7 +213,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getSettings,
-  signout,
   updateSettings,
 };
 

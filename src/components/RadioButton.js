@@ -27,15 +27,16 @@ const styles = StyleSheet.create({
     width: 28,
     borderRadius: 14,
     borderWidth: 1.5,
-    borderColor: Colors.secondary,
+    borderColor: Colors.primaryColor,
+    borderWidth: 3,
     justifyContent: "center",
     alignItems: "center",
   },
   checked: {
-    height: 20,
-    width: 20,
-    borderRadius: 10,
-    backgroundColor: Colors.secondary,
+    height: 18,
+    width: 18,
+    borderRadius: 9,
+    backgroundColor: Colors.primaryColor,
   },
 });
 

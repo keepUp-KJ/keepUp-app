@@ -35,7 +35,6 @@ const Menu = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.primaryColor,
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 20,
@@ -45,11 +44,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingVertical: 2,
-    borderColor: "white",
+    borderColor: Colors.secondary,
   },
   text: {
     fontFamily: "Futura",
-    color: "white",
+    color: Colors.secondary,
   },
 });
 

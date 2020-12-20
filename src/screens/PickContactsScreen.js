@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
+  Dimensions,
 } from "react-native";
 import Contact from "../components/Contact";
 import Colors from "../constants/Colors";
@@ -19,11 +20,14 @@ import {
   rejectContact,
   syncContacts,
 } from "../store/actions/contacts";
+import { Overlay } from "react-native-elements";
 
 class PickContactsScreen extends React.Component {
   state = {
     filteredContacts: [],
     input: "",
+    visible: false,
+    activeContact: {},
   };
 
   componentDidMount() {
@@ -61,6 +65,22 @@ class PickContactsScreen extends React.Component {
 
     return (
       <SafeAreaView style={styles.screen}>
+        {/* <Overlay
+          overlayStyle={styles.overlay}
+          isVisible={this.state.visible}
+          onBackdropPress={() => {
+            this.setState({ visible: false, activeContact: {} });
+          }}
+        >
+          <View>
+            <Text style={}>
+              {this.state.activeContact.firstName +
+                " " +
+                this.state.activeContact.lastName}
+            </Text>
+            <Text>Relation</Text>
+          </View>
+        </Overlay> */}
         {/* HEADER + SEARCH INPUT */}
         <View style={styles.container}>
           <Header
@@ -178,6 +198,12 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
     textAlign: "center",
     fontWeight: "700",
+  },
+  overlay: {
+    width: Dimensions.get("window").width / 1.2,
+    height: Dimensions.get("window").height / 5,
+    borderRadius: 35,
+    alignItems: "center",
   },
 });
 

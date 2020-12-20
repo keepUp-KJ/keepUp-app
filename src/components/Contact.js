@@ -37,7 +37,12 @@ const Contact = (props) => {
       />
 
       {contactPressed ? (
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View
+          style={{ flexDirection: "row", alignItems: "center" }}
+          onPress={() => {
+            setContactPressed(false);
+          }}
+        >
           <Ionicons
             name="ios-checkmark-circle"
             size={50}

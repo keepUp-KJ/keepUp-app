@@ -13,6 +13,7 @@ import Header from "../components/Header";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import Input from "../components/Input";
+import TabNav from "../components/TabNav";
 import Menu from "../components/Menu";
 import RejectedContact from "../components/RejectedContact";
 import { connect } from "react-redux";
@@ -91,21 +92,13 @@ class ContactsScreen extends React.Component {
           contact={this.state.activeContact}
           close={() => this.setState({ visible: false, contact: {} })}
         />
-        <View style={{ ...styles.headerContainer, flex: rejected ? 0.1 : 0.2 }}>
+        <View style={{ ...styles.headerContainer, flex: 0.07 }}>
           <Header
-            leftComponent={
-              <Ionicons
-                name="md-arrow-back"
-                size={30}
-                color={Colors.secondary}
-                onPress={() => {
-                  this.props.navigation.navigate("Home");
-                }}
-              />
-            }
             centerComponent={<Text style={styles.title}>CONTACTS</Text>}
           />
-          {rejected ? null : (
+        </View>
+        <View style={{ flex: 0.15 }}>
+          {/* {rejected ? null : (
             <View style={{ width: "85%" }}>
               <Input
                 placeholder="Search..."
@@ -130,12 +123,17 @@ class ContactsScreen extends React.Component {
                 }}
               />
             </View>
-          )}
+          )} */}
+          <Menu
+            active={this.state.activeTab}
+            onChange={(activeTab) => {
+              this.setState({ activeTab });
+            }}
+          />
         </View>
-
         <View
           style={{
-            flex: rejected ? 0.8 : 0.7,
+            flex: 0.7,
             alignItems: rejected ? null : "center",
           }}
         >
@@ -158,25 +156,7 @@ class ContactsScreen extends React.Component {
             keyExtractor={(item) => item.id}
           />
         </View>
-
-        <View style={{ flex: 0.1, justifyContent: "flex-end" }}>
-          <Menu
-            active={this.state.activeTab}
-            onChange={(activeTab) => {
-              this.setState({ activeTab });
-            }}
-          />
-        </View>
-        {Dimensions.get("window").height > 850 ? (
-          <View
-            style={{
-              backgroundColor: Colors.primaryColor,
-              marginBottom: 0,
-              padding: 10,
-              marginBottom: -40,
-            }}
-          />
-        ) : null}
+        <TabNav active="contacts" />
       </SafeAreaView>
     );
   }

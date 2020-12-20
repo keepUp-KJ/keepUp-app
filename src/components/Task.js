@@ -9,18 +9,16 @@ const Task = (props) => {
 
   return (
     <View style={styles.task}>
-      <View style={{ ...styles.container, flex: 0.8 }}>
-        <Octicons name="primitive-dot" size={20} color={Colors.secondary} />
+      <View style={{ ...styles.container, flex: 0.9 }}>
         <Text style={styles.taskText}>{props.reminder.text}</Text>
       </View>
       <View
         style={{
           ...styles.container,
-          flex: 0.2,
+          flex: 0.1,
           justifyContent: "space-between",
         }}
       >
-        <Entypo name="phone" size={28} color={Colors.primaryColor} />
         <RadioButton checked={checked} onPress={() => setChecked(!checked)} />
       </View>
     </View>
@@ -33,10 +31,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    padding: 20,
+    borderRadius: 15,
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+    elevation: 10,
+    marginVertical: 10,
   },
   taskText: {
     marginLeft: 10,
-    fontSize: 12,
+    fontSize: 16,
     color: Colors.secondary,
     fontFamily: "Futura",
   },

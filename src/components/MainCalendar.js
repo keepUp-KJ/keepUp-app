@@ -1,6 +1,6 @@
 import React from "react";
 import {} from "react-native";
-import { Calendar, CalendarList, Agenda } from "react-native-calendars";
+import { Calendar } from "react-native-calendars";
 import Colors from "../constants/Colors";
 
 const MainCalendar = (props) => {
@@ -9,9 +9,6 @@ const MainCalendar = (props) => {
       enableSwipeMonths={true}
       onDayPress={(day) => {
         props.onDayPress(day);
-      }}
-      style={{
-        height: 350,
       }}
       theme={{
         calendarBackground: "#ededed",
