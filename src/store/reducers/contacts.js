@@ -40,6 +40,7 @@ const contactsReducer = (state = initialState, action) => {
       };
     case SET_CONTACTS:
       return {
+        ...state,
         acceptedContacts: action.payload.filter(
           (contact) => contact.status === "Accepted"
         ),

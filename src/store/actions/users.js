@@ -57,7 +57,12 @@ export const signup = (email, password, confPassword) => async (dispatch) => {
   })
     .then((res) => res.json())
     .then((json) => {
-      if (json.user) {
+      if (json.errors) {
+        dispatch({
+          type: ERROR,
+          payload: json.errors,
+        });
+      } else {
         dispatch({
           type: SIGNUP,
           payload: json.user,
@@ -65,11 +70,6 @@ export const signup = (email, password, confPassword) => async (dispatch) => {
         AsyncStorage.setItem("user", JSON.stringify(json.user));
         navigate("VerifyEmail");
       }
-
-      dispatch({
-        type: ERROR,
-        payload: json.errors,
-      });
     });
 };
 

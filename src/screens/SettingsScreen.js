@@ -73,7 +73,9 @@ class SettingsScreen extends React.Component {
       <SafeAreaView style={styles.screen}>
         {/* back arrow */}
         <View style={styles.top}>
-          <Header centerComponent={<Text style={styles.text}>SETTINGS</Text>} />
+          <Header
+            centerComponent={<Text style={styles.title}>Settings</Text>}
+          />
         </View>
         <View style={{ ...styles.container, flex: 0.05 }}>
           <Text style={styles.headerText}>REMINDER</Text>
@@ -202,12 +204,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.secondary,
     zIndex: 0,
   },
-  text: {
-    fontSize: 20,
+  title: {
+    fontSize: 18,
     fontFamily: "Futura",
-    color: Colors.primaryColor,
-    textAlign: "center",
-    fontWeight: "700",
+    color: Colors.secondary,
   },
   headerText: {
     fontSize: 18,

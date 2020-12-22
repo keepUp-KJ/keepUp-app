@@ -2,17 +2,22 @@ import React from "react";
 import { ActivityIndicator } from "react-native";
 import { SafeAreaView, View, StyleSheet, Text } from "react-native";
 import { connect } from "react-redux";
-import { generateReminders } from "../store/actions/reminders";
+import { setupAccount } from "../store/actions/reminders";
 import Colors from "../constants/Colors";
 
 class SetupScreen extends React.Component {
   state = { loading: true };
 
   componentDidMount() {
-    this.props.generate(this.props.contacts).then(() => {
-      this.setState({ loading: false });
-      this.props.navigation.navigate("Home");
-    });
+    this.props
+      .setup(
+        this.props.contacts.filter((contact) => contact.frequency !== null),
+        "1"
+      )
+      .then(() => {
+        this.setState({ loading: false });
+        this.props.navigation.navigate("Home");
+      });
   }
 
   render() {
@@ -49,7 +54,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  generate: generateReminders,
+  setup: setupAccount,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SetupScreen);

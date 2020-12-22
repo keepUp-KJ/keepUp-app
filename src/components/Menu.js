@@ -12,20 +12,19 @@ const Menu = (props) => {
           key={item}
           style={{
             ...styles.menuItem,
-            borderRightWidth: item === "Rejected" ? 0 : 1,
+            borderBottomWidth: props.active === item ? 3 : 0,
           }}
         >
           <Text
             style={{
               ...styles.text,
-              textDecorationLine: props.active === item ? "underline" : null,
               fontWeight: props.active === item ? "700" : null,
             }}
             onPress={() => {
               props.onChange(item);
             }}
           >
-            {item}
+            {item.toUpperCase()}
           </Text>
         </View>
       ))}
@@ -38,6 +37,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 20,
+    marginHorizontal: 20,
   },
   menuItem: {
     flex: 0.34,
@@ -45,10 +45,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 2,
     borderColor: Colors.secondary,
+    borderBottomColor: Colors.primaryColor,
   },
   text: {
     fontFamily: "Futura",
     color: Colors.secondary,
+    fontSize: 13,
   },
 });
 

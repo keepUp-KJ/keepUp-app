@@ -31,7 +31,9 @@ class CalendarScreen extends React.Component {
       <SafeAreaView style={styles.screen}>
         {/* Header */}
         <View style={styles.header}>
-          <Header centerComponent={<Text style={styles.text}>CALENDAR</Text>} />
+          <Header
+            centerComponent={<Text style={styles.title}>Calendar</Text>}
+          />
         </View>
         <View style={styles.calendar}>
           {/* CALENDAR */}
@@ -53,11 +55,9 @@ class CalendarScreen extends React.Component {
               });
             }}
           />
-
-          {/* DATE */}
         </View>
         <View style={{ flex: 0.3 }}>
-          <Text style={styles.date}>{this.state.date.toString()}</Text>
+          {/* <Text style={styles.date}>{this.state.date.toString()}</Text> */}
         </View>
         <TabNav active="calendar" />
       </SafeAreaView>
@@ -76,12 +76,10 @@ const styles = StyleSheet.create({
   calendar: {
     flex: 0.55,
   },
-  text: {
-    fontSize: 20,
+  title: {
+    fontSize: 18,
     fontFamily: "Futura",
-    color: Colors.primaryColor,
-    textAlign: "center",
-    fontWeight: "700",
+    color: Colors.secondary,
   },
   date: {
     fontSize: 24,

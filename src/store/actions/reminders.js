@@ -54,24 +54,39 @@ export const addReminder = (date, contact, occasion, notify) => async (
     });
 };
 
-export const generateReminders = (contacts) => async (dispatch) => {
-  const contactReminders = [];
-  contacts.map((contact) => {
-    const reminder = {
-      start: moment().format("DD-MMM-YYYY"),
-      contactId: contact.contact.id,
-      text: `Call ${
-        contact.contact.firstName + " " + contact.contact.lastName
-      }`,
-      frequency: contact.frequency,
-      completed: false,
-    };
-    contactReminders.push(reminder);
-  });
-  AsyncStorage.setItem(
-    `@KeepUp:ContactReminders`,
-    JSON.stringify(contactReminders)
-  );
+export const setupAccount = (contacts, userId) => async (dispatch) => {
+  fetch("http://localhost:3000/contacts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      contacts,
+      userId,
+    }),
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (!json.error) {
+        const contactReminders = [];
+        contacts.map((contact) => {
+          const reminder = {
+            start: moment().format("DD-MMM-YYYY"),
+            contactId: contact.contact.id,
+            text: `Call ${
+              contact.contact.firstName + " " + contact.contact.lastName
+            }`,
+            frequency: contact.frequency,
+            completed: false,
+          };
+          contactReminders.push(reminder);
+        });
+        AsyncStorage.setItem(
+          `@KeepUp:ContactReminders`,
+          JSON.stringify(contactReminders)
+        );
+      }
+    });
 };
 
 export const addContactsToReminder = () => async (dispatch) => {};
