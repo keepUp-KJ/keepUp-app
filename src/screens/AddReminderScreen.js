@@ -7,7 +7,6 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   Keyboard,
-  Switch,
   FlatList,
 } from "react-native";
 import Btn from "../components/Btn";
