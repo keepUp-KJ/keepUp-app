@@ -5,7 +5,9 @@ import Header from "../components/Header";
 import SettingsItem from "../components/SettingsItem";
 import { connect } from "react-redux";
 import { getSettings, updateSettings } from "../store/actions/settings";
+import { signout } from "../store/actions/users";
 import TabNav from "../components/TabNav";
+import Btn from "../components/Btn";
 class SettingsScreen extends React.Component {
   state = {
     settings: {},
@@ -76,7 +78,7 @@ class SettingsScreen extends React.Component {
         <View style={{ ...styles.container, flex: 0.05 }}>
           <Text style={styles.headerText}>REMINDER</Text>
         </View>
-        <View style={{ flex: 0.35 }}>
+        <View style={{ flex: 0.3 }}>
           <SettingsItem
             text="Birthday reminder"
             dropdown
@@ -126,7 +128,7 @@ class SettingsScreen extends React.Component {
         <View style={{ ...styles.container, flex: 0.05 }}>
           <Text style={styles.headerText}>NOTIFICATIONS</Text>
         </View>
-        <View style={{ flex: 0.4 }}>
+        <View style={{ flex: 0.3 }}>
           <SettingsItem
             text="Birthday Notifications"
             switch
@@ -167,6 +169,17 @@ class SettingsScreen extends React.Component {
                     .incompleteTaskNotification,
                 },
               });
+            }}
+          />
+        </View>
+        <View style={{ flex: 0.15 }}>
+          <Btn
+            style={{ width: "60%", alignSelf: "center" }}
+            title="Signout"
+            btnColor={Colors.primaryColor}
+            textColor="white"
+            onPress={() => {
+              this.props.signout();
             }}
           />
         </View>
@@ -214,6 +227,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getSettings,
   updateSettings,
+  signout,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);

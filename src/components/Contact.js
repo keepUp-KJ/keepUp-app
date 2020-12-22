@@ -1,69 +1,46 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React from "react";
+import { Text, StyleSheet, TouchableOpacity, View } from "react-native";
 import Colors from "../constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 
 const Contact = (props) => {
-  const [contactPressed, setContactPressed] = useState(false);
-
   return (
     <TouchableOpacity
       style={styles.card}
       activeOpacity={0.6}
-      disabled={contactPressed || props.accepted || props.rejected}
       onPress={() => {
-        setContactPressed(true);
+        props.contact.accepted === false
+          ? props.addContact()
+          : props.removeContact();
       }}
     >
-      <Text style={styles.text}>{props.contact.name}</Text>
-
+      <Text style={styles.text}>{props.contact.contact.name}</Text>
+      <MaterialCommunityIcons
+        style={{ position: "absolute" }}
+        name={
+          props.contact.accepted && props.frequency === props.contact.frequency
+            ? "checkbox-blank-circle"
+            : null
+        }
+        size={60}
+        color="white"
+      />
       <Ionicons
         style={{ position: "absolute" }}
         name={
-          props.accepted
+          props.contact.accepted && props.frequency === props.contact.frequency
             ? "ios-checkmark-circle"
-            : props.rejected
-            ? "ios-close-circle"
             : null
         }
         size={70}
         color={
-          props.accepted
-            ? Colors.primaryColor
-            : props.rejected
-            ? "#990000"
-            : null
+          props.frequency === "weekly"
+            ? "purple"
+            : props.frequency === "monthly"
+            ? "rgb(50,130,180)"
+            : Colors.primaryColor
         }
       />
-
-      {contactPressed ? (
-        <View
-          style={{ flexDirection: "row", alignItems: "center" }}
-          onPress={() => {
-            setContactPressed(false);
-          }}
-        >
-          <Ionicons
-            name="ios-checkmark-circle"
-            size={50}
-            color={Colors.primaryColor}
-            onPress={() => {
-              props.onAccept();
-              setContactPressed(false);
-            }}
-          />
-          <Ionicons
-            name="ios-close-circle"
-            size={50}
-            color="#990000"
-            style={{ marginLeft: 5 }}
-            onPress={() => {
-              props.onReject();
-              setContactPressed(false);
-            }}
-          />
-        </View>
-      ) : null}
     </TouchableOpacity>
   );
 };
@@ -76,7 +53,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 5,
     borderRadius: 15,
-    backgroundColor: "#C3C4C4",
+    backgroundColor: "#e6e6e6",
   },
   text: {
     textAlign: "center",

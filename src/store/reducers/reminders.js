@@ -9,7 +9,7 @@ const remindersReducer = (state = initialState, action) => {
     case SET_REMINDERS: {
       return {
         ...state,
-        reminders: action.reminders,
+        reminders: action.reminders.filter((rem) => rem.frequency === "daily"),
       };
     }
     default:

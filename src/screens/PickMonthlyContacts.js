@@ -13,27 +13,16 @@ import Colors from "../constants/Colors";
 import Input from "../components/Input";
 import Header from "../components/Header";
 import { connect } from "react-redux";
-import {
-  syncContacts,
-  addContact,
-  removeContact,
-} from "../store/actions/contacts";
-import { MaterialIcons } from "@expo/vector-icons";
+import { addContact, removeContact } from "../store/actions/contacts";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 
-class PickContactsScreen extends React.Component {
+class PickMonthlyContacts extends React.Component {
   state = {
     filteredContacts: [],
     input: "",
     visible: false,
     activeContact: {},
   };
-
-  componentDidMount() {
-    const back = this.props.navigation.getParam("back");
-    if (!back) {
-      this.props.sync();
-    }
-  }
 
   alert = () =>
     Alert.alert(
@@ -58,11 +47,11 @@ class PickContactsScreen extends React.Component {
         <Text
           style={{
             fontWeight: "700",
-            color: Colors.primaryColor,
+            color: "rgb(50,130,180)",
             fontSize: 17,
           }}
         >
-          DAILY
+          MONTHLY
         </Text>
       </Text>
     );
@@ -70,10 +59,20 @@ class PickContactsScreen extends React.Component {
 
   render() {
     const contacts = !this.state.input
-      ? this.props.contacts.sort((a, b) => {
-          if (a.contact.firstName < b.contact.firstName) return -1;
-          if (a.contact.firstName > b.contact.firstName) return 1;
-        })
+      ? this.props.contacts
+          .filter(
+            (contact) =>
+              !this.props.dailyContacts.find(
+                (item) => item.contact.id === contact.contact.id
+              ) &&
+              !this.props.weeklyContacts.find(
+                (item) => item.contact.id === contact.contact.id
+              )
+          )
+          .sort((a, b) => {
+            if (a.contact.firstName < b.contact.firstName) return -1;
+            if (a.contact.firstName > b.contact.firstName) return 1;
+          })
       : this.state.filteredContacts.sort((a, b) => {
           if (a.contact.firstName < b.contact.firstName) return -1;
           if (a.contact.firstName > b.contact.firstName) return 1;
@@ -83,13 +82,23 @@ class PickContactsScreen extends React.Component {
       <SafeAreaView style={styles.screen}>
         <View style={styles.container}>
           <Header
+            leftComponent={
+              <Ionicons
+                name="md-arrow-back"
+                size={25}
+                color={Colors.secondary}
+                onPress={() => {
+                  this.props.navigation.navigate("PickWeekly");
+                }}
+              />
+            }
             centerComponent={
               <View>
                 <Text style={styles.headerText}>PICK CONTACTS</Text>
                 <Text
-                  style={{ ...styles.headerText, color: Colors.primaryColor }}
+                  style={{ ...styles.headerText, color: "rgb(50,130,180)" }}
                 >
-                  {this.props.dailyContacts.length} CONTACTS SELECTED
+                  {this.props.monthlyContacts.length} CONTACTS SELECTED
                 </Text>
               </View>
             }
@@ -124,7 +133,7 @@ class PickContactsScreen extends React.Component {
             />
           </View>
         </View>
-        {/* CONTACTS + DONE BUTTON */}
+        {/* CONTACTS */}
         <View style={{ flex: 0.8 }}>
           <FlatList
             ListHeaderComponent={this.renderHeader}
@@ -133,13 +142,13 @@ class PickContactsScreen extends React.Component {
             keyExtractor={(item) => item.contact.id}
             renderItem={(itemData) => (
               <Contact
-                frequency="daily"
+                frequency="monthly"
                 contact={itemData.item}
                 addContact={() => {
-                  this.props.add(itemData.item, "daily");
+                  this.props.add(itemData.item, "monthly");
                 }}
                 removeContact={() => {
-                  this.props.remove(itemData.item, "daily");
+                  this.props.remove(itemData.item, "monthly");
                 }}
               />
             )}
@@ -150,7 +159,7 @@ class PickContactsScreen extends React.Component {
           <TouchableOpacity
             style={styles.btnContainer}
             onPress={() => {
-              this.props.navigation.navigate("PickWeekly");
+              this.props.navigation.navigate("ConfirmSelection");
             }}
           >
             <MaterialIcons name="arrow-forward" size={24} color="white" />
@@ -210,15 +219,18 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  user: state.users.user,
   contacts: state.contacts.contacts,
   dailyContacts: state.contacts.dailyContacts,
+  weeklyContacts: state.contacts.weeklyContacts,
+  monthlyContacts: state.contacts.monthlyContacts,
 });
 
 const mapDispatchToProps = {
   add: addContact,
   remove: removeContact,
-  sync: syncContacts,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PickContactsScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PickMonthlyContacts);

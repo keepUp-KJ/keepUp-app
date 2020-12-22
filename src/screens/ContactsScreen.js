@@ -43,11 +43,13 @@ class ContactsScreen extends React.Component {
       style={styles.card}
       activeOpacity={0.6}
       onPress={() => {
-        this.setState({ visible: true, activeContact: itemData.item });
+        this.setState({ visible: true, activeContact: itemData.item.contact });
       }}
     >
       <Text style={styles.text}>
-        {itemData.item.firstName + " " + (itemData.item.lastName || "")}
+        {itemData.item.contact.firstName +
+          " " +
+          (itemData.item.contact.lastName || "")}
       </Text>
     </TouchableOpacity>
   );
@@ -153,7 +155,7 @@ class ContactsScreen extends React.Component {
               rejected ? this.renderRejectedContact : this.renderContact
             }
             numColumns={accepted || pending ? 3 : null}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.contact.id}
           />
         </View>
         <TabNav active="contacts" />
@@ -184,7 +186,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 5,
     borderRadius: 15,
-    backgroundColor: "#C3C4C4",
+    backgroundColor: "#e6e6e6",
   },
   text: {
     textAlign: "center",

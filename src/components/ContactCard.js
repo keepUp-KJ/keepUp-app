@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Overlay } from "react-native-elements";
 import Colors from "../constants/Colors";
-import { Ionicons, Entypo } from "@expo/vector-icons";
+import { Ionicons, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
 import { TextInput } from "react-native-gesture-handler";
 
@@ -186,19 +186,43 @@ const ContactCard = (props) => {
               marginTop: 15,
             }}
           >
-            <Ionicons
-              name="ios-close-circle"
-              size={80}
-              color="#990000"
+            <TouchableOpacity
+              style={{ justifyContent: "center" }}
               onPress={props.onReject}
-            />
+              activeOpacity={0.6}
+            >
+              <MaterialCommunityIcons
+                style={{
+                  position: "absolute",
+                  alignSelf: "center",
+                }}
+                name="checkbox-blank-circle"
+                size={50}
+                color="white"
+              />
+              <Ionicons name="ios-close-circle" size={80} color="#990000" />
+            </TouchableOpacity>
 
-            <Ionicons
-              name="ios-checkmark-circle"
-              size={80}
-              color={Colors.primaryColor}
+            <TouchableOpacity
+              style={{ justifyContent: "center" }}
               onPress={props.onAccept}
-            />
+              activeOpacity={0.6}
+            >
+              <MaterialCommunityIcons
+                style={{
+                  position: "absolute",
+                  alignSelf: "center",
+                }}
+                name="checkbox-blank-circle"
+                size={50}
+                color="white"
+              />
+              <Ionicons
+                name="ios-checkmark-circle"
+                size={80}
+                color={Colors.primaryColor}
+              />
+            </TouchableOpacity>
           </View>
         )}
       </View>
