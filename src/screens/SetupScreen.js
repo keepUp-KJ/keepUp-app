@@ -15,8 +15,10 @@ class SetupScreen extends React.Component {
         "1"
       )
       .then(() => {
-        this.setState({ loading: false });
-        this.props.navigation.navigate("Home");
+        setTimeout(() => {
+          this.setState({ loading: false });
+          this.props.navigation.navigate("Home");
+        }, 2500);
       });
   }
 

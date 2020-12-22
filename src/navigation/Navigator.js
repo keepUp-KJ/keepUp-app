@@ -37,7 +37,7 @@ const Navigator = createSwitchNavigator(
     AddReminder: AddReminderScreen,
   },
   {
-    // initialRouteName: "Contacts",
+    // initialRouteName: "ConfirmSelection",
   }
 );
 
