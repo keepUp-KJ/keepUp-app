@@ -18,10 +18,18 @@ import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
 import { addContactsToReminder } from "../store/actions/reminders";
-
+import DateTimePicker from "@react-native-community/datetimepicker";
 class AddReminderScreen extends React.Component {
+  state = {
+    date: new Date(),
+    show: false,
+    notify: "1",
+  };
   render() {
-    const CONTACTS = [];
+    const CONTACTS = [
+      // { firstName: "Khaled", lastName: "Magued" },
+      // { firstName: "Jana", lastName: "Hamdy" },
+    ];
     CONTACTS.unshift({});
     let dropdownItems = [
       {
@@ -56,6 +64,9 @@ class AddReminderScreen extends React.Component {
                   size={24}
                   color="grey"
                   style={{ marginLeft: 15 }}
+                  onPress={() => {
+                    this.props.navigation.navigate("Home");
+                  }}
                 />
               }
               centerComponent={
@@ -65,19 +76,29 @@ class AddReminderScreen extends React.Component {
           </View>
           <View style={styles.body}>
             <Input title="Event Title" placeholder="Add event title" />
-            <Input title="Location" placeholder="Add location" />
             <View style={styles.container}>
               <Text style={styles.text}>Date</Text>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text style={{ ...styles.text, color: "black" }}>
-                  All day event
-                </Text>
-                <Switch style={{ marginLeft: 15 }} />
-              </View>
             </View>
-            <View style={{ flex: 0.6 }}></View>
+            <TouchableOpacity
+              style={styles.dateContainer}
+              onPress={() => {
+                this.setState({ show: !this.state.show });
+              }}
+            >
+              <Text style={styles.text}>{this.state.date.toDateString()}</Text>
+            </TouchableOpacity>
+            {this.state.show ? (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={this.state.date}
+                mode="date"
+                onChange={(event, date) => this.setState({ date })}
+              />
+            ) : null}
+
             <DropDownPicker
               style={{ borderWidth: 0 }}
+              defaultValue={this.state.notify}
               items={dropdownItems}
               containerStyle={{
                 ...styles.input,
@@ -89,6 +110,9 @@ class AddReminderScreen extends React.Component {
               dropDownStyle={{ marginTop: 5, marginLeft: 20 }}
               arrowSize={18}
               arrowStyle={{ alignSelf: "center" }}
+              onChangeItem={(item) => {
+                this.setState({ notify: item.value });
+              }}
             />
             <FlatList
               ListHeaderComponent={
@@ -97,6 +121,8 @@ class AddReminderScreen extends React.Component {
                 </Text>
               }
               data={CONTACTS}
+              keyExtractor={(item) => item.firstName}
+              numColumns={4}
               renderItem={(itemData) => (
                 <TouchableOpacity
                   style={{
@@ -118,8 +144,6 @@ class AddReminderScreen extends React.Component {
                   )}
                 </TouchableOpacity>
               )}
-              keyExtractor={(item) => item.firstName}
-              numColumns={4}
             />
           </View>
           <View style={styles.footer}>
@@ -188,6 +212,15 @@ const styles = StyleSheet.create({
     margin: 5,
     borderColor: "#e6e6e6",
     borderStyle: "dashed",
+  },
+  dateContainer: {
+    marginVertical: 5,
+    borderColor: Colors.secondary,
+    borderWidth: 0.5,
+    borderRadius: 25,
+    padding: 10,
+    paddingHorizontal: 20,
+    marginVertical: 2,
   },
   footer: {
     flex: 0.1,

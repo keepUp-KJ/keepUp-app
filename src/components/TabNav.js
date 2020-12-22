@@ -30,7 +30,7 @@ const TabNav = (props) => {
         iconName="ios-add"
         center
         onPress={() => {
-          navigate("CreateReminder");
+          navigate("AddReminder");
         }}
       />
       <MenuItem

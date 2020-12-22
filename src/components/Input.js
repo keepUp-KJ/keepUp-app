@@ -40,7 +40,7 @@ const Input = (props) => {
 
 const styles = StyleSheet.create({
   input: {
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderRadius: 25,
     padding: 10,
     paddingHorizontal: 20,

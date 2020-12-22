@@ -7,12 +7,9 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
-  Dimensions,
 } from "react-native";
 import Header from "../components/Header";
-import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
-import Input from "../components/Input";
 import TabNav from "../components/TabNav";
 import Menu from "../components/Menu";
 import RejectedContact from "../components/RejectedContact";
@@ -35,7 +32,7 @@ class ContactsScreen extends React.Component {
 
   componentDidMount() {
     this.props.sync();
-    this.props.get(this.props.user._id);
+    // this.props.get(this.props.user._id);
   }
 
   renderContact = (itemData) => (
