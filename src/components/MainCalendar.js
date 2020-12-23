@@ -1,5 +1,4 @@
 import React from "react";
-import {} from "react-native";
 import { Calendar } from "react-native-calendars";
 import Colors from "../constants/Colors";
 
