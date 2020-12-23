@@ -6,22 +6,31 @@ import Colors from "../constants/Colors";
 import Task from "../components/Task";
 import { connect } from "react-redux";
 import { getReminders } from "../store/actions/reminders";
+import { Calendar } from "react-native-event-week";
 
 class HomeScreen extends React.Component {
+  state = {
+    date: new Date(),
+  };
   componentDidMount() {
-    this.props.get();
+    this.props.get(this.props.user._id);
   }
 
   render() {
-    var today = moment().format("MMMM DD");
-    const REMINDERS = [
+    var today = moment().format("MMM DD, YYYY");
+
+    const events = [
       {
-        text: `Call Janito`,
-        frequency: "Daily",
-        completed: false,
+        title: "Important meeting",
+        start: "2020-12-26 14:45",
+        end: "2020-12-26 18:15",
+        backgroundColor: "#41CAC0",
       },
       {
-        text: "It's Ahmed's birthday!",
+        title: "Coffee break",
+        start: "2020-12-24 06:45",
+        end: "2020-12-24 07:15",
+        backgroundColor: "#41CAC0",
       },
     ];
 
@@ -30,14 +39,30 @@ class HomeScreen extends React.Component {
         {/* MAIN */}
         <View style={styles.main}>
           <View style={styles.head}>
-            <Text style={styles.date}>TODAY</Text>
-            <Text style={styles.date}>{today.toUpperCase()}</Text>
+            <Text style={styles.date}>{today}</Text>
+            <Text style={styles.today}>Today</Text>
           </View>
-          <View style={{ flex: 0.75 }}>
+          <View style={{ flex: 0.1 }}>
+            <Calendar
+              events={events}
+              height={100}
+              showTime={false}
+              swipeEnabled={false}
+              style={{ alignSelf: "center", marginLeft: -50 }}
+            />
+          </View>
+          <View style={{ flex: 0.45 }}>
             <FlatList
               showsVerticalScrollIndicator={false}
               data={this.props.reminders}
-              renderItem={(itemData) => <Task reminder={itemData.item} />}
+              renderItem={(itemData) => (
+                <Task
+                  reminder={itemData.item}
+                  completeTask={() => {
+                    console.log("YOO");
+                  }}
+                />
+              )}
               keyExtractor={(item) => item.text}
             />
           </View>
@@ -53,7 +78,6 @@ class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: "center",
   },
   main: {
     flex: 0.92,
@@ -61,12 +85,16 @@ const styles = StyleSheet.create({
   head: {
     flex: 0.15,
     justifyContent: "center",
-    alignItems: "center",
+    width: "80%",
+    alignSelf: "center",
   },
   date: {
-    fontSize: 22,
-    fontWeight: "700",
-    color: Colors.primaryColor,
+    fontSize: 16,
+    color: Colors.secondary,
+    fontFamily: "Futura",
+  },
+  today: {
+    fontSize: 35,
     fontFamily: "Futura",
   },
 });

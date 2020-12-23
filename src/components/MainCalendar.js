@@ -10,28 +10,19 @@ const MainCalendar = (props) => {
       onDayPress={(day) => {
         props.onDayPress(day);
       }}
+      hideArrows={true}
       theme={{
-        calendarBackground: "#ededed",
-        textSectionTitleColor: "black",
         selectedDayBackgroundColor: Colors.primaryColor,
-        selectedDayTextColor: "black",
         todayTextColor: Colors.primaryColor,
-        dayTextColor: "black",
-        textDisabledColor: "#d9e1e8",
         dotColor: Colors.primaryColor,
         selectedDotColor: Colors.primaryColor,
-        arrowColor: "black",
-        disabledArrowColor: "#d9e1e8",
-        monthTextColor: "black",
         indicatorColor: Colors.primaryColor,
         textDayFontFamily: "Futura",
         textMonthFontFamily: "Futura",
         textDayHeaderFontFamily: "Futura",
-        textDayFontWeight: "300",
-        textDayHeaderFontWeight: "300",
-        textDayFontSize: 16,
+        textDayFontSize: 14,
         textMonthFontSize: 16,
-        textDayHeaderFontSize: 16,
+        textDayHeaderFontSize: 14,
       }}
       markedDates={props.dates}
     />

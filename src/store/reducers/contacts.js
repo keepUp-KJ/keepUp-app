@@ -12,20 +12,12 @@ const initialState = {
   dailyContacts: [],
   weeklyContacts: [],
   monthlyContacts: [],
+  acceptedContacts: [],
+  pendingContacts: [],
 };
 
 const contactsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ACCEPT_CONTACT:
-      return {
-        ...state,
-        acceptedContacts: [action.contact, ...state.acceptedContacts],
-      };
-    case REJECT_CONTACT:
-      return {
-        ...state,
-        rejectedContacts: [action.contact, ...state.rejectedContacts],
-      };
     case SYNC_CONTACTS:
       const updatedContacts = [];
       action.payload.forEach((contact) => {
@@ -43,9 +35,6 @@ const contactsReducer = (state = initialState, action) => {
         ...state,
         acceptedContacts: action.payload.filter(
           (contact) => contact.status === "Accepted"
-        ),
-        rejectedContacts: action.payload.filter(
-          (contact) => contact.status === "Rejected"
         ),
         pendingContacts: state.contacts.filter(
           (contact) =>

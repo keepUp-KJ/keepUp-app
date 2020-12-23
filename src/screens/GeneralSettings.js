@@ -9,13 +9,15 @@ import {
 import { connect } from "react-redux";
 import Colors from "../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import SettingsItem from "../components/SettingsItem";
 
-class ProfileScreen extends React.Component {
+class GeneralSettings extends React.Component {
   state = {
     birthday: false,
     dailyCalls: false,
     incompleteTask: false,
   };
+  componentDidMount() {}
 
   render() {
     return (
@@ -34,27 +36,10 @@ class ProfileScreen extends React.Component {
             <Ionicons name="md-arrow-back" size={25} color="white" />
           </TouchableOpacity>
           <View style={styles.container}>
-            <Text style={styles.title}>Profile</Text>
+            <Text style={styles.text}>General</Text>
           </View>
         </View>
-        <View style={styles.body}>
-          <View style={styles.labelContainer}>
-            <Text style={styles.label}>First Name</Text>
-            <Text style={styles.text}>Basha</Text>
-          </View>
-          <View style={styles.labelContainer}>
-            <Text style={styles.label}>Last Name</Text>
-            <Text style={styles.text}>Khokha</Text>
-          </View>
-          <View style={styles.labelContainer}>
-            <Text style={styles.label}>Email</Text>
-            <Text style={styles.text}>{this.props.user.email}</Text>
-          </View>
-          <View style={styles.labelContainer}>
-            <Text style={styles.label}>Mobile</Text>
-            <Text style={styles.text}>01063795325</Text>
-          </View>
-        </View>
+        <View style={styles.body}></View>
       </SafeAreaView>
     );
   }
@@ -66,7 +51,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 0.3,
-    backgroundColor: Colors.primaryColor,
+    backgroundColor: Colors.secondary,
     marginTop: -50,
   },
   container: {
@@ -76,26 +61,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   text: {
-    fontFamily: "Futura",
-    fontSize: 20,
-  },
-  title: {
     color: "white",
     fontFamily: "Futura",
     fontSize: 35,
   },
   body: {
     flex: 0.7,
-    marginHorizontal: 30,
-  },
-  label: {
-    fontFamily: "Futura",
-    fontSize: 16,
-    color: Colors.secondary,
-    marginBottom: 5,
-  },
-  labelContainer: {
-    marginVertical: 20,
   },
 });
 
@@ -105,4 +76,4 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(GeneralSettings);

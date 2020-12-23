@@ -8,25 +8,19 @@ import { Ionicons } from "@expo/vector-icons";
 
 class ConfirmSelectionScreen extends React.Component {
   renderContact = (itemData) => (
-    <View style={{ width: "20%", alignItems: "center", margin: 10 }}>
-      <View style={styles.nameContainer}>
-        <Text style={styles.initials}>
-          {itemData.item.contact.firstName.charAt(0) +
-            itemData.item.contact.lastName.charAt(0)}
-        </Text>
-      </View>
-      <Text
-        numberOfLines={2}
-        style={{
-          textAlign: "center",
-          fontFamily: "Futura",
-          fontSize: 16,
-          color: Colors.secondary,
-        }}
-      >
-        {itemData.item.contact.name}
-      </Text>
-    </View>
+    <TouchableOpacity
+      style={{
+        ...styles.card,
+        backgroundColor:
+          itemData.item.frequency === "weekly"
+            ? Colors.blue
+            : itemData.item.frequency === "monthly"
+            ? Colors.tomato
+            : Colors.primaryColor,
+      }}
+    >
+      <Text style={styles.contactText}>{itemData.item.contact.name}</Text>
+    </TouchableOpacity>
   );
 
   render() {
@@ -51,7 +45,6 @@ class ConfirmSelectionScreen extends React.Component {
         </View>
         {this.props.dailyContacts.length !== 0 && (
           <View style={styles.container}>
-            <View style={styles.leftLine} />
             <Text style={styles.headerText}>DAILY</Text>
             <View style={styles.line} />
           </View>
@@ -66,7 +59,6 @@ class ConfirmSelectionScreen extends React.Component {
         </View>
         {this.props.weeklyContacts.length !== 0 && (
           <View style={styles.container}>
-            <View style={styles.leftLine} />
             <Text style={styles.headerText}>WEEKLY</Text>
             <View style={styles.line} />
           </View>
@@ -81,7 +73,6 @@ class ConfirmSelectionScreen extends React.Component {
         </View>
         {this.props.monthlyContacts.length !== 0 && (
           <View style={styles.container}>
-            <View style={styles.leftLine} />
             <Text style={styles.headerText}>MONTHLY</Text>
             <View style={styles.line} />
           </View>
@@ -128,16 +119,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: "Futura",
     marginHorizontal: 15,
-    color: Colors.primaryColor,
+    color: Colors.secondary,
     fontWeight: "800",
   },
-  leftLine: {
-    flex: 0.1,
-    borderWidth: 1,
-    borderColor: "grey",
-  },
   line: {
-    flex: 0.8,
+    flex: 0.9,
     borderWidth: 1,
     borderColor: "grey",
   },
@@ -179,6 +165,21 @@ const styles = StyleSheet.create({
     width: "65%",
     alignSelf: "center",
     justifyContent: "center",
+  },
+  card: {
+    height: 100,
+    width: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 5,
+    borderRadius: 15,
+  },
+  contactText: {
+    textAlign: "center",
+    fontFamily: "Futura",
+    fontSize: 14,
+    paddingHorizontal: 5,
+    color: "white",
   },
 });
 

@@ -47,7 +47,7 @@ class PickWeeklyContacts extends React.Component {
         <Text
           style={{
             fontWeight: "700",
-            color: "purple",
+            color: Colors.blue,
             fontSize: 17,
           }}
         >
@@ -94,7 +94,7 @@ class PickWeeklyContacts extends React.Component {
             centerComponent={
               <View>
                 <Text style={styles.headerText}>PICK CONTACTS</Text>
-                <Text style={{ ...styles.headerText, color: "purple" }}>
+                <Text style={{ ...styles.headerText, color: Colors.blue }}>
                   {this.props.weeklyContacts.length} CONTACTS SELECTED
                 </Text>
               </View>

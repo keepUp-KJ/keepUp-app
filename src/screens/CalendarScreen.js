@@ -31,9 +31,7 @@ class CalendarScreen extends React.Component {
       <SafeAreaView style={styles.screen}>
         {/* Header */}
         <View style={styles.header}>
-          <Header
-            centerComponent={<Text style={styles.title}>Calendar</Text>}
-          />
+          <Header leftComponent={<Text style={styles.title}>Calendar</Text>} />
         </View>
         <View style={styles.calendar}>
           {/* CALENDAR */}
@@ -77,9 +75,8 @@ const styles = StyleSheet.create({
     flex: 0.55,
   },
   title: {
-    fontSize: 18,
+    fontSize: 30,
     fontFamily: "Futura",
-    color: Colors.secondary,
   },
   date: {
     fontSize: 24,

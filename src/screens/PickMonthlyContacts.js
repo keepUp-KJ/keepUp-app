@@ -47,7 +47,7 @@ class PickMonthlyContacts extends React.Component {
         <Text
           style={{
             fontWeight: "700",
-            color: "rgb(50,130,180)",
+            color: Colors.tomato,
             fontSize: 17,
           }}
         >
@@ -95,9 +95,7 @@ class PickMonthlyContacts extends React.Component {
             centerComponent={
               <View>
                 <Text style={styles.headerText}>PICK CONTACTS</Text>
-                <Text
-                  style={{ ...styles.headerText, color: "rgb(50,130,180)" }}
-                >
+                <Text style={{ ...styles.headerText, color: Colors.tomato }}>
                   {this.props.monthlyContacts.length} CONTACTS SELECTED
                 </Text>
               </View>

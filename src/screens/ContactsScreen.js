@@ -7,6 +7,8 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import Header from "../components/Header";
 import Colors from "../constants/Colors";
@@ -29,7 +31,7 @@ class ContactsScreen extends React.Component {
     searchInput: "",
     activeTab: "Accepted",
     visible: false,
-    activeContact: {},
+    activeContact: null,
     search: false,
     filteredContacts: [],
   };
@@ -44,13 +46,21 @@ class ContactsScreen extends React.Component {
       style={styles.card}
       activeOpacity={0.6}
       onPress={() => {
-        this.setState({ visible: true, activeContact: itemData.item.contact });
+        this.setState({
+          visible: true,
+          activeContact:
+            this.state.activeTab === "Pending"
+              ? itemData.item.contact
+              : itemData.item,
+        });
       }}
     >
       <Text style={styles.text}>
-        {itemData.item.contact.firstName +
-          " " +
-          (itemData.item.contact.lastName || "")}
+        {this.state.activeTab === "Pending"
+          ? itemData.item.contact.firstName +
+            " " +
+            (itemData.item.contact.lastName || "")
+          : itemData.item.firstName + " " + (itemData.item.lastName || "")}
       </Text>
     </TouchableOpacity>
   );
@@ -86,58 +96,79 @@ class ContactsScreen extends React.Component {
 
     return (
       <SafeAreaView style={styles.screen}>
-        <ContactCard
-          onAccept={() => {}}
-          onReject={() => {}}
-          pending={pending}
-          accepted={accepted}
-          visible={this.state.visible}
-          contact={this.state.activeContact}
-          close={() => this.setState({ visible: false, contact: {} })}
-        />
+        {this.state.activeContact !== null && (
+          <ContactCard
+            onAccept={() => {}}
+            onReject={() => {}}
+            pending={pending}
+            accepted={accepted}
+            visible={this.state.visible}
+            contact={this.state.activeContact}
+            close={() => this.setState({ visible: false, activeContact: null })}
+          />
+        )}
         <View style={{ ...styles.headerContainer, flex: 0.07 }}>
-          <Header
-            centerComponent={<Text style={styles.title}>Contacts</Text>}
-            rightComponent={
+          {this.state.search ? (
+            <View style={styles.searchContainer}>
               <Ionicons
                 name="ios-search"
                 size={23}
                 color={Colors.secondary}
+                style={{ flex: 0.1 }}
                 onPress={() => {
                   this.setState({ search: !this.state.search });
                 }}
               />
-            }
-          />
-        </View>
-        <View style={{ flex: 0.15 }}>
-          {this.state.search ? (
-            <View style={{ width: "85%", alignSelf: "center" }}>
-              <Input
-                placeholder="Search..."
-                value={this.state.searchInput}
-                onChangeText={(text) => {
-                  const updatedContacts = this.props.contacts.filter(
-                    (contact) => {
+              <View style={{ flex: 0.8 }}>
+                <Input
+                  onBlur={() => {
+                    Keyboard.dismiss();
+                  }}
+                  placeholder="Search..."
+                  value={this.state.searchInput}
+                  onChangeText={(text) => {
+                    const currentList = pending
+                      ? this.props.pending
+                      : accepted
+                      ? this.props.accepted
+                      : null;
+                    const updatedContacts = currentList.filter((contact) => {
+                      const contactInfo = pending ? contact.contact : contact;
+
                       const name = String.prototype.toUpperCase.call(
-                        (contact.contact.firstName || "") +
+                        (contactInfo.firstName || "") +
                           " " +
-                          (contact.contact.lastName || "")
+                          (contactInfo.lastName || "")
                       );
 
                       const search = String.prototype.toUpperCase.call(text);
                       return name.indexOf(search) > -1;
-                    }
-                  );
-                  this.setState({
-                    filteredContacts: updatedContacts,
-                    searchInput: text,
-                  });
-                }}
-              />
+                    });
+                    this.setState({
+                      filteredContacts: updatedContacts,
+                      searchInput: text,
+                    });
+                  }}
+                />
+              </View>
             </View>
-          ) : null}
-
+          ) : (
+            <Header
+              leftComponent={<Text style={styles.title}>Contacts</Text>}
+              rightComponent={
+                <Ionicons
+                  name="ios-search"
+                  size={23}
+                  color={Colors.secondary}
+                  onPress={() => {
+                    this.setState({ search: !this.state.search });
+                  }}
+                />
+              }
+            />
+          )}
+        </View>
+        <View style={{ flex: 0.1 }}>
           <Menu
             active={this.state.activeTab}
             onChange={(activeTab) => {
@@ -147,7 +178,7 @@ class ContactsScreen extends React.Component {
         </View>
         <View
           style={{
-            flex: 0.7,
+            flex: 0.75,
             alignItems: rejected ? null : "center",
           }}
         >
@@ -159,8 +190,6 @@ class ContactsScreen extends React.Component {
                 ? this.state.filteredContacts
                 : accepted
                 ? this.props.accepted
-                : rejected
-                ? this.props.rejected
                 : pending
                 ? this.props.pending
                 : null
@@ -169,7 +198,7 @@ class ContactsScreen extends React.Component {
               rejected ? this.renderRejectedContact : this.renderContact
             }
             numColumns={accepted || pending ? 3 : null}
-            keyExtractor={(item) => item.contact.id}
+            keyExtractor={(item) => item.id}
           />
         </View>
         <TabNav active="contacts" />
@@ -188,9 +217,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    fontSize: 18,
+    fontSize: 30,
     fontFamily: "Futura",
-    color: Colors.secondary,
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    flex: 1,
   },
   card: {
     height: 100,
@@ -199,7 +234,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 5,
     borderRadius: 15,
-    backgroundColor: "#e6e6e6",
+    backgroundColor: "rgb(248, 249, 253)",
   },
   text: {
     textAlign: "center",
@@ -214,7 +249,6 @@ const mapStateToProps = (state) => ({
   user: state.users.user,
   contacts: state.contacts.contacts,
   accepted: state.contacts.acceptedContacts,
-  rejected: state.contacts.rejectedContacts,
   pending: state.contacts.pendingContacts,
 });
 

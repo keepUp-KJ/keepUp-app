@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import MenuItem from "./MenuItem";
+import Tab from "./Tab";
 import { navigate } from "../navigation/navigationRef";
 
 const TabNav = (props) => {
@@ -8,7 +8,7 @@ const TabNav = (props) => {
 
   return (
     <View style={styles.menu}>
-      <MenuItem
+      <Tab
         text="Home"
         iconName="ios-home"
         active={active === "home"}
@@ -17,7 +17,7 @@ const TabNav = (props) => {
           navigate("Home");
         }}
       />
-      <MenuItem
+      <Tab
         text="Contacts"
         iconName="ios-contacts"
         active={active === "contacts"}
@@ -26,14 +26,14 @@ const TabNav = (props) => {
           navigate("Contacts");
         }}
       />
-      <MenuItem
+      <Tab
         iconName="ios-add"
         center
         onPress={() => {
           navigate("AddReminder");
         }}
       />
-      <MenuItem
+      <Tab
         text="Calendar"
         iconName="ios-calendar"
         active={active === "calendar"}
@@ -42,7 +42,7 @@ const TabNav = (props) => {
           navigate("Calendar");
         }}
       />
-      <MenuItem
+      <Tab
         text="Settings"
         iconName="ios-settings"
         active={active === "settings"}

@@ -1,27 +1,40 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Octicons, Entypo } from "@expo/vector-icons";
+import { Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Animated,
+  TouchableOpacity,
+} from "react-native";
 import Colors from "../constants/Colors";
-import RadioButton from "./RadioButton";
 
 const Task = (props) => {
-  const [checked, setChecked] = useState(false);
+  const _animatedWidth = new Animated.Value(0);
+
+  function setCompleted() {
+    Animated.timing(_animatedWidth, {
+      toValue: 300,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+  }
 
   return (
-    <View style={styles.task}>
-      <View style={{ ...styles.container, flex: 0.9 }}>
+    <TouchableOpacity style={styles.task} onPress={setCompleted}>
+      <View style={styles.container}>
+        <Animated.View
+          style={{
+            width: _animatedWidth,
+            borderWidth: 1.5,
+            borderColor: Colors.secondary,
+            position: "absolute",
+            borderRadius: 10,
+          }}
+        />
         <Text style={styles.taskText}>{props.reminder.text}</Text>
       </View>
-      <View
-        style={{
-          ...styles.container,
-          flex: 0.1,
-          justifyContent: "space-between",
-        }}
-      >
-        <RadioButton checked={checked} onPress={() => setChecked(!checked)} />
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -31,17 +44,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 20,
+    padding: 25,
     borderRadius: 15,
-    backgroundColor: "white",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
-    elevation: 10,
+    backgroundColor: "rgb(248, 249, 253)",
     marginVertical: 10,
   },
   taskText: {

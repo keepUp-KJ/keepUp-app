@@ -15,7 +15,7 @@ import { TextInput } from "react-native-gesture-handler";
 const ContactCard = (props) => {
   const [pressed, setPressed] = useState(false);
   const [relation, setRelation] = useState("NOT SPECIFIED");
-  const [value, setValue] = useState("WEEKLY");
+  const [value, setValue] = useState(props.contact.frequency);
   const dropdownItems = [
     {
       label: "DAILY",
@@ -59,7 +59,7 @@ const ContactCard = (props) => {
             <Entypo
               name="circle-with-minus"
               size={30}
-              color="#990000"
+              color="white"
               onPress={props.remove}
             />
             <TouchableOpacity
@@ -89,7 +89,7 @@ const ContactCard = (props) => {
             ...styles.text,
             marginTop: -60,
             fontSize: 32,
-            color: props.pending ? "white" : Colors.secondary,
+            color: "white",
           }}
         >
           {props.contact.firstName + " " + props.contact.lastName}
@@ -98,7 +98,7 @@ const ContactCard = (props) => {
         <View style={styles.container}>
           <Ionicons
             name="ios-calendar"
-            color={props.accepted ? Colors.secondary : "white"}
+            color={"white"}
             size={30}
             style={{ marginRight: 10 }}
           />
@@ -106,7 +106,7 @@ const ContactCard = (props) => {
             style={{
               ...styles.text,
               fontWeight: "400",
-              color: props.accepted ? Colors.secondary : "white",
+              color: "white",
             }}
           >
             12 JANUARY
@@ -126,7 +126,9 @@ const ContactCard = (props) => {
                 Frequency of Getting in Touch
               </Text>
               {!pressed ? (
-                <Text style={{ ...styles.text, ...styles.label }}>{value}</Text>
+                <Text style={{ ...styles.text, ...styles.label }}>
+                  {props.contact.frequency.toUpperCase()}
+                </Text>
               ) : (
                 <DropDownPicker
                   style={{

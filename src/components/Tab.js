@@ -9,7 +9,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 
-const MenuItem = (props) => {
+const Tab = (props) => {
   return (
     <TouchableOpacity
       style={styles.container}
@@ -84,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MenuItem;
+export default Tab;

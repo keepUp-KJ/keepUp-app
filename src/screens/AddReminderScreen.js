@@ -79,12 +79,18 @@ class AddReminderScreen extends React.Component {
               <Text style={styles.text}>Date</Text>
             </View>
             <TouchableOpacity
+              activeOpacity={0.8}
               style={styles.dateContainer}
               onPress={() => {
                 this.setState({ show: !this.state.show });
               }}
             >
               <Text style={styles.text}>{this.state.date.toDateString()}</Text>
+              <Ionicons
+                name={this.state.show ? "ios-arrow-up" : "ios-arrow-down"}
+                size={16}
+                style={{ flex: 0.13 }}
+              />
             </TouchableOpacity>
             {this.state.show ? (
               <DateTimePicker
@@ -220,6 +226,8 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 20,
     marginVertical: 2,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   footer: {
     flex: 0.1,

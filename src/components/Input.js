@@ -5,6 +5,7 @@ import Colors from "../constants/Colors";
 const Input = (props) => {
   const [borderColor, setBorderColor] = useState(Colors.secondary);
   const [borderWidth, setBorderWidth] = useState(0.5);
+
   return (
     <View>
       <Text
@@ -40,7 +41,6 @@ const Input = (props) => {
 
 const styles = StyleSheet.create({
   input: {
-    borderWidth: 0.5,
     borderRadius: 25,
     padding: 10,
     paddingHorizontal: 20,

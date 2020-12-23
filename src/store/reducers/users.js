@@ -74,6 +74,7 @@ const usersReducer = (state = initialState, action) => {
       };
     case RESET:
       return {
+        ...state,
         confirm: false,
       };
     default:

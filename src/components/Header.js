@@ -4,16 +4,16 @@ import { View, StyleSheet } from "react-native";
 const Header = (props) => {
   return (
     <View style={styles.container}>
-      <View style={{ marginLeft: 10 }}>{props.leftComponent}</View>
+      <View style={{ marginLeft: 30 }}>{props.leftComponent}</View>
       <View
         style={{
-          marginLeft: props.rightComponent ? 10 : 0,
-          marginRight: props.leftComponent ? 10 : 0,
+          marginLeft: props.rightComponent ? 30 : 0,
+          marginRight: props.leftComponent ? 30 : 0,
         }}
       >
         {props.centerComponent}
       </View>
-      <View style={{ marginRight: 10 }}>{props.rightComponent}</View>
+      <View style={{ marginRight: 30 }}>{props.rightComponent}</View>
     </View>
   );
 };

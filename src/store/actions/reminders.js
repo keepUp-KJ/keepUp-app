@@ -5,13 +5,16 @@ import { AsyncStorage } from "react-native";
 import { navigate } from "../../navigation/navigationRef";
 import moment from "moment";
 
-export const getReminders = () => async (dispatch) => {
-  await AsyncStorage.getItem(`@KeepUp:ContactReminders`, (err, result) => {
-    dispatch({
-      type: SET_REMINDERS,
-      reminders: JSON.parse(result),
-    });
-  });
+export const getReminders = (userId) => async (dispatch) => {
+  await AsyncStorage.getItem(
+    `@KeepUp:${userId}/ContactReminders`,
+    (err, result) => {
+      dispatch({
+        type: SET_REMINDERS,
+        reminders: JSON.parse(result),
+      });
+    }
+  );
   // fetch("https://keep-up-mock.herokuapp.com/api/reminders", {
   //   method: "GET",
   // })
@@ -82,7 +85,7 @@ export const setupAccount = (contacts, userId) => async (dispatch) => {
           contactReminders.push(reminder);
         });
         AsyncStorage.setItem(
-          `@KeepUp:ContactReminders`,
+          `@KeepUp:${userId}/ContactReminders`,
           JSON.stringify(contactReminders)
         );
       }

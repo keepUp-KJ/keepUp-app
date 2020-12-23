@@ -16,6 +16,10 @@ import LoadingScreen from "../screens/LoadingScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SetupScreen from "../screens/SetupScreen";
 import AddReminderScreen from "../screens/AddReminderScreen";
+import Settings from "../screens/Settings";
+import NotificationsScreen from "../screens/NotificationsScreen";
+import GeneralSettings from "../screens/GeneralSettings";
+import ProfileScreen from "../screens/ProfileScreen";
 
 const Navigator = createSwitchNavigator(
   {
@@ -29,15 +33,19 @@ const Navigator = createSwitchNavigator(
     RenewPassword: RenewPasswordScreen,
     VerifyEmail: VerifyEmailScreen,
     Home: HomeScreen,
-    Settings: SettingsScreen,
+    // Settings: SettingsScreen,
     Contacts: ContactsScreen,
     ConfirmSelection: ConfirmSelectionScreen,
     Calendar: CalendarScreen,
     Setup: SetupScreen,
     AddReminder: AddReminderScreen,
+    Settings: Settings,
+    Notifications: NotificationsScreen,
+    General: GeneralSettings,
+    Profile: ProfileScreen,
   },
   {
-    // initialRouteName: "ConfirmSelection",
+    // initialRouteName: "PickContacts",
   }
 );
 

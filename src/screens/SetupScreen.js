@@ -12,7 +12,7 @@ class SetupScreen extends React.Component {
     this.props
       .setup(
         this.props.contacts.filter((contact) => contact.frequency !== null),
-        "1"
+        this.props.user._id
       )
       .then(() => {
         setTimeout(() => {
