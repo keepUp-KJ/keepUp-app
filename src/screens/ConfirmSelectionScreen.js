@@ -26,7 +26,7 @@ class ConfirmSelectionScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.screen}>
-        <View style={{ flex: 0.2, justifyContent: "center" }}>
+        <View style={{ flex: 0.15, justifyContent: "center" }}>
           <Header
             leftComponent={
               <Ionicons
@@ -43,48 +43,21 @@ class ConfirmSelectionScreen extends React.Component {
             }
           />
         </View>
-        {this.props.dailyContacts.length !== 0 && (
-          <View style={styles.container}>
-            <Text style={styles.headerText}>DAILY</Text>
-            <View style={styles.line} />
-          </View>
-        )}
         <View style={styles.list}>
           <FlatList
-            numColumns={4}
-            data={this.props.dailyContacts}
+            showsVerticalScrollIndicator={false}
+            numColumns={3}
+            data={this.props.contacts.filter(
+              (contact) =>
+                contact.frequency === "daily" ||
+                contact.frequency === "weekly" ||
+                contact.frequency === "monthly"
+            )}
             keyExtractor={(item) => item.contact.id}
             renderItem={this.renderContact}
           />
         </View>
-        {this.props.weeklyContacts.length !== 0 && (
-          <View style={styles.container}>
-            <Text style={styles.headerText}>WEEKLY</Text>
-            <View style={styles.line} />
-          </View>
-        )}
-        <View style={styles.list}>
-          <FlatList
-            numColumns={4}
-            data={this.props.weeklyContacts}
-            keyExtractor={(item) => item.contact.id}
-            renderItem={this.renderContact}
-          />
-        </View>
-        {this.props.monthlyContacts.length !== 0 && (
-          <View style={styles.container}>
-            <Text style={styles.headerText}>MONTHLY</Text>
-            <View style={styles.line} />
-          </View>
-        )}
-        <View style={styles.list}>
-          <FlatList
-            numColumns={4}
-            data={this.props.monthlyContacts}
-            keyExtractor={(item) => item.contact.id}
-            renderItem={this.renderContact}
-          />
-        </View>
+
         <View style={styles.footer}>
           <TouchableOpacity
             style={styles.btn}
@@ -103,7 +76,6 @@ class ConfirmSelectionScreen extends React.Component {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    marginHorizontal: 15,
   },
   title: {
     fontSize: 18,
@@ -115,17 +87,16 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: "center",
   },
+  list: {
+    flex: 0.75,
+    alignItems: "center",
+  },
   headerText: {
     fontSize: 18,
     fontFamily: "Futura",
     marginHorizontal: 15,
     color: Colors.secondary,
     fontWeight: "800",
-  },
-  line: {
-    flex: 0.9,
-    borderWidth: 1,
-    borderColor: "grey",
   },
   container: {
     flex: 0.1,
@@ -161,7 +132,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   footer: {
-    flex: 0.4,
+    flex: 0.1,
     width: "65%",
     alignSelf: "center",
     justifyContent: "center",
@@ -185,7 +156,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   user: state.users.user,
-  contacts: state.contacts.acceptedContacts,
+  contacts: state.contacts.contacts,
   dailyContacts: state.contacts.dailyContacts,
   weeklyContacts: state.contacts.weeklyContacts,
   monthlyContacts: state.contacts.monthlyContacts,

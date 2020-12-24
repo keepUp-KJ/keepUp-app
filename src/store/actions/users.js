@@ -62,13 +62,15 @@ export const signup = (email, password, confPassword) => async (dispatch) => {
           type: ERROR,
           payload: json.errors,
         });
-      } else {
+      } else if (json.user) {
         dispatch({
           type: SIGNUP,
           payload: json.user,
         });
         AsyncStorage.setItem("user", JSON.stringify(json.user));
         navigate("VerifyEmail");
+      } else {
+        console.log("ERROR");
       }
     });
 };
@@ -86,14 +88,14 @@ export const tryLocalSignin = () => async (dispatch) => {
   }
 };
 
-export const verifyEmail = (email, code) => async (dispatch) => {
+export const verifyEmail = (userId, code) => async (dispatch) => {
   fetch("https://rocky-mesa-61495.herokuapp.com/users/verify-email", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      email,
+      userId,
       code,
     }),
   })

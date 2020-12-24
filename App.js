@@ -8,6 +8,7 @@ import remindersReducer from "./src/store/reducers/reminders";
 import contactsReducer from "./src/store/reducers/contacts";
 import settingsReducer from "./src/store/reducers/settings";
 import { setNavigator } from "./src/navigation/navigationRef";
+import { StatusBar } from "react-native";
 
 const rootReducer = combineReducers({
   contacts: contactsReducer,
@@ -19,6 +20,8 @@ const rootReducer = combineReducers({
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
 let App = () => {
+  StatusBar.setBarStyle("dark-content");
+
   return (
     <Provider store={store}>
       <Navigator
