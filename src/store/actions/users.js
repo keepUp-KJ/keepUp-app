@@ -15,7 +15,7 @@ import { navigate } from "../../navigation/navigationRef";
 import { AsyncStorage } from "react-native";
 
 export const login = (email, password) => async (dispatch) => {
-  fetch("http://localhost:3000/users/login", {
+  fetch("https://rocky-mesa-61495.herokuapp.com/users/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 export const signup = (email, password, confPassword) => async (dispatch) => {
-  fetch("http://localhost:3000/users", {
+  fetch("https://rocky-mesa-61495.herokuapp.com/users", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -87,7 +87,7 @@ export const tryLocalSignin = () => async (dispatch) => {
 };
 
 export const verifyEmail = (email, code) => async (dispatch) => {
-  fetch("http://localhost:3000/users/verify-email", {
+  fetch("https://rocky-mesa-61495.herokuapp.com/users/verify-email", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -132,7 +132,7 @@ export const signout = () => async (dispatch) => {
 };
 
 export const forgotPassword = (email) => async (dispatch) => {
-  fetch("http://localhost:3000/users/forgot-password", {
+  fetch("https://rocky-mesa-61495.herokuapp.com/users/forgot-password", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -154,7 +154,7 @@ export const forgotPassword = (email) => async (dispatch) => {
 export const renewPassword = (email, password, confPassword) => async (
   dispatch
 ) => {
-  fetch(`http://localhost:3000/users/renew-password`, {
+  fetch(`https://rocky-mesa-61495.herokuapp.com/users/renew-password`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

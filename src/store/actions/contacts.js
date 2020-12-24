@@ -26,7 +26,7 @@ export const syncContacts = () => async (dispatch) => {
 };
 
 export const getContactDecisions = (id) => async (dispatch) => {
-  fetch(`http://localhost:3000/users/${id}/contacts`, {
+  fetch(`https://rocky-mesa-61495.herokuapp.com/users/${id}/contacts`, {
     method: "GET",
   })
     .then((res) => res.json())

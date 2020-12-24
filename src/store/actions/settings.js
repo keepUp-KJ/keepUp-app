@@ -2,7 +2,7 @@ export const GET_SETTINGS = "GET_SETTINGS";
 export const UPDATE_SETTINGS = "UPDATE_SETTINGS";
 
 export const getSettings = (id) => async (dispatch) => {
-  fetch(`http://localhost:3000/users/${id}/settings`, {
+  fetch(`https://rocky-mesa-61495.herokuapp.com/users/${id}/settings`, {
     method: "GET",
   })
     .then((res) => res.json())
@@ -15,7 +15,7 @@ export const getSettings = (id) => async (dispatch) => {
 };
 
 export const updateSettings = (id, settings) => async (dispatch) => {
-  fetch(`http://localhost:3000/users/${id}/settings`, {
+  fetch(`https://rocky-mesa-61495.herokuapp.com/users/${id}/settings`, {
     method: "PATCH",
     body: JSON.stringify({
       settings,

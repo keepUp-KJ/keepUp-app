@@ -17,7 +17,7 @@ export const getReminders = (userId) => async (dispatch) => {
           reminders: JSON.parse(result),
         });
       } else {
-        fetch(`http://localhost:3000/reminders/${userId}`, {
+        fetch(`https://rocky-mesa-61495.herokuapp.com/reminders/${userId}`, {
           method: "GET",
         })
           .then((res) => res.json())
@@ -35,7 +35,7 @@ export const getReminders = (userId) => async (dispatch) => {
 export const addReminder = (date, contact, occasion, notify) => async (
   dispatch
 ) => {
-  fetch("https://keep-up-mock.herokuapp.com/api/reminders", {
+  fetch("https://rocky-mesa-61495.herokuapp.com/api/reminders", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -63,7 +63,7 @@ export const addReminder = (date, contact, occasion, notify) => async (
 };
 
 export const setupAccount = (contacts, userId) => async (dispatch) => {
-  fetch("http://localhost:3000/contacts", {
+  fetch("https://rocky-mesa-61495.herokuapp.com/contacts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
