@@ -1,14 +1,16 @@
 import React from "react";
-import { View, StyleSheet, Text, SafeAreaView } from "react-native";
+import { View, StyleSheet, Text, SafeAreaView, FlatList } from "react-native";
 import Colors from "../constants/Colors";
 import Header from "../components/Header";
 import moment from "moment";
 import MainCalendar from "../components/MainCalendar";
 import TabNav from "../components/TabNav";
+import { connect } from "react-redux";
+import Task from "../components/Task";
 
 class CalendarScreen extends React.Component {
   state = {
-    date: moment().format("DD MMMM YYYY"),
+    date: moment().format("MMM DD, YYYY"),
     markedDates: {},
   };
 
@@ -43,19 +45,26 @@ class CalendarScreen extends React.Component {
               this.getSelectedDayEvents(day.dateString);
               this.setState({
                 date:
+                  new Intl.DateTimeFormat("en-US", { month: "short" }).format(
+                    date
+                  ) +
+                  " " +
                   day.day +
-                  " " +
-                  new Intl.DateTimeFormat("en-US", {
-                    month: "long",
-                  }).format(date) +
-                  " " +
+                  ", " +
                   day.year,
               });
             }}
           />
         </View>
-        <View style={{ flex: 0.3 }}>
-          {/* <Text style={styles.date}>{this.state.date.toString()}</Text> */}
+        <View style={{ flex: 0.45 }}>
+          <Text style={styles.date}>{this.state.date.toString()}</Text>
+          <FlatList
+            data={this.props.reminders.filter(
+              (reminder) => reminder.date === this.state.date.toString()
+            )}
+            renderItem={(itemData) => <Task reminder={itemData.item} />}
+            keyExtractor={(item) => item._id || item.contacts[0].id}
+          />
         </View>
         <TabNav active="calendar" />
       </SafeAreaView>
@@ -72,19 +81,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   calendar: {
-    flex: 0.55,
+    flex: 0.4,
   },
   title: {
     fontSize: 30,
     fontFamily: "Futura",
   },
   date: {
-    fontSize: 24,
+    fontSize: 20,
     fontFamily: "Futura",
-    color: Colors.secondary,
-    textAlign: "center",
-    fontWeight: "700",
+    marginHorizontal: 30,
   },
 });
 
-export default CalendarScreen;
+const mapStateToProps = (state) => ({
+  reminders: state.reminders.reminders,
+});
+
+export default connect(mapStateToProps)(CalendarScreen);

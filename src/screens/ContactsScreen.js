@@ -107,7 +107,7 @@ class ContactsScreen extends React.Component {
             close={() => this.setState({ visible: false, activeContact: null })}
           />
         )}
-        <View style={{ ...styles.headerContainer, flex: 0.07 }}>
+        <View style={{ ...styles.headerContainer, flex: 0.08 }}>
           {this.state.search ? (
             <View style={styles.searchContainer}>
               <Ionicons
@@ -168,7 +168,7 @@ class ContactsScreen extends React.Component {
             />
           )}
         </View>
-        <View style={{ flex: 0.1 }}>
+        <View style={{ flex: 0.11 }}>
           <Menu
             active={this.state.activeTab}
             onChange={(activeTab) => {

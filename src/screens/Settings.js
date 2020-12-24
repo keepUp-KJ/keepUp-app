@@ -29,7 +29,7 @@ class Settings extends React.Component {
               this.props.navigation.navigate("General");
             }}
           >
-            <View style={{ ...styles.icon, backgroundColor: Colors.secondary }}>
+            <View style={{ ...styles.icon, backgroundColor: Colors.babyBlue }}>
               <Octicons name="settings" size={30} color="white" />
             </View>
             <Text style={styles.iconText}>General</Text>
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 10,
+    marginVertical: 15,
     borderRadius: 20,
   },
   icon: {

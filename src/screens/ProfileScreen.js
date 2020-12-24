@@ -40,11 +40,11 @@ class ProfileScreen extends React.Component {
         <View style={styles.body}>
           <View style={styles.labelContainer}>
             <Text style={styles.label}>First Name</Text>
-            <Text style={styles.text}>Basha</Text>
+            <Text style={styles.text}>Khaled</Text>
           </View>
           <View style={styles.labelContainer}>
             <Text style={styles.label}>Last Name</Text>
-            <Text style={styles.text}>Khokha</Text>
+            <Text style={styles.text}>Magued</Text>
           </View>
           <View style={styles.labelContainer}>
             <Text style={styles.label}>Email</Text>
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: "Futura",
     fontSize: 16,
-    color: Colors.secondary,
+    color: Colors.primaryColor,
     marginBottom: 5,
   },
   labelContainer: {

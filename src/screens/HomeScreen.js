@@ -42,7 +42,7 @@ class HomeScreen extends React.Component {
             <Text style={styles.date}>{today}</Text>
             <Text style={styles.today}>Today</Text>
           </View>
-          <View style={{ flex: 0.1 }}>
+          <View style={{ flex: 0.12 }}>
             <Calendar
               events={events}
               height={100}
@@ -51,10 +51,12 @@ class HomeScreen extends React.Component {
               style={{ alignSelf: "center", marginLeft: -50 }}
             />
           </View>
-          <View style={{ flex: 0.45 }}>
+          <View style={{ flex: 0.73 }}>
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={this.props.reminders}
+              data={this.props.reminders.filter(
+                (reminder) => reminder.date === today
+              )}
               renderItem={(itemData) => (
                 <Task
                   reminder={itemData.item}
@@ -63,7 +65,7 @@ class HomeScreen extends React.Component {
                   }}
                 />
               )}
-              keyExtractor={(item) => item.text}
+              keyExtractor={(item) => item._id || item.contacts[0].id}
             />
           </View>
         </View>

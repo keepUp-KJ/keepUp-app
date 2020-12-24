@@ -12,7 +12,7 @@ const Contact = (props) => {
             ? props.frequency === "weekly"
               ? Colors.blue
               : props.frequency === "monthly"
-              ? Colors.tomato
+              ? Colors.babyBlue
               : Colors.primaryColor
             : "#e6e6e6",
       }}

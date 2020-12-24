@@ -15,7 +15,7 @@ class ConfirmSelectionScreen extends React.Component {
           itemData.item.frequency === "weekly"
             ? Colors.blue
             : itemData.item.frequency === "monthly"
-            ? Colors.tomato
+            ? Colors.babyBlue
             : Colors.primaryColor,
       }}
     >

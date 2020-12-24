@@ -8,20 +8,20 @@ const SettingsItem = (props) => {
     <View style={{ marginVertical: 10 }}>
       <View style={styles.container}>
         {/* text area */}
-        <View style={{ marginHorizontal: 20, flex: 0.55 }}>
+        <View style={{ marginHorizontal: 20 }}>
           <Text style={{ ...styles.title, color: props.titleColor }}>
             {props.title}{" "}
           </Text>
         </View>
 
         {/* dropdown or switch */}
-        <View style={{ flex: 0.35, alignItems: "flex-end" }}>
+        <View style={{ flex: 0.9, alignItems: "flex-end" }}>
           {props.switch ? (
             <Switch
               style={{ marginVertical: 15 }}
               trackColor={{
                 false: Colors.secondary,
-                true: Colors.tomato,
+                true: Colors.primaryColor,
               }}
               thumbColor={"white"}
               ios_backgroundColor="white"
@@ -29,31 +29,38 @@ const SettingsItem = (props) => {
               value={props.value}
             />
           ) : null}
-          {props.dropdown ? (
-            <View style={{ width: "100%" }}>
-              <DropDownPicker
-                style={{ borderWidth: 0 }}
-                items={props.dropdownItems}
-                defaultValue={props.value}
-                containerStyle={{ height: 50 }}
-                itemStyle={{ justifyContent: "flex-start" }}
-                labelStyle={{
-                  color: Colors.secondary,
-                  fontFamily: "Futura",
-                  fontSize: 10,
-                  textAlign: "center",
-                }}
-                showArrow={false}
-                selectedLabelStyle={{ fontWeight: "700" }}
-                onChangeItem={(item) => props.onChangeItem(item)}
-              />
-            </View>
-          ) : null}
         </View>
       </View>
+
       <Text style={styles.text} numberOfLines={3}>
         {props.text}
       </Text>
+      {props.dropdown ? (
+        <View style={{ width: "80%", marginHorizontal: 20 }}>
+          <DropDownPicker
+            style={{ borderWidth: 0 }}
+            items={props.dropdownItems}
+            defaultValue={props.value}
+            containerStyle={{
+              ...styles.input,
+              height: 45,
+              marginVertical: 15,
+            }}
+            itemStyle={{ justifyContent: "flex-start" }}
+            labelStyle={{
+              color: Colors.secondary,
+              fontFamily: "Futura",
+              fontSize: 12,
+            }}
+            dropDownStyle={{ marginTop: 5, marginLeft: 20 }}
+            arrowSize={18}
+            arrowStyle={{ alignSelf: "center" }}
+            showArrow={false}
+            selectedLabelStyle={{ fontWeight: "700" }}
+            onChangeItem={(item) => props.onChangeItem(item)}
+          />
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -66,6 +73,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontFamily: "Futura",
+    marginBottom: 10,
   },
   text: {
     fontFamily: "Futura",
@@ -73,6 +81,13 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
     marginHorizontal: 20,
     width: "60%",
+  },
+  input: {
+    borderWidth: 0.5,
+    borderRadius: 25,
+    paddingHorizontal: 20,
+    marginVertical: 12,
+    borderColor: Colors.secondary,
   },
 });
 

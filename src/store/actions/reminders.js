@@ -6,25 +6,30 @@ import { navigate } from "../../navigation/navigationRef";
 import moment from "moment";
 
 export const getReminders = (userId) => async (dispatch) => {
+  console.log();
+
   await AsyncStorage.getItem(
     `@KeepUp:${userId}/ContactReminders`,
     (err, result) => {
-      dispatch({
-        type: SET_REMINDERS,
-        reminders: JSON.parse(result),
-      });
+      if (result) {
+        dispatch({
+          type: SET_REMINDERS,
+          reminders: JSON.parse(result),
+        });
+      } else {
+        fetch(`http://localhost:3000/reminders/${userId}`, {
+          method: "GET",
+        })
+          .then((res) => res.json())
+          .then((json) => {
+            dispatch({
+              type: SET_REMINDERS,
+              reminders: json.reminders,
+            });
+          });
+      }
     }
   );
-  // fetch("https://keep-up-mock.herokuapp.com/api/reminders", {
-  //   method: "GET",
-  // })
-  //   .then((res) => res.json())
-  //   .then((json) => {
-  //     dispatch({
-  //       type: SET_REMINDERS,
-  //       reminders: json.reminders,
-  //     });
-  //   });
 };
 
 export const addReminder = (date, contact, occasion, notify) => async (
@@ -74,12 +79,21 @@ export const setupAccount = (contacts, userId) => async (dispatch) => {
         const contactReminders = [];
         contacts.map((contact) => {
           const reminder = {
-            start: moment().format("DD-MMM-YYYY"),
-            contactId: contact.contact.id,
-            text: `Call ${
-              contact.contact.firstName + " " + contact.contact.lastName
-            }`,
-            frequency: contact.frequency,
+            date:
+              contact.frequency === "weekly"
+                ? moment().add(7, "days").format("MMM DD, YYYY")
+                : contact.frequency === "monthly"
+                ? moment().add(30, "days").format("MMM DD, YYYY")
+                : moment().format("MMM DD, YYYY"),
+            contacts: [
+              {
+                id: contact.contact.id,
+                firstName: contact.contact.firstName,
+                lastName: contact.contact.lastName,
+              },
+            ],
+            occasion: null,
+            notify: "On the same day",
             completed: false,
           };
           contactReminders.push(reminder);

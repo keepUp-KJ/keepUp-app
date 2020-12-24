@@ -36,9 +36,9 @@ const Tab = (props) => {
         </View>
       ) : (
         <View style={styles.circle}>
-          <View style={styles.smallCircle}>
-            <Ionicons name={props.iconName} size={40} color="white" />
-          </View>
+          {/* <View style={styles.smallCircle}> */}
+          <Ionicons name={props.iconName} size={50} color="white" />
+          {/* </View> */}
         </View>
       )}
     </TouchableOpacity>
@@ -62,13 +62,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primaryColor,
   },
   circle: {
+    backgroundColor: Colors.primaryColor,
     marginTop: -50,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 40,
     width: 80,
     height: 80,
-    backgroundColor: "white",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

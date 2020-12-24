@@ -13,13 +13,44 @@ import SettingsItem from "../components/SettingsItem";
 
 class GeneralSettings extends React.Component {
   state = {
-    birthday: false,
-    dailyCalls: false,
-    incompleteTask: false,
+    birthday: "On the same day",
+    dailyCalls: "On the same day",
+    incompleteTask: "One day after",
   };
-  componentDidMount() {}
 
   render() {
+    let options = [
+      {
+        label: "On the same day",
+        value: "On the same day",
+      },
+      {
+        label: "One day before",
+        value: "One day before",
+      },
+      {
+        label: "One week before",
+        value: "One week before",
+      },
+      {
+        label: "None",
+        value: "None",
+      },
+    ];
+    let incompleteOptions = [
+      {
+        label: "One day after",
+        value: "One day after",
+      },
+      {
+        label: "One week after",
+        value: "One week after",
+      },
+      {
+        label: "None",
+        value: "None",
+      },
+    ];
     return (
       <SafeAreaView style={styles.screen}>
         <View style={styles.header}>
@@ -39,7 +70,47 @@ class GeneralSettings extends React.Component {
             <Text style={styles.text}>General</Text>
           </View>
         </View>
-        <View style={styles.body}></View>
+        <View style={styles.body}>
+          <SettingsItem
+            dropdown
+            dropdownItems={options}
+            titleColor={Colors.babyBlue}
+            title="Birthday reminder"
+            text="Reminder of your accepted contacts birthdays"
+            value={this.state.birthday}
+            onChangeItem={(item) => {
+              this.setState({
+                birthday: item.value,
+              });
+            }}
+          />
+          <SettingsItem
+            dropdown
+            dropdownItems={options}
+            titleColor={Colors.babyBlue}
+            title="Daily Calls reminder"
+            text="Reminder of your accepted contacts birthdays"
+            value={this.state.dailyCalls}
+            onChangeItem={(item) => {
+              this.setState({
+                dailyCalls: item.value,
+              });
+            }}
+          />
+          <SettingsItem
+            dropdown
+            dropdownItems={incompleteOptions}
+            titleColor={Colors.babyBlue}
+            title="Incomplete Task reminder"
+            text="Reminder of your accepted contacts birthdays"
+            value={this.state.incompleteTask}
+            onChangeItem={(item) => {
+              this.setState({
+                incompleteTask: item.value,
+              });
+            }}
+          />
+        </View>
       </SafeAreaView>
     );
   }
@@ -51,7 +122,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 0.3,
-    backgroundColor: Colors.secondary,
+    backgroundColor: Colors.babyBlue,
     marginTop: -50,
   },
   container: {
@@ -66,6 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
   },
   body: {
+    marginVertical: 20,
     flex: 0.7,
   },
 });

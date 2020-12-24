@@ -31,7 +31,12 @@ const Task = (props) => {
             borderRadius: 10,
           }}
         />
-        <Text style={styles.taskText}>{props.reminder.text}</Text>
+        <Text style={styles.taskText}>
+          Call{" "}
+          {props.reminder.contacts[0].firstName +
+            " " +
+            props.reminder.contacts[0].lastName}
+        </Text>
       </View>
     </TouchableOpacity>
   );
