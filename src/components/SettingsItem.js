@@ -31,19 +31,19 @@ const SettingsItem = (props) => {
           ) : null}
         </View>
       </View>
-
       <Text style={styles.text} numberOfLines={3}>
         {props.text}
       </Text>
       {props.dropdown ? (
         <View style={{ width: "80%", marginHorizontal: 20 }}>
           <DropDownPicker
+            zIndex={2}
             style={{ borderWidth: 0 }}
             items={props.dropdownItems}
             defaultValue={props.value}
             containerStyle={{
               ...styles.input,
-              height: 45,
+              height: 40,
               marginVertical: 15,
             }}
             itemStyle={{ justifyContent: "flex-start" }}
@@ -52,10 +52,10 @@ const SettingsItem = (props) => {
               fontFamily: "Futura",
               fontSize: 12,
             }}
-            dropDownStyle={{ marginTop: 5, marginLeft: 20 }}
+            dropDownStyle={{ marginTop: 1, marginLeft: 20 }}
             arrowSize={18}
             arrowStyle={{ alignSelf: "center" }}
-            showArrow={false}
+            showArrow={true}
             selectedLabelStyle={{ fontWeight: "700" }}
             onChangeItem={(item) => props.onChangeItem(item)}
           />
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     width: "60%",
   },
   input: {
-    borderWidth: 0.5,
+    borderWidth: 1,
     borderRadius: 25,
     paddingHorizontal: 20,
     marginVertical: 12,

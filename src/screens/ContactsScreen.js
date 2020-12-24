@@ -198,7 +198,7 @@ class ContactsScreen extends React.Component {
               rejected ? this.renderRejectedContact : this.renderContact
             }
             numColumns={accepted || pending ? 3 : null}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => (pending ? item.contact.id : item.id)}
           />
         </View>
         <TabNav active="contacts" />

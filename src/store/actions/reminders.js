@@ -6,8 +6,6 @@ import { navigate } from "../../navigation/navigationRef";
 import moment from "moment";
 
 export const getReminders = (userId) => async (dispatch) => {
-  console.log();
-
   await AsyncStorage.getItem(
     `@KeepUp:${userId}/ContactReminders`,
     (err, result) => {

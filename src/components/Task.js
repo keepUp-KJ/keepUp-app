@@ -32,10 +32,8 @@ const Task = (props) => {
           }}
         />
         <Text style={styles.taskText}>
-          Call{" "}
-          {props.reminder.contacts[0].firstName +
-            " " +
-            props.reminder.contacts[0].lastName}
+          Call {props.reminder.contacts[0].firstName}{" "}
+          {props.reminder.contacts[0].lastName}
         </Text>
       </View>
     </TouchableOpacity>

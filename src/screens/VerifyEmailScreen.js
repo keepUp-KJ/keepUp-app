@@ -83,7 +83,7 @@ class VerifyEmailScreen extends React.Component {
                 bold
                 onPress={() =>
                   this.props
-                    .verify(this.props.user._id, this.state.code)
+                    .verify(this.props.user.email, this.state.code)
                     .then(() => {
                       this.props.navigation.navigate("PickContacts", {
                         userId: this.props.user._id,

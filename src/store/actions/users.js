@@ -88,14 +88,14 @@ export const tryLocalSignin = () => async (dispatch) => {
   }
 };
 
-export const verifyEmail = (userId, code) => async (dispatch) => {
+export const verifyEmail = (email, code) => async (dispatch) => {
   fetch("https://rocky-mesa-61495.herokuapp.com/users/verify-email", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      userId,
+      email,
       code,
     }),
   })

@@ -56,7 +56,7 @@ class CalendarScreen extends React.Component {
             }}
           />
         </View>
-        <View style={{ flex: 0.45 }}>
+        <View style={{ flex: 0.35 }}>
           <Text style={styles.date}>{this.state.date.toString()}</Text>
           <FlatList
             data={this.props.reminders.filter(
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   calendar: {
-    flex: 0.4,
+    flex: 0.5,
   },
   title: {
     fontSize: 30,
