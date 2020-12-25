@@ -21,8 +21,8 @@ const rootReducer = combineReducers({
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
 Fonts.loadAsync({
-  regular: require("./assets/Roboto-Regular.ttf"),
-  bold: require("./assets/Roboto-Bold.ttf"),
+  regular: require("./assets/Lato-Regular.ttf"),
+  bold: require("./assets/Lato-Black.ttf"),
 });
 
 let App = () => {

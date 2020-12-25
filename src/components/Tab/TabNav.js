@@ -10,7 +10,7 @@ const TabNav = (props) => {
     <View style={styles.menu}>
       <Tab
         text="Home"
-        iconName="ios-home"
+        iconName="md-home"
         active={active === "home"}
         onPress={() => {
           setActive("home");
@@ -19,7 +19,7 @@ const TabNav = (props) => {
       />
       <Tab
         text="Contacts"
-        iconName="ios-contacts"
+        iconName="md-contacts"
         active={active === "contacts"}
         onPress={() => {
           setActive("contacts");
@@ -35,7 +35,7 @@ const TabNav = (props) => {
       />
       <Tab
         text="Calendar"
-        iconName="ios-calendar"
+        iconName="md-calendar"
         active={active === "calendar"}
         onPress={() => {
           setActive("calendar");
@@ -44,7 +44,7 @@ const TabNav = (props) => {
       />
       <Tab
         text="Settings"
-        iconName="ios-settings"
+        iconName="md-settings"
         active={active === "settings"}
         onPress={() => {
           setActive("settings");
