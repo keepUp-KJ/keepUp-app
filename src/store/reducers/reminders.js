@@ -15,6 +15,7 @@ const remindersReducer = (state = initialState, action) => {
     }
     case DONE: {
       return {
+        ...state,
         loading: false,
       };
     }

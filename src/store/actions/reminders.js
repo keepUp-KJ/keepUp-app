@@ -108,6 +108,7 @@ export const setupAccount = (contacts, userId) => async (dispatch) => {
         dispatch({
           type: DONE,
         });
+        navigate("Home");
       }
     });
 };

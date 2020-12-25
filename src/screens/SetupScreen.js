@@ -6,25 +6,17 @@ import { setupAccount } from "../store/actions/reminders";
 import Colors from "../constants/Colors";
 
 class SetupScreen extends React.Component {
-  state = { loading: true };
   componentDidMount() {
-    this.props
-      .setup(
-        this.props.contacts.filter((contact) => contact.accepted === true),
-        this.props.user._id
-      )
-      .then(() => {
-        setTimeout(() => {
-          this.setState({ loading: false });
-          this.props.navigation.navigate("Home");
-        }, 2500);
-      });
+    this.props.setup(
+      this.props.contacts.filter((contact) => contact.accepted === true),
+      this.props.user._id
+    );
   }
 
   render() {
     return (
       <SafeAreaView style={styles.screen}>
-        {this.state.loading ? (
+        {this.props.loading ? (
           <View>
             <ActivityIndicator size="large" color={Colors.primaryColor} />
             <Text style={styles.text}>Setting Up {"\n"} Your Account</Text>
