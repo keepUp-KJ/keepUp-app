@@ -8,7 +8,7 @@ import LoadingScreen from "../screens/Signup/LoadingScreen";
 import PickContactsScreen from "../screens/AccountSetup/PickContactsScreen";
 import PickWeeklyContacts from "../screens/AccountSetup/PickWeeklyContacts";
 import PickMonthlyContacts from "../screens/AccountSetup/PickMonthlyContacts";
-import ConfirmSelectionScreen from "../screens/AccountSetupConfirmSelectionScreen";
+import ConfirmSelectionScreen from "../screens/AccountSetup/ConfirmSelectionScreen";
 import SetupScreen from "../screens/AccountSetup/SetupScreen";
 
 import ForgotPasswordScreen from "../screens/PasswordRenewal/ForgotPasswordScreen";
