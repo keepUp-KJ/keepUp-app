@@ -16,13 +16,15 @@ import Header from "../components/Header";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
-import { addContactsToReminder } from "../store/actions/reminders";
+import { addContactsToReminder, addReminder } from "../store/actions/reminders";
 import DateTimePicker from "@react-native-community/datetimepicker";
 class AddReminderScreen extends React.Component {
   state = {
     date: new Date(),
     show: false,
-    notify: "1",
+    notify: "On the same day",
+    open: false,
+    title: "",
   };
 
   render() {
@@ -34,19 +36,19 @@ class AddReminderScreen extends React.Component {
     let dropdownItems = [
       {
         label: "On the same day",
-        value: "1",
+        value: "On the same day",
       },
       {
         label: "One day before",
-        value: "2",
+        value: "One day before",
       },
       {
         label: "One week before",
-        value: "3",
+        value: "One week before",
       },
       {
         label: "None",
-        value: "4",
+        value: "None",
       },
     ];
     return (
@@ -59,15 +61,18 @@ class AddReminderScreen extends React.Component {
           <View style={styles.header}>
             <Header
               leftComponent={
-                <Ionicons
-                  name="ios-arrow-back"
-                  size={24}
-                  color="grey"
-                  style={{ marginLeft: 15 }}
+                <TouchableOpacity
                   onPress={() => {
                     this.props.navigation.navigate("Home");
                   }}
-                />
+                >
+                  <Ionicons
+                    name="ios-arrow-back"
+                    size={24}
+                    color="grey"
+                    style={{ marginLeft: 15 }}
+                  />
+                </TouchableOpacity>
               }
               centerComponent={
                 <Text style={styles.headerText}>New Reminder</Text>
@@ -79,15 +84,23 @@ class AddReminderScreen extends React.Component {
               title="Event Title"
               placeholder="Add event title"
               auto={true}
+              value={this.state.title}
             />
             <View style={styles.container}>
               <Text style={styles.text}>Date</Text>
             </View>
             <TouchableOpacity
               activeOpacity={0.8}
-              style={styles.dateContainer}
+              style={{
+                ...styles.dateContainer,
+                borderColor: this.state.show
+                  ? Colors.primaryColor
+                  : Colors.secondary,
+                borderWidth: this.state.show ? 2 : 0.5,
+              }}
               onPress={() => {
                 this.setState({ show: !this.state.show });
+                Keyboard.dismiss();
               }}
             >
               <Text style={styles.text}>{this.state.date.toDateString()}</Text>
@@ -112,14 +125,23 @@ class AddReminderScreen extends React.Component {
               items={dropdownItems}
               containerStyle={{
                 ...styles.input,
-                height: 45,
-                marginVertical: 15,
+                borderWidth: this.state.open ? 2 : 0.5,
+                borderColor: this.state.open
+                  ? Colors.primaryColor
+                  : Colors.secondary,
               }}
               itemStyle={{ justifyContent: "flex-start" }}
               labelStyle={{ color: Colors.secondary, fontFamily: "Futura" }}
-              dropDownStyle={{ marginTop: 5, marginLeft: 20 }}
+              dropDownStyle={{ marginTop: 7, marginLeft: 20 }}
               arrowSize={18}
               arrowStyle={{ alignSelf: "center" }}
+              onOpen={() => {
+                this.setState({ show: false, open: true });
+                Keyboard.dismiss();
+              }}
+              onClose={() => {
+                this.setState({ open: false });
+              }}
               onChangeItem={(item) => {
                 this.setState({ notify: item.value });
               }}
@@ -161,6 +183,14 @@ class AddReminderScreen extends React.Component {
               title="Create reminder"
               btnColor={Colors.primaryColor}
               style={{ width: "80%", alignSelf: "center" }}
+              onPress={() => {
+                this.props.create(
+                  this.state.date,
+                  this.props.contacts,
+                  this.state.title,
+                  this.state.notify
+                );
+              }}
             />
           </View>
         </SafeAreaView>
@@ -205,13 +235,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   input: {
-    borderWidth: 0.5,
     borderRadius: 25,
     paddingHorizontal: 20,
     width: "100%",
     marginVertical: 12,
     padding: 2,
-    borderColor: Colors.secondary,
+    height: 45,
+    marginVertical: 15,
   },
   contactContainer: {
     width: 70,
@@ -225,7 +255,6 @@ const styles = StyleSheet.create({
   },
   dateContainer: {
     marginVertical: 5,
-    borderColor: Colors.secondary,
     borderWidth: 0.5,
     borderRadius: 25,
     padding: 10,
@@ -239,10 +268,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  contacts: state.reminders.contacts,
+});
 
 const mapDispatchToProps = {
   add: addContactsToReminder,
+  create: addReminder,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddReminderScreen);

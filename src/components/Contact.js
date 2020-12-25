@@ -14,7 +14,7 @@ const Contact = (props) => {
               : props.frequency === "monthly"
               ? Colors.babyBlue
               : Colors.primaryColor
-            : "#e6e6e6",
+            : "rgb(248, 249, 253)",
       }}
       activeOpacity={0.6}
       onPress={() => {

@@ -21,6 +21,7 @@ const Input = (props) => {
       <TextInput
         {...props}
         autoFocus={props.auto}
+        blurOnSubmit={true}
         onFocus={() => {
           setBorderColor(Colors.primaryColor);
           setBorderWidth(2);

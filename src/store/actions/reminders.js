@@ -1,6 +1,7 @@
 export const SET_REMINDERS = "SET_REMINDERS";
 export const CREATE_REMINDER = "CREATE_REMINDER";
 export const DONE = "DONE";
+export const ERROR = "ERROR";
 
 import { AsyncStorage } from "react-native";
 import { navigate } from "../../navigation/navigationRef";
@@ -35,7 +36,7 @@ export const getReminders = (userId) => async (dispatch) => {
   );
 };
 
-export const addReminder = (date, contact, occasion, notify) => async (
+export const addReminder = (date, contacts, occasion, notify) => async (
   dispatch
 ) => {
   fetch("https://rocky-mesa-61495.herokuapp.com/api/reminders", {
@@ -45,20 +46,19 @@ export const addReminder = (date, contact, occasion, notify) => async (
     },
     body: JSON.stringify({
       date,
-      contact,
+      contacts,
       occasion,
       notify,
     }),
   })
     .then((res) => res.json())
     .then((json) => {
-      if (json.response === "Success") {
+      if (json.error) {
+        dispatch({ type: ERROR, error: json.error });
+      } else {
         dispatch({
           type: CREATE_REMINDER,
-          date,
-          contact,
-          occasion,
-          notify,
+          reminder: json.reminder,
         });
         navigate("Home");
       }

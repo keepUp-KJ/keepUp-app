@@ -45,7 +45,7 @@ const Navigator = createSwitchNavigator(
     Profile: ProfileScreen,
   },
   {
-    // initialRouteName: "Setup",
+    // initialRouteName: "PickContacts",
   }
 );
 

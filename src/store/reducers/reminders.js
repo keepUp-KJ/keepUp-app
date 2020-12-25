@@ -3,6 +3,7 @@ import { SET_REMINDERS, DONE } from "../actions/reminders";
 const initialState = {
   reminders: [],
   loading: true,
+  contacts: [],
 };
 
 const remindersReducer = (state = initialState, action) => {
