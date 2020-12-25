@@ -1,13 +1,8 @@
 import React from "react";
-import {
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  View,
-  Dimensions,
-} from "react-native";
+import { TouchableOpacity, StyleSheet, View, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
+import TextComp from "../TextComp";
 
 const Tab = (props) => {
   return (
@@ -24,14 +19,14 @@ const Tab = (props) => {
             color={props.active ? Colors.primaryColor : Colors.secondary}
           />
           {Dimensions.get("window").height > 670 ? (
-            <Text
+            <TextComp
               style={{
                 ...styles.text,
                 color: props.active ? Colors.primaryColor : Colors.secondary,
               }}
             >
               {props.text}
-            </Text>
+            </TextComp>
           ) : null}
         </View>
       ) : (
@@ -78,9 +73,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     marginBottom: 5,
-  },
-  text: {
-    fontFamily: "Futura",
   },
 });
 

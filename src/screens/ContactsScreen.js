@@ -3,7 +3,6 @@ import {
   StyleSheet,
   SafeAreaView,
   View,
-  Text,
   FlatList,
   TouchableOpacity,
   Alert,
@@ -25,6 +24,7 @@ import {
 } from "../store/actions/contacts";
 import { Ionicons } from "@expo/vector-icons";
 import { ActivityIndicator } from "react-native";
+import TextComp from "../components/TextComp";
 
 class ContactsScreen extends React.Component {
   state = {
@@ -56,13 +56,13 @@ class ContactsScreen extends React.Component {
         });
       }}
     >
-      <Text style={styles.text}>
+      <TextComp style={styles.text}>
         {this.state.activeTab === "Pending"
           ? itemData.item.contact.firstName +
             " " +
             (itemData.item.contact.lastName || "")
           : itemData.item.firstName + " " + (itemData.item.lastName || "")}
-      </Text>
+      </TextComp>
     </TouchableOpacity>
   );
 
@@ -155,7 +155,11 @@ class ContactsScreen extends React.Component {
             </View>
           ) : (
             <Header
-              leftComponent={<Text style={styles.title}>Contacts</Text>}
+              leftComponent={
+                <TextComp bold style={styles.title}>
+                  Contacts
+                </TextComp>
+              }
               rightComponent={
                 <Ionicons
                   name="ios-search"
@@ -223,7 +227,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    fontFamily: "Futura",
   },
   searchContainer: {
     flexDirection: "row",
@@ -243,7 +246,6 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: "center",
-    fontFamily: "Futura",
     color: Colors.secondary,
     fontSize: 14,
     paddingHorizontal: 5,

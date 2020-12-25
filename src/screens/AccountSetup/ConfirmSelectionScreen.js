@@ -1,10 +1,11 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, Text, FlatList, View } from "react-native";
+import { SafeAreaView, StyleSheet, FlatList, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import Colors from "../../constants/Colors";
 import Header from "../../components/Header";
 import { Ionicons } from "@expo/vector-icons";
+import TextComp from "../../components/TextComp";
 
 class ConfirmSelectionScreen extends React.Component {
   renderContact = (itemData) => (
@@ -19,7 +20,9 @@ class ConfirmSelectionScreen extends React.Component {
             : Colors.primaryColor,
       }}
     >
-      <Text style={styles.contactText}>{itemData.item.contact.name}</Text>
+      <TextComp style={styles.contactText}>
+        {itemData.item.contact.name}
+      </TextComp>
     </TouchableOpacity>
   );
 
@@ -39,7 +42,9 @@ class ConfirmSelectionScreen extends React.Component {
               />
             }
             centerComponent={
-              <Text style={styles.title}>Confirm Selection</Text>
+              <TextComp bold style={styles.title}>
+                Confirm Selection
+              </TextComp>
             }
           />
         </View>
@@ -62,7 +67,9 @@ class ConfirmSelectionScreen extends React.Component {
               this.props.navigation.navigate("Setup");
             }}
           >
-            <Text style={styles.btnText}>Confirm</Text>
+            <TextComp bold style={styles.btnText}>
+              Confirm
+            </TextComp>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -76,24 +83,15 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontFamily: "Futura",
     color: Colors.secondary,
   },
   text: {
-    fontFamily: "Futura",
     fontSize: 25,
     textAlign: "center",
   },
   list: {
     flex: 0.75,
     alignItems: "center",
-  },
-  headerText: {
-    fontSize: 18,
-    fontFamily: "Futura",
-    marginHorizontal: 15,
-    color: Colors.secondary,
-    fontWeight: "800",
   },
   container: {
     flex: 0.1,
@@ -113,7 +111,6 @@ const styles = StyleSheet.create({
   },
   initials: {
     fontSize: 18,
-    fontFamily: "Futura",
     color: Colors.secondary,
   },
   btn: {
@@ -124,8 +121,6 @@ const styles = StyleSheet.create({
   btnText: {
     color: "white",
     fontSize: 14,
-    fontFamily: "Futura",
-    fontWeight: "700",
     textAlign: "center",
   },
   footer: {

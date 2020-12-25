@@ -1,10 +1,6 @@
 import React from "react";
-import {
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-  ActivityIndicator,
-} from "react-native";
+import { TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
+import TextComp from "./TextComp";
 
 const Btn = (props) => {
   return (
@@ -21,17 +17,16 @@ const Btn = (props) => {
       {props.loading ? (
         <ActivityIndicator size="small" color="white" />
       ) : (
-        <Text
+        <TextComp
+          bold={props.bold}
           style={{
             color: props.textColor || "white",
             fontSize: props.fontSize,
-            fontWeight: props.bold ? "800" : "400",
             marginLeft: 5,
-            fontFamily: "Futura",
           }}
         >
           {props.title}
-        </Text>
+        </TextComp>
       )}
     </TouchableOpacity>
   );

@@ -1,6 +1,7 @@
 import React from "react";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import Colors from "../../constants/Colors";
+import TextComp from "../TextComp";
 
 const Contact = (props) => {
   return (
@@ -23,7 +24,7 @@ const Contact = (props) => {
           : props.removeContact();
       }}
     >
-      <Text
+      <TextComp
         style={{
           ...styles.text,
           color:
@@ -34,7 +35,7 @@ const Contact = (props) => {
         }}
       >
         {props.contact.contact.name}
-      </Text>
+      </TextComp>
     </TouchableOpacity>
   );
 };
@@ -50,7 +51,6 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: "center",
-    fontFamily: "Futura",
     fontSize: 14,
     paddingHorizontal: 5,
   },

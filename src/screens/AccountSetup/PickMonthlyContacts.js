@@ -2,7 +2,6 @@ import React from "react";
 import {
   View,
   StyleSheet,
-  Text,
   SafeAreaView,
   FlatList,
   TouchableOpacity,
@@ -15,6 +14,7 @@ import Header from "../../components/Header";
 import { connect } from "react-redux";
 import { addContact, removeContact } from "../../store/actions/contacts";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
+import TextComp from "../../components/TextComp";
 
 class PickMonthlyContacts extends React.Component {
   state = {
@@ -42,18 +42,18 @@ class PickMonthlyContacts extends React.Component {
 
   renderHeader = () => {
     return (
-      <Text style={styles.text}>
+      <TextComp style={styles.text}>
         Pick Contacts that you wish to contact{" "}
-        <Text
+        <TextComp
+          bold
           style={{
-            fontWeight: "700",
             color: Colors.babyBlue,
             fontSize: 17,
           }}
         >
           MONTHLY
-        </Text>
-      </Text>
+        </TextComp>
+      </TextComp>
     );
   };
 
@@ -94,15 +94,20 @@ class PickMonthlyContacts extends React.Component {
             }
             centerComponent={
               <View>
-                <Text style={styles.headerText}>PICK CONTACTS</Text>
-                <Text style={{ ...styles.headerText, color: Colors.babyBlue }}>
+                <TextComp bold style={styles.headerText}>
+                  PICK CONTACTS
+                </TextComp>
+                <TextComp
+                  bold
+                  style={{ ...styles.headerText, color: Colors.babyBlue }}
+                >
                   {this.props.monthlyContacts.length} CONTACTS SELECTED
-                </Text>
+                </TextComp>
               </View>
             }
             rightComponent={
               <TouchableOpacity onPress={this.alert}>
-                <Text style={styles.text}>Skip</Text>
+                <TextComp style={styles.text}>Skip</TextComp>
               </TouchableOpacity>
             }
           />
@@ -202,14 +207,11 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 14,
-    fontFamily: "Futura",
     color: Colors.secondary,
     textAlign: "center",
-    fontWeight: "700",
   },
   text: {
     fontSize: 14,
-    fontFamily: "Futura",
     color: Colors.secondary,
     textAlign: "center",
     marginBottom: 15,

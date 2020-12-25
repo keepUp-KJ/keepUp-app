@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, SafeAreaView, Text, FlatList } from "react-native";
+import { View, StyleSheet, SafeAreaView, FlatList } from "react-native";
 import TabNav from "../components/Tab/TabNav";
 import moment from "moment";
 import Colors from "../constants/Colors";
@@ -7,11 +7,13 @@ import Task from "../components/Task";
 import { connect } from "react-redux";
 import { getReminders } from "../store/actions/reminders";
 import { Calendar } from "react-native-event-week";
+import TextComp from "../components/TextComp";
 
 class HomeScreen extends React.Component {
   state = {
     date: new Date(),
   };
+
   componentDidMount() {
     this.props.get(this.props.user._id);
   }
@@ -39,8 +41,10 @@ class HomeScreen extends React.Component {
         {/* MAIN */}
         <View style={styles.main}>
           <View style={styles.head}>
-            <Text style={styles.date}>{today}</Text>
-            <Text style={styles.today}>Today</Text>
+            <TextComp style={styles.date}>{today}</TextComp>
+            <TextComp bold style={styles.today}>
+              Today
+            </TextComp>
           </View>
           <View style={{ flex: 0.12 }}>
             <Calendar
@@ -93,11 +97,9 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 16,
     color: Colors.secondary,
-    fontFamily: "Futura",
   },
   today: {
     fontSize: 35,
-    fontFamily: "Futura",
   },
 });
 

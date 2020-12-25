@@ -1,7 +1,8 @@
 import React from "react";
-import { View, StyleSheet, Text, Switch } from "react-native";
+import { View, StyleSheet, Switch } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import Colors from "../../constants/Colors";
+import TextComp from "../TextComp";
 
 const SettingsItem = (props) => {
   return (
@@ -9,9 +10,9 @@ const SettingsItem = (props) => {
       <View style={styles.container}>
         {/* text area */}
         <View style={{ marginHorizontal: 20 }}>
-          <Text style={{ ...styles.title, color: props.titleColor }}>
+          <TextComp style={{ ...styles.title, color: props.titleColor }}>
             {props.title}{" "}
-          </Text>
+          </TextComp>
         </View>
 
         {/* dropdown or switch */}
@@ -31,9 +32,9 @@ const SettingsItem = (props) => {
           ) : null}
         </View>
       </View>
-      <Text style={styles.text} numberOfLines={3}>
+      <TextComp style={styles.text} numberOfLines={3}>
         {props.text}
-      </Text>
+      </TextComp>
       {props.dropdown ? (
         <View style={{ width: "80%", marginHorizontal: 20 }}>
           <DropDownPicker
@@ -72,11 +73,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontFamily: "Futura",
     marginBottom: 10,
   },
   text: {
-    fontFamily: "Futura",
     fontSize: 14,
     color: Colors.secondary,
     marginHorizontal: 20,

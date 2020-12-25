@@ -1,16 +1,11 @@
 import React from "react";
-import {
-  SafeAreaView,
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { SafeAreaView, View, StyleSheet, TouchableOpacity } from "react-native";
 import Colors from "../../constants/Colors";
 import { Octicons, Ionicons } from "@expo/vector-icons";
 import TabNav from "../../components/Tab/TabNav";
 import { connect } from "react-redux";
 import { signout } from "../../store/actions/users";
+import TextComp from "../../components/TextComp";
 
 class Settings extends React.Component {
   componentDidMount() {}
@@ -19,7 +14,9 @@ class Settings extends React.Component {
     return (
       <SafeAreaView style={styles.screen}>
         <View style={styles.header}>
-          <Text style={styles.text}>Settings</Text>
+          <TextComp bold style={styles.text}>
+            Settings
+          </TextComp>
         </View>
         <View style={styles.body}>
           <TouchableOpacity
@@ -32,7 +29,7 @@ class Settings extends React.Component {
             <View style={{ ...styles.icon, backgroundColor: Colors.babyBlue }}>
               <Octicons name="settings" size={30} color="white" />
             </View>
-            <Text style={styles.iconText}>General</Text>
+            <TextComp style={styles.iconText}>General</TextComp>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -45,7 +42,7 @@ class Settings extends React.Component {
             <View style={{ ...styles.icon, backgroundColor: Colors.blue }}>
               <Octicons name="bell" size={30} color="white" />
             </View>
-            <Text style={styles.iconText}>Notifications</Text>
+            <TextComp style={styles.iconText}>Notifications</TextComp>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -58,7 +55,7 @@ class Settings extends React.Component {
             <View style={styles.icon}>
               <Octicons name="person" size={30} color="white" />
             </View>
-            <Text style={styles.iconText}>Profile</Text>
+            <TextComp style={styles.iconText}>Profile</TextComp>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -71,7 +68,7 @@ class Settings extends React.Component {
             <View style={{ ...styles.icon, backgroundColor: Colors.tomato }}>
               <Ionicons name="ios-exit" size={30} color="white" />
             </View>
-            <Text style={styles.iconText}>Logout</Text>
+            <TextComp style={styles.iconText}>Logout</TextComp>
           </TouchableOpacity>
         </View>
         <TabNav active="settings" />
@@ -109,11 +106,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primaryColor,
   },
   iconText: {
-    fontFamily: "Futura",
     fontSize: 16,
   },
   text: {
-    fontFamily: "Futura",
     fontSize: 35,
     marginTop: 20,
     textAlign: "center",

@@ -1,8 +1,7 @@
-import React, { Suspense } from "react";
+import React from "react";
 import {
   View,
   StyleSheet,
-  Text,
   SafeAreaView,
   TouchableWithoutFeedback,
   Keyboard,
@@ -13,6 +12,7 @@ import Input from "../../components/Input";
 import { Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { signup, hideError } from "../../store/actions/users";
+import TextComp from "../../components/TextComp";
 
 class SignupScreen extends React.Component {
   state = {
@@ -49,7 +49,9 @@ class SignupScreen extends React.Component {
 
           {/* Header */}
           <View style={{ ...styles.container, flex: 0.15 }}>
-            <Text style={styles.title}>CREATE{"\n"}ACCOUNT</Text>
+            <TextComp bold style={styles.title}>
+              CREATE{"\n"}ACCOUNT
+            </TextComp>
           </View>
 
           {/* Inputs */}
@@ -114,10 +116,10 @@ class SignupScreen extends React.Component {
               />
             </View>
 
-            <Text style={styles.termsText}>
+            <TextComp style={styles.termsText}>
               By creating an account you agree to our terms of service and
               privacy policy
-            </Text>
+            </TextComp>
           </View>
         </SafeAreaView>
       </TouchableWithoutFeedback>
@@ -136,9 +138,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     textAlign: "center",
-    fontWeight: "700",
     color: Colors.secondary,
-    fontFamily: "Futura",
   },
   footerContainer: {
     alignItems: "center",
@@ -151,7 +151,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     width: "60%",
     color: Colors.secondary,
-    fontFamily: "Futura",
   },
   errorText: {
     textAlign: "center",

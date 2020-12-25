@@ -1,14 +1,9 @@
 import React from "react";
-import {
-  SafeAreaView,
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { SafeAreaView, View, StyleSheet, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import TextComp from "../../components/TextComp";
 
 class ProfileScreen extends React.Component {
   state = {
@@ -34,25 +29,27 @@ class ProfileScreen extends React.Component {
             <Ionicons name="md-arrow-back" size={25} color="white" />
           </TouchableOpacity>
           <View style={styles.container}>
-            <Text style={styles.title}>Profile</Text>
+            <TextComp bold style={styles.title}>
+              Profile
+            </TextComp>
           </View>
         </View>
         <View style={styles.body}>
           <View style={styles.labelContainer}>
-            <Text style={styles.label}>First Name</Text>
-            <Text style={styles.text}>Khaled</Text>
+            <TextComp style={styles.label}>First Name</TextComp>
+            <TextComp style={styles.text}>Khaled</TextComp>
           </View>
           <View style={styles.labelContainer}>
-            <Text style={styles.label}>Last Name</Text>
-            <Text style={styles.text}>Magued</Text>
+            <TextComp style={styles.label}>Last Name</TextComp>
+            <TextComp style={styles.text}>Magued</TextComp>
           </View>
           <View style={styles.labelContainer}>
-            <Text style={styles.label}>Email</Text>
-            <Text style={styles.text}>{this.props.user.email}</Text>
+            <TextComp style={styles.label}>Email</TextComp>
+            <TextComp style={styles.text}>{this.props.user.email}</TextComp>
           </View>
           <View style={styles.labelContainer}>
-            <Text style={styles.label}>Mobile</Text>
-            <Text style={styles.text}>01063795325</Text>
+            <TextComp style={styles.label}>Mobile</TextComp>
+            <TextComp style={styles.text}>01063795325</TextComp>
           </View>
         </View>
       </SafeAreaView>
@@ -76,12 +73,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   text: {
-    fontFamily: "Futura",
     fontSize: 20,
   },
   title: {
     color: "white",
-    fontFamily: "Futura",
     fontSize: 35,
   },
   body: {
@@ -89,7 +84,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
   },
   label: {
-    fontFamily: "Futura",
     fontSize: 16,
     color: Colors.primaryColor,
     marginBottom: 5,

@@ -1,7 +1,8 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import Colors from "../../constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
+import TextComp from "../TextComp";
 
 const RejectedContact = (props) => {
   return (
@@ -12,15 +13,17 @@ const RejectedContact = (props) => {
         </View>
       </View>
       <View style={{ flex: 0.5 }}>
-        <Text style={styles.text}>
+        <TextComp style={styles.text} bold>
           {props.contact.firstName + " " + props.contact.lastName}
-        </Text>
+        </TextComp>
       </View>
       <TouchableOpacity
         style={{ flex: 0.3, alignItems: "flex-end" }}
         onPress={props.onPress}
       >
-        <Text style={{ ...styles.text, color: "#990000" }}>Unreject</Text>
+        <TextComp style={{ ...styles.text, color: "#990000" }} bold>
+          Unreject
+        </TextComp>
       </TouchableOpacity>
     </View>
   );
@@ -36,8 +39,6 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   text: {
-    fontFamily: "Futura",
-    fontWeight: "700",
     color: Colors.secondary,
   },
   circle: {

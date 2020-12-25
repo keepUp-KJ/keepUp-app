@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, SafeAreaView } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
 import Colors from "../../constants/Colors";
 import Header from "../../components/Header";
 import SettingsItem from "../../components/Settings/SettingsItem";
@@ -8,6 +8,7 @@ import { getSettings, updateSettings } from "../../store/actions/settings";
 import { signout } from "../../store/actions/users";
 import TabNav from "../../components/Tab/TabNav";
 import Btn from "../../components/Btn";
+import TextComp from "../../components/TextComp";
 class SettingsScreen extends React.Component {
   state = {
     settings: {},
@@ -74,11 +75,15 @@ class SettingsScreen extends React.Component {
         {/* back arrow */}
         <View style={styles.top}>
           <Header
-            centerComponent={<Text style={styles.title}>Settings</Text>}
+            centerComponent={
+              <TextComp bold style={styles.title}>
+                Settings
+              </TextComp>
+            }
           />
         </View>
         <View style={{ ...styles.container, flex: 0.05 }}>
-          <Text style={styles.headerText}>REMINDER</Text>
+          <TextComp style={styles.headerText}>REMINDER</TextComp>
         </View>
         <View style={{ flex: 0.3 }}>
           <SettingsItem
@@ -128,7 +133,7 @@ class SettingsScreen extends React.Component {
           />
         </View>
         <View style={{ ...styles.container, flex: 0.05 }}>
-          <Text style={styles.headerText}>NOTIFICATIONS</Text>
+          <TextComp style={styles.headerText}>NOTIFICATIONS</TextComp>
         </View>
         <View style={{ flex: 0.3 }}>
           <SettingsItem
@@ -211,11 +216,9 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 18,
-    fontFamily: "Futura",
     color: "white",
     textAlign: "left",
     marginHorizontal: 15,
-    fontWeight: "700",
   },
 });
 

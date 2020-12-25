@@ -1,6 +1,7 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import Colors from "../constants/Colors";
+import TextComp from "./TextComp";
 
 const IconButton = (props) => {
   return (
@@ -12,7 +13,7 @@ const IconButton = (props) => {
       >
         <View>{props.icon}</View>
       </TouchableOpacity>
-      <Text style={styles.text}>{props.title}</Text>
+      <TextComp style={styles.text}>{props.title}</TextComp>
     </View>
   );
 };
@@ -28,7 +29,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    fontFamily: "Futura",
     color: Colors.secondary,
   },
 });

@@ -49,7 +49,7 @@ const Navigator = createSwitchNavigator(
     Profile: ProfileScreen,
   },
   {
-    // initialRouteName: "PickContacts",
+    // initialRouteName: "RenewPassword",
   }
 );
 

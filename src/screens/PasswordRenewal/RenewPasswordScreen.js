@@ -2,7 +2,6 @@ import React from "react";
 import {
   View,
   StyleSheet,
-  Text,
   SafeAreaView,
   TouchableWithoutFeedback,
   Keyboard,
@@ -13,6 +12,7 @@ import Btn from "../../components/Btn";
 import Input from "../../components/Input";
 import { connect } from "react-redux";
 import { renewPassword } from "../../store/actions/users";
+import TextComp from "../../components/TextComp";
 
 class RenewPasswordScreen extends React.Component {
   state = {
@@ -39,22 +39,24 @@ class RenewPasswordScreen extends React.Component {
                 this.props.navigation.navigate("Login");
               }}
             >
-              <Text
+              <TextComp
                 name="md-arrow-back"
                 size={30}
                 style={{ color: Colors.secondary, fontFamily: "Futura" }}
               >
                 Cancel
-              </Text>
+              </TextComp>
             </TouchableOpacity>
           </View>
 
           {/* Header */}
           <View style={{ ...styles.container, flex: 0.2 }}>
-            <Text style={styles.title}>RENEW PASSWORD</Text>
-            <Text style={styles.body}>
+            <TextComp bold style={styles.title}>
+              RENEW PASSWORD
+            </TextComp>
+            <TextComp style={styles.body}>
               Enter new password for your account{" "}
-            </Text>
+            </TextComp>
           </View>
 
           {/* Input */}
@@ -116,10 +118,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     textAlign: "center",
-    fontWeight: "800",
     color: Colors.secondary,
     marginHorizontal: 14,
-    fontFamily: "Futura",
   },
   body: {
     fontSize: 16,
@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
     marginTop: 10,
     marginHorizontal: 70,
-    fontFamily: "Futura",
   },
   container: {
     justifyContent: "center",

@@ -2,7 +2,6 @@ import React from "react";
 import {
   View,
   StyleSheet,
-  Text,
   SafeAreaView,
   TouchableWithoutFeedback,
   Keyboard,
@@ -14,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import { connect } from "react-redux";
 import { forgotPassword, verifyEmail } from "../../store/actions/users";
+import TextComp from "../../components/TextComp";
 
 const mapStateToProps = (state) => ({
   confirm: state.users.confirm,
@@ -50,12 +50,14 @@ class ForgotPasswordScreen extends React.Component {
 
           {/* Header */}
           <View style={{ ...styles.container, flex: 0.2 }}>
-            <Text style={styles.title}>FORGOT YOUR PASSWORD?</Text>
-            <Text style={styles.body}>
+            <TextComp bold style={styles.title}>
+              FORGOT YOUR PASSWORD?
+            </TextComp>
+            <TextComp style={styles.body}>
               {this.props.confirm
                 ? `An email was sent to ${this.state.email} with the instructions. Enter the code sent to your inbox to proceed with the password renewal for your account.`
                 : "Confirm your email and we'll send the instructions"}
-            </Text>
+            </TextComp>
           </View>
 
           {/* Input */}
@@ -79,7 +81,9 @@ class ForgotPasswordScreen extends React.Component {
                       this.setState({ code });
                     }}
                   />
-                  <Text style={styles.errorStyle}>{this.state.error}</Text>
+                  <TextComp bold style={styles.errorStyle}>
+                    {this.state.error}
+                  </TextComp>
                 </View>
               ) : (
                 <Input
@@ -129,10 +133,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     textAlign: "center",
-    fontWeight: "800",
     color: Colors.secondary,
     marginHorizontal: 14,
-    fontFamily: "Futura",
   },
   body: {
     fontSize: 15,
@@ -140,7 +142,6 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
     marginTop: 10,
     marginHorizontal: 30,
-    fontFamily: "Futura",
   },
   container: {
     justifyContent: "center",
@@ -160,8 +161,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#990000",
     marginTop: 0,
-    fontWeight: "600",
-    fontFamily: "Futura",
   },
 });
 

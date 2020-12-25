@@ -1,15 +1,10 @@
 import React from "react";
-import {
-  SafeAreaView,
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { SafeAreaView, View, StyleSheet, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import SettingsItem from "../../components/Settings/SettingsItem";
+import TextComp from "../../components/TextComp";
 
 class GeneralSettings extends React.Component {
   state = {
@@ -51,6 +46,7 @@ class GeneralSettings extends React.Component {
         value: "None",
       },
     ];
+
     return (
       <SafeAreaView style={styles.screen}>
         <View style={styles.header}>
@@ -67,7 +63,9 @@ class GeneralSettings extends React.Component {
             <Ionicons name="md-arrow-back" size={25} color="white" />
           </TouchableOpacity>
           <View style={styles.container}>
-            <Text style={styles.text}>General</Text>
+            <TextComp bold style={styles.text}>
+              General
+            </TextComp>
           </View>
         </View>
         <View style={styles.body}>
@@ -133,7 +131,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "white",
-    fontFamily: "Futura",
     fontSize: 35,
   },
   body: {

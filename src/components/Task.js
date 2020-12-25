@@ -1,12 +1,7 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, Animated, TouchableOpacity } from "react-native";
 import Colors from "../constants/Colors";
+import TextComp from "./TextComp";
 
 const Task = (props) => {
   const _animatedWidth = new Animated.Value(0);
@@ -31,10 +26,10 @@ const Task = (props) => {
             borderRadius: 10,
           }}
         /> */}
-        <Text style={styles.taskText}>
+        <TextComp style={styles.taskText}>
           Call {props.reminder.contacts[0].firstName}{" "}
           {props.reminder.contacts[0].lastName}
-        </Text>
+        </TextComp>
       </View>
     </TouchableOpacity>
   );
@@ -55,7 +50,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 16,
     color: Colors.secondary,
-    fontFamily: "Futura",
   },
   container: { flexDirection: "row", alignItems: "center" },
 });

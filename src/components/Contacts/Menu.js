@@ -1,6 +1,7 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Colors from "../../constants/Colors";
+import TextComp from "../TextComp";
 
 const Menu = (props) => {
   const STATUS = ["Accepted", "Pending", "Rejected"];
@@ -15,17 +16,15 @@ const Menu = (props) => {
             borderBottomWidth: props.active === item ? 3 : 0,
           }}
         >
-          <Text
-            style={{
-              ...styles.text,
-              fontWeight: props.active === item ? "700" : null,
-            }}
+          <TextComp
+            style={styles.text}
+            bold={props.active === item}
             onPress={() => {
               props.onChange(item);
             }}
           >
             {item.toUpperCase()}
-          </Text>
+          </TextComp>
         </View>
       ))}
     </View>
@@ -48,7 +47,6 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.primaryColor,
   },
   text: {
-    fontFamily: "Futura",
     color: Colors.secondary,
     fontSize: 13,
   },

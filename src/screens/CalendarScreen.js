@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, SafeAreaView, FlatList } from "react-native";
+import { View, StyleSheet, SafeAreaView, FlatList } from "react-native";
 import Colors from "../constants/Colors";
 import Header from "../components/Header";
 import moment from "moment";
@@ -7,6 +7,7 @@ import MainCalendar from "../components/MainCalendar";
 import TabNav from "../components/Tab/TabNav";
 import { connect } from "react-redux";
 import Task from "../components/Task";
+import TextComp from "../components/TextComp";
 
 class CalendarScreen extends React.Component {
   state = {
@@ -33,7 +34,13 @@ class CalendarScreen extends React.Component {
       <SafeAreaView style={styles.screen}>
         {/* Header */}
         <View style={styles.header}>
-          <Header leftComponent={<Text style={styles.title}>Calendar</Text>} />
+          <Header
+            leftComponent={
+              <TextComp bold style={styles.title}>
+                Calendar
+              </TextComp>
+            }
+          />
         </View>
         <View style={styles.body}>
           <View style={styles.calendar}>
@@ -58,7 +65,9 @@ class CalendarScreen extends React.Component {
             />
           </View>
           <View style={styles.list}>
-            <Text style={styles.date}>{this.state.date.toString()}</Text>
+            <TextComp style={styles.date}>
+              {this.state.date.toString()}
+            </TextComp>
             <FlatList
               showsVerticalScrollIndicator={false}
               data={this.props.reminders.filter(
@@ -92,11 +101,9 @@ const styles = StyleSheet.create({
   list: { flex: 1 },
   title: {
     fontSize: 30,
-    fontFamily: "Futura",
   },
   date: {
     fontSize: 20,
-    fontFamily: "Futura",
     marginHorizontal: 30,
     marginBottom: 10,
   },

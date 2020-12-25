@@ -2,7 +2,6 @@ import React from "react";
 import {
   View,
   StyleSheet,
-  Text,
   SafeAreaView,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -19,6 +18,7 @@ import {
   hideLoginError,
 } from "../../store/actions/users";
 import { connect } from "react-redux";
+import TextComp from "../../components/TextComp";
 
 class LoginScreen extends React.Component {
   state = {
@@ -55,9 +55,12 @@ class LoginScreen extends React.Component {
         <SafeAreaView style={styles.screen}>
           {/* Title */}
           <View style={{ flex: 0.25, justifyContent: "center" }}>
-            <Text style={styles.title}>
-              Keep<Text style={{ color: Colors.primaryColor }}>Up</Text>
-            </Text>
+            <TextComp bold style={styles.title}>
+              Keep
+              <TextComp bold style={{ color: Colors.primaryColor }}>
+                Up
+              </TextComp>
+            </TextComp>
           </View>
 
           {/* Inputs */}
@@ -88,7 +91,7 @@ class LoginScreen extends React.Component {
                 this.props.navigation.navigate("ForgotPassword");
               }}
             >
-              <Text
+              <TextComp
                 style={{
                   textAlign: "center",
                   marginTop: 10,
@@ -96,10 +99,10 @@ class LoginScreen extends React.Component {
                 }}
               >
                 Forgot password
-                <Text style={{ fontFamily: "Arial" }}>?</Text>
-              </Text>
+                <TextComp style={{ fontFamily: "Arial" }}>?</TextComp>
+              </TextComp>
             </TouchableOpacity>
-            <Text style={styles.errorText}>{this.props.error}</Text>
+            <TextComp style={styles.errorText}>{this.props.error}</TextComp>
           </View>
 
           {/* Buttons */}
@@ -147,24 +150,15 @@ class LoginScreen extends React.Component {
 
           {/* Footer */}
           <View style={styles.footerContainer}>
-            <Text style={{ fontFamily: "Futura" }}>
-              Don't have an account
-              <Text style={{ fontFamily: "Arial" }}>? </Text>
-            </Text>
+            <TextComp>Don't have an account? </TextComp>
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("SignUp");
               }}
             >
-              <Text
-                style={{
-                  color: Colors.primaryColor,
-                  fontWeight: "700",
-                  fontFamily: "Futura",
-                }}
-              >
+              <TextComp bold style={{ color: Colors.primaryColor }}>
                 Sign Up
-              </Text>
+              </TextComp>
             </TouchableOpacity>
           </View>
         </SafeAreaView>
@@ -180,9 +174,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 50,
-    fontWeight: "800",
     color: Colors.secondary,
-    fontFamily: "Futura",
   },
   footerContainer: {
     flex: 0.25,

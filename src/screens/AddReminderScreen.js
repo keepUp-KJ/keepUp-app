@@ -3,7 +3,6 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  Text,
   TouchableWithoutFeedback,
   TouchableOpacity,
   Keyboard,
@@ -18,6 +17,7 @@ import { Ionicons } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
 import { addContactsToReminder, addReminder } from "../store/actions/reminders";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import TextComp from "../components/TextComp";
 class AddReminderScreen extends React.Component {
   state = {
     date: new Date(),
@@ -75,7 +75,7 @@ class AddReminderScreen extends React.Component {
                 </TouchableOpacity>
               }
               centerComponent={
-                <Text style={styles.headerText}>New Reminder</Text>
+                <TextComp style={styles.headerText}>New Reminder</TextComp>
               }
             />
           </View>
@@ -85,9 +85,12 @@ class AddReminderScreen extends React.Component {
               placeholder="Add event title"
               auto={true}
               value={this.state.title}
+              onChangeText={(title) => {
+                this.setState({ title });
+              }}
             />
             <View style={styles.container}>
-              <Text style={styles.text}>Date</Text>
+              <TextComp style={styles.text}>Date</TextComp>
             </View>
             <TouchableOpacity
               activeOpacity={0.8}
@@ -103,7 +106,9 @@ class AddReminderScreen extends React.Component {
                 Keyboard.dismiss();
               }}
             >
-              <Text style={styles.text}>{this.state.date.toDateString()}</Text>
+              <TextComp style={styles.text}>
+                {this.state.date.toDateString()}
+              </TextComp>
               <Ionicons
                 name={this.state.show ? "ios-arrow-up" : "ios-arrow-down"}
                 size={16}
@@ -131,7 +136,7 @@ class AddReminderScreen extends React.Component {
                   : Colors.secondary,
               }}
               itemStyle={{ justifyContent: "flex-start" }}
-              labelStyle={{ color: Colors.secondary, fontFamily: "Futura" }}
+              labelStyle={{ color: Colors.secondary, fontFamily: "regular" }}
               dropDownStyle={{ marginTop: 7, marginLeft: 20 }}
               arrowSize={18}
               arrowStyle={{ alignSelf: "center" }}
@@ -148,9 +153,9 @@ class AddReminderScreen extends React.Component {
             />
             <FlatList
               ListHeaderComponent={
-                <Text style={{ ...styles.text, marginVertical: 5 }}>
+                <TextComp style={{ ...styles.text, marginVertical: 5 }}>
                   Contacts
-                </Text>
+                </TextComp>
               }
               data={CONTACTS}
               keyExtractor={(item) => item.firstName}
@@ -169,10 +174,10 @@ class AddReminderScreen extends React.Component {
                   {itemData.index === 0 ? (
                     <Ionicons name="ios-add" size={40} color="#e6e6e6" />
                   ) : (
-                    <Text style={styles.contactText}>
+                    <TextComp style={styles.contactText}>
                       {itemData.item.firstName.charAt(0).toUpperCase() +
                         itemData.item.lastName.charAt(0).toUpperCase()}
-                    </Text>
+                    </TextComp>
                   )}
                 </TouchableOpacity>
               )}
@@ -210,18 +215,13 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 18,
-    fontFamily: "Futura",
-    fontWeight: "300",
   },
   text: {
     fontSize: 14,
-    fontFamily: "Futura",
-    fontWeight: "300",
     color: Colors.secondary,
   },
   contactText: {
     fontSize: 20,
-    fontFamily: "Futura",
     color: Colors.secondary,
   },
   body: {

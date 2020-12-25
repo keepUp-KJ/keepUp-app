@@ -2,7 +2,6 @@ import React from "react";
 import {
   View,
   StyleSheet,
-  Text,
   TouchableWithoutFeedback,
   SafeAreaView,
   Keyboard,
@@ -13,6 +12,7 @@ import OTPInputView from "@twotalltotems/react-native-otp-input";
 import Btn from "../../components/Btn";
 import { connect } from "react-redux";
 import { verifyEmail } from "../../store/actions/users";
+import TextComp from "../../components/TextComp";
 
 class VerifyEmailScreen extends React.Component {
   state = {
@@ -37,26 +37,24 @@ class VerifyEmailScreen extends React.Component {
                 this.props.navigation.navigate("Login");
               }}
             >
-              <Text style={{ color: Colors.secondary, fontFamily: "Futura" }}>
-                Cancel
-              </Text>
+              <TextComp style={{ color: Colors.secondary }}>Cancel</TextComp>
             </TouchableOpacity>
           </View>
 
           {/* Header */}
           <View style={{ alignItems: "center", flex: 0.05 }}>
-            <Text style={styles.title}>VERIFY YOUR EMAIL</Text>
+            <TextComp bold style={styles.title}>
+              VERIFY YOUR EMAIL
+            </TextComp>
           </View>
 
           {/* Body */}
           <View style={{ ...styles.container, flex: 0.2 }}>
-            <Text style={styles.body}>
+            <TextComp style={styles.body}>
               Thank you for choosing KeepUp! {"\n\n"}Please confirm that{" "}
-              <Text style={{ fontWeight: "bold" }}>
-                {this.props.user.email}
-              </Text>{" "}
-              is your email address by entering the code sent to your inbox
-            </Text>
+              <TextComp bold>{this.props.user.email}</TextComp> is your email
+              address by entering the code sent to your inbox
+            </TextComp>
           </View>
 
           <View style={{ ...styles.container, flex: 0.1 }}>
@@ -75,7 +73,9 @@ class VerifyEmailScreen extends React.Component {
                   this.setState({ code });
                 }}
               />
-              <Text style={styles.errorStyle}>{this.props.error}</Text>
+              <TextComp bold style={styles.errorStyle}>
+                {this.props.error}
+              </TextComp>
               <Btn
                 title="VERIFY"
                 btnColor={Colors.primaryColor}
@@ -110,10 +110,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     textAlign: "center",
-    fontWeight: "800",
     color: Colors.secondary,
     marginHorizontal: 14,
-    fontFamily: "Futura",
   },
   body: {
     fontSize: 15,
@@ -121,7 +119,6 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
     marginTop: 10,
     marginHorizontal: 30,
-    fontFamily: "Futura",
   },
   underlineStyleBase: {
     width: 35,
@@ -137,8 +134,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#990000",
     marginTop: -15,
-    fontWeight: "600",
-    fontFamily: "Futura",
   },
 });
 
