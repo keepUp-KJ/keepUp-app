@@ -24,6 +24,10 @@ export const getReminders = (userId) => async (dispatch) => {
               type: SET_REMINDERS,
               reminders: json.reminders,
             });
+            AsyncStorage.setItem(
+              `@KeepUp:${userId}/ContactReminders`,
+              JSON.stringify(json.reminders)
+            );
           });
       }
     }

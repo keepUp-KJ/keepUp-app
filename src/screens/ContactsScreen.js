@@ -7,7 +7,6 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
-  TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
 import Header from "../components/Header";
@@ -25,6 +24,7 @@ import {
   syncContacts,
 } from "../store/actions/contacts";
 import { Ionicons } from "@expo/vector-icons";
+import { ActivityIndicator } from "react-native";
 
 class ContactsScreen extends React.Component {
   state = {
@@ -34,11 +34,14 @@ class ContactsScreen extends React.Component {
     activeContact: null,
     search: false,
     filteredContacts: [],
+    loading: true,
   };
 
   componentDidMount() {
     this.props.sync();
-    this.props.get(this.props.user._id);
+    this.props.get(this.props.user._id).then(() => {
+      this.setState({ loading: false });
+    });
   }
 
   renderContact = (itemData) => (
@@ -182,24 +185,28 @@ class ContactsScreen extends React.Component {
             alignItems: rejected ? null : "center",
           }}
         >
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            key={accepted || pending ? "1" : "0"}
-            data={
-              this.state.searchInput
-                ? this.state.filteredContacts
-                : accepted
-                ? this.props.accepted
-                : pending
-                ? this.props.pending
-                : null
-            }
-            renderItem={
-              rejected ? this.renderRejectedContact : this.renderContact
-            }
-            numColumns={accepted || pending ? 3 : null}
-            keyExtractor={(item) => (pending ? item.contact.id : item.id)}
-          />
+          {this.state.loading ? (
+            <ActivityIndicator color={Colors.primaryColor} />
+          ) : (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              key={accepted || pending ? "1" : "0"}
+              data={
+                this.state.searchInput
+                  ? this.state.filteredContacts
+                  : accepted
+                  ? this.props.accepted
+                  : pending
+                  ? this.props.pending
+                  : null
+              }
+              renderItem={
+                rejected ? this.renderRejectedContact : this.renderContact
+              }
+              numColumns={accepted || pending ? 3 : null}
+              keyExtractor={(item) => (pending ? item.contact.id : item._id)}
+            />
+          )}
         </View>
         <TabNav active="contacts" />
       </SafeAreaView>

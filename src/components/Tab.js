@@ -63,12 +63,12 @@ const styles = StyleSheet.create({
   },
   circle: {
     backgroundColor: Colors.primaryColor,
-    marginTop: -50,
+    marginTop: -30,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 40,
-    width: 80,
-    height: 80,
+    borderRadius: 35,
+    width: 70,
+    height: 70,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

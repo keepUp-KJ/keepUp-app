@@ -35,36 +35,39 @@ class CalendarScreen extends React.Component {
         <View style={styles.header}>
           <Header leftComponent={<Text style={styles.title}>Calendar</Text>} />
         </View>
-        <View style={styles.calendar}>
-          {/* CALENDAR */}
-          <MainCalendar
-            dates={this.state.markedDates}
-            onDayPress={(day) => {
-              const date = new Date(day.dateString);
-              date.getMonth();
-              this.getSelectedDayEvents(day.dateString);
-              this.setState({
-                date:
-                  new Intl.DateTimeFormat("en-US", { month: "short" }).format(
-                    date
-                  ) +
-                  " " +
-                  day.day +
-                  ", " +
-                  day.year,
-              });
-            }}
-          />
-        </View>
-        <View style={{ flex: 0.35 }}>
-          <Text style={styles.date}>{this.state.date.toString()}</Text>
-          <FlatList
-            data={this.props.reminders.filter(
-              (reminder) => reminder.date === this.state.date.toString()
-            )}
-            renderItem={(itemData) => <Task reminder={itemData.item} />}
-            keyExtractor={(item) => item._id || item.contacts[0].id}
-          />
+        <View style={styles.body}>
+          <View style={styles.calendar}>
+            {/* CALENDAR */}
+            <MainCalendar
+              dates={this.state.markedDates}
+              onDayPress={(day) => {
+                const date = new Date(day.dateString);
+                date.getMonth();
+                this.getSelectedDayEvents(day.dateString);
+                this.setState({
+                  date:
+                    new Intl.DateTimeFormat("en-US", { month: "short" }).format(
+                      date
+                    ) +
+                    " " +
+                    day.day +
+                    ", " +
+                    day.year,
+                });
+              }}
+            />
+          </View>
+          <View style={styles.list}>
+            <Text style={styles.date}>{this.state.date.toString()}</Text>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={this.props.reminders.filter(
+                (reminder) => reminder.date === this.state.date.toString()
+              )}
+              renderItem={(itemData) => <Task reminder={itemData.item} />}
+              keyExtractor={(item) => item._id || item.contacts[0].id}
+            />
+          </View>
         </View>
         <TabNav active="calendar" />
       </SafeAreaView>
@@ -80,9 +83,13 @@ const styles = StyleSheet.create({
     flex: 0.07,
     justifyContent: "center",
   },
-  calendar: {
-    flex: 0.5,
+  body: {
+    flex: 0.85,
   },
+  calendar: {
+    marginBottom: 20,
+  },
+  list: { flex: 1 },
   title: {
     fontSize: 30,
     fontFamily: "Futura",
@@ -91,6 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: "Futura",
     marginHorizontal: 30,
+    marginBottom: 10,
   },
 });
 

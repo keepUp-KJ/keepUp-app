@@ -20,6 +20,7 @@ const Input = (props) => {
       </Text>
       <TextInput
         {...props}
+        autoFocus={props.auto}
         onFocus={() => {
           setBorderColor(Colors.primaryColor);
           setBorderWidth(2);

@@ -22,7 +22,7 @@ const Task = (props) => {
   return (
     <TouchableOpacity style={styles.task} onPress={setCompleted}>
       <View style={styles.container}>
-        <Animated.View
+        {/* <Animated.View
           style={{
             width: _animatedWidth,
             borderWidth: 1.5,
@@ -30,7 +30,7 @@ const Task = (props) => {
             position: "absolute",
             borderRadius: 10,
           }}
-        />
+        /> */}
         <Text style={styles.taskText}>
           Call {props.reminder.contacts[0].firstName}{" "}
           {props.reminder.contacts[0].lastName}

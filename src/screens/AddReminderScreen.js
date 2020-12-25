@@ -24,6 +24,7 @@ class AddReminderScreen extends React.Component {
     show: false,
     notify: "1",
   };
+
   render() {
     const CONTACTS = [
       // { firstName: "Khaled", lastName: "Magued" },
@@ -74,7 +75,11 @@ class AddReminderScreen extends React.Component {
             />
           </View>
           <View style={styles.body}>
-            <Input title="Event Title" placeholder="Add event title" />
+            <Input
+              title="Event Title"
+              placeholder="Add event title"
+              auto={true}
+            />
             <View style={styles.container}>
               <Text style={styles.text}>Date</Text>
             </View>

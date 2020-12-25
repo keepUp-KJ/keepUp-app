@@ -71,6 +71,7 @@ class LoginScreen extends React.Component {
               placeholder="Email"
               autoCapitalize="none"
               autoCorrect={false}
+              keyboardType="email-address"
             />
             <Input
               value={this.state.password}

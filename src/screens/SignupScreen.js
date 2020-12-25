@@ -66,6 +66,7 @@ class SignupScreen extends React.Component {
                 placeholder="Email"
                 autoCapitalize="none"
                 autoCorrect={false}
+                keyboardType="email-address"
                 error={this.props.errors.email}
               />
               <Input

@@ -11,7 +11,7 @@ class SetupScreen extends React.Component {
   componentDidMount() {
     this.props
       .setup(
-        this.props.contacts.filter((contact) => contact.frequency !== null),
+        this.props.contacts.filter((contact) => contact.accepted === true),
         this.props.user._id
       )
       .then(() => {

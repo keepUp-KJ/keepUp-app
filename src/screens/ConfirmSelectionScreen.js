@@ -48,10 +48,7 @@ class ConfirmSelectionScreen extends React.Component {
             showsVerticalScrollIndicator={false}
             numColumns={3}
             data={this.props.contacts.filter(
-              (contact) =>
-                contact.frequency === "daily" ||
-                contact.frequency === "weekly" ||
-                contact.frequency === "monthly"
+              (contact) => contact.accepted === true
             )}
             keyExtractor={(item) => item.contact.id}
             renderItem={this.renderContact}
