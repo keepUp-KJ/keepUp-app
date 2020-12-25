@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { tryLocalSignin } from "../store/actions/users";
+import { tryLocalSignin } from "../../store/actions/users";
 
 class LoadingScreen extends React.Component {
   componentDidMount = () => {

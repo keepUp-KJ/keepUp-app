@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Overlay } from "react-native-elements";
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 import { Ionicons, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
 import { TextInput } from "react-native-gesture-handler";

@@ -8,16 +8,16 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import Btn from "../components/Btn";
+import Btn from "../../components/Btn";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import Input from "../components/Input";
-import Colors from "../constants/Colors";
+import Input from "../../components/Input";
+import Colors from "../../constants/Colors";
 import {
   login,
   loginWithFacebook,
   loginWithGoogle,
   hideLoginError,
-} from "../store/actions/users";
+} from "../../store/actions/users";
 import { connect } from "react-redux";
 
 class LoginScreen extends React.Component {

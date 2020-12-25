@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { connect } from "react-redux";
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
 class ProfileScreen extends React.Component {

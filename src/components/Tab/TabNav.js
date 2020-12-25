@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import Tab from "./Tab";
-import { navigate } from "../navigation/navigationRef";
+import { navigate } from "../../navigation/navigationRef";
 
 const TabNav = (props) => {
   const [active, setActive] = useState(props.active);

@@ -7,12 +7,12 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import Colors from "../constants/Colors";
-import Btn from "../components/Btn";
-import Input from "../components/Input";
+import Colors from "../../constants/Colors";
+import Btn from "../../components/Btn";
+import Input from "../../components/Input";
 import { Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
-import { signup, hideError } from "../store/actions/users";
+import { signup, hideError } from "../../store/actions/users";
 
 class SignupScreen extends React.Component {
   state = {

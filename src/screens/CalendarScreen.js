@@ -4,7 +4,7 @@ import Colors from "../constants/Colors";
 import Header from "../components/Header";
 import moment from "moment";
 import MainCalendar from "../components/MainCalendar";
-import TabNav from "../components/TabNav";
+import TabNav from "../components/Tab/TabNav";
 import { connect } from "react-redux";
 import Task from "../components/Task";
 

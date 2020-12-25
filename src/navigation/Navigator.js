@@ -1,25 +1,29 @@
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
-import LoginScreen from "../screens/LoginScreen";
-import SignupScreen from "../screens/SignupScreen";
-import PickContactsScreen from "../screens/PickContactsScreen";
-import PickWeeklyContacts from "../screens/PickWeeklyContacts";
-import PickMonthlyContacts from "../screens/PickMonthlyContacts";
-import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
-import RenewPasswordScreen from "../screens/RenewPasswordScreen";
-import VerifyEmailScreen from "../screens/VerifyEmailScreen";
-import SettingsScreen from "../screens/SettingsScreen";
-import ContactsScreen from "../screens/ContactsScreen";
-import ConfirmSelectionScreen from "../screens/ConfirmSelectionScreen";
-import CalendarScreen from "../screens/CalendarScreen";
-import LoadingScreen from "../screens/LoadingScreen";
+import LoginScreen from "../screens/Signup/LoginScreen";
+import SignupScreen from "../screens/Signup/SignupScreen";
+import VerifyEmailScreen from "../screens/Signup/VerifyEmailScreen";
+import LoadingScreen from "../screens/Signup/LoadingScreen";
+
+import PickContactsScreen from "../screens/AccountSetup/PickContactsScreen";
+import PickWeeklyContacts from "../screens/AccountSetup/PickWeeklyContacts";
+import PickMonthlyContacts from "../screens/AccountSetup/PickMonthlyContacts";
+import ConfirmSelectionScreen from "../screens/AccountSetupConfirmSelectionScreen";
+import SetupScreen from "../screens/AccountSetup/SetupScreen";
+
+import ForgotPasswordScreen from "../screens/PasswordRenewal/ForgotPasswordScreen";
+import RenewPasswordScreen from "../screens/PasswordRenewal/RenewPasswordScreen";
+
+import SettingsScreen from "../screens/Settings/SettingsScreen";
+import Settings from "../screens/Settings/Settings";
+import NotificationsScreen from "../screens/Settings/NotificationsScreen";
+import GeneralSettings from "../screens/Settings/GeneralSettings";
+import ProfileScreen from "../screens/Settings/ProfileScreen";
+
 import HomeScreen from "../screens/HomeScreen";
-import SetupScreen from "../screens/SetupScreen";
+import ContactsScreen from "../screens/ContactsScreen";
 import AddReminderScreen from "../screens/AddReminderScreen";
-import Settings from "../screens/Settings";
-import NotificationsScreen from "../screens/NotificationsScreen";
-import GeneralSettings from "../screens/GeneralSettings";
-import ProfileScreen from "../screens/ProfileScreen";
+import CalendarScreen from "../screens/CalendarScreen";
 
 const Navigator = createSwitchNavigator(
   {

@@ -2,8 +2,8 @@ import React from "react";
 import { ActivityIndicator } from "react-native";
 import { SafeAreaView, View, StyleSheet, Text } from "react-native";
 import { connect } from "react-redux";
-import { setupAccount } from "../store/actions/reminders";
-import Colors from "../constants/Colors";
+import { setupAccount } from "../../store/actions/reminders";
+import Colors from "../../constants/Colors";
 
 class SetupScreen extends React.Component {
   componentDidMount() {

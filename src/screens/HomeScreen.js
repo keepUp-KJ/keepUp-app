@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, SafeAreaView, Text, FlatList } from "react-native";
-import TabNav from "../components/TabNav";
+import TabNav from "../components/Tab/TabNav";
 import moment from "moment";
 import Colors from "../constants/Colors";
 import Task from "../components/Task";

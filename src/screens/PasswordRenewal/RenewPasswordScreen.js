@@ -8,11 +8,11 @@ import {
   Keyboard,
   TouchableOpacity,
 } from "react-native";
-import Colors from "../constants/Colors";
-import Btn from "../components/Btn";
-import Input from "../components/Input";
+import Colors from "../../constants/Colors";
+import Btn from "../../components/Btn";
+import Input from "../../components/Input";
 import { connect } from "react-redux";
-import { renewPassword } from "../store/actions/users";
+import { renewPassword } from "../../store/actions/users";
 
 class RenewPasswordScreen extends React.Component {
   state = {

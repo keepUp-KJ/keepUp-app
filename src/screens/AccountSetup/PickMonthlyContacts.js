@@ -8,12 +8,12 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import Contact from "../components/Contact";
-import Colors from "../constants/Colors";
-import Input from "../components/Input";
-import Header from "../components/Header";
+import Contact from "../../components/Contacts/Contact";
+import Colors from "../../constants/Colors";
+import Input from "../../components/Input";
+import Header from "../../components/Header";
 import { connect } from "react-redux";
-import { addContact, removeContact } from "../store/actions/contacts";
+import { addContact, removeContact } from "../../store/actions/contacts";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 
 class PickMonthlyContacts extends React.Component {

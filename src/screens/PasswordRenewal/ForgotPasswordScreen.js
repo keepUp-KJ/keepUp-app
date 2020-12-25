@@ -7,13 +7,13 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import Colors from "../constants/Colors";
-import Btn from "../components/Btn";
-import Input from "../components/Input";
+import Colors from "../../constants/Colors";
+import Btn from "../../components/Btn";
+import Input from "../../components/Input";
 import { Ionicons } from "@expo/vector-icons";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import { connect } from "react-redux";
-import { forgotPassword, verifyEmail } from "../store/actions/users";
+import { forgotPassword, verifyEmail } from "../../store/actions/users";
 
 const mapStateToProps = (state) => ({
   confirm: state.users.confirm,

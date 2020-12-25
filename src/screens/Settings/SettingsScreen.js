@@ -1,13 +1,13 @@
 import React from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
-import Colors from "../constants/Colors";
-import Header from "../components/Header";
-import SettingsItem from "../components/SettingsItem";
+import Colors from "../../constants/Colors";
+import Header from "../../components/Header";
+import SettingsItem from "../../components/Settings/SettingsItem";
 import { connect } from "react-redux";
-import { getSettings, updateSettings } from "../store/actions/settings";
-import { signout } from "../store/actions/users";
-import TabNav from "../components/TabNav";
-import Btn from "../components/Btn";
+import { getSettings, updateSettings } from "../../store/actions/settings";
+import { signout } from "../../store/actions/users";
+import TabNav from "../../components/Tab/TabNav";
+import Btn from "../../components/Btn";
 class SettingsScreen extends React.Component {
   state = {
     settings: {},

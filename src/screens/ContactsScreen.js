@@ -11,12 +11,12 @@ import {
 } from "react-native";
 import Header from "../components/Header";
 import Colors from "../constants/Colors";
-import TabNav from "../components/TabNav";
-import Menu from "../components/Menu";
+import TabNav from "../components/Tab/TabNav";
+import Menu from "../components/Contacts/Menu";
 import Input from "../components/Input";
-import RejectedContact from "../components/RejectedContact";
+import RejectedContact from "../components/Contacts/RejectedContact";
 import { connect } from "react-redux";
-import ContactCard from "../components/ContactCard";
+import ContactCard from "../components/Contacts/ContactCard";
 import {
   acceptContact,
   rejectContact,

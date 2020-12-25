@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const RejectedContact = (props) => {

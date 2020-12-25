@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 
 const Menu = (props) => {
   const STATUS = ["Accepted", "Pending", "Rejected"];

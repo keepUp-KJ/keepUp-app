@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text, Switch } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 
 const SettingsItem = (props) => {
   return (

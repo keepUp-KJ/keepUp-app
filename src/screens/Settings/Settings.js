@@ -6,11 +6,11 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 import { Octicons, Ionicons } from "@expo/vector-icons";
-import TabNav from "../components/TabNav";
+import TabNav from "../../components/Tab/TabNav";
 import { connect } from "react-redux";
-import { signout } from "../store/actions/users";
+import { signout } from "../../store/actions/users";
 
 class Settings extends React.Component {
   componentDidMount() {}

@@ -2,8 +2,8 @@ import React from "react";
 import { SafeAreaView, StyleSheet, Text, FlatList, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { connect } from "react-redux";
-import Colors from "../constants/Colors";
-import Header from "../components/Header";
+import Colors from "../../constants/Colors";
+import Header from "../../components/Header";
 import { Ionicons } from "@expo/vector-icons";
 
 class ConfirmSelectionScreen extends React.Component {

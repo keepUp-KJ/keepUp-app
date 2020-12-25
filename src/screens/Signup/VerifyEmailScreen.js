@@ -8,11 +8,11 @@ import {
   Keyboard,
   TouchableOpacity,
 } from "react-native";
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
-import Btn from "../components/Btn";
+import Btn from "../../components/Btn";
 import { connect } from "react-redux";
-import { verifyEmail } from "../store/actions/users";
+import { verifyEmail } from "../../store/actions/users";
 
 class VerifyEmailScreen extends React.Component {
   state = {

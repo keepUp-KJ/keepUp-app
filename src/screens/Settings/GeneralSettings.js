@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { connect } from "react-redux";
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import SettingsItem from "../components/SettingsItem";
+import SettingsItem from "../../components/Settings/SettingsItem";
 
 class GeneralSettings extends React.Component {
   state = {
