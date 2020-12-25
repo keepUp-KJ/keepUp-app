@@ -45,7 +45,7 @@ const Navigator = createSwitchNavigator(
     Profile: ProfileScreen,
   },
   {
-    // initialRouteName: "AddReminder",
+    // initialRouteName: "Setup",
   }
 );
 
