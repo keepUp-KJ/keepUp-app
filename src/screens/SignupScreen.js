@@ -19,7 +19,6 @@ class SignupScreen extends React.Component {
     email: "",
     password: "",
     confPassword: "",
-    loading: false,
   };
 
   componentDidMount() {
@@ -103,21 +102,14 @@ class SignupScreen extends React.Component {
                 title="SIGN UP"
                 btnColor={Colors.primaryColor}
                 fontSize={12}
-                loading={this.state.loading}
+                loading={this.props.loading}
                 bold
                 onPress={() => {
-                  this.setState({ loading: true });
-                  this.props
-                    .signup(
-                      this.state.email,
-                      this.state.password,
-                      this.state.confPassword
-                    )
-                    .then(() => {
-                      this.setState({
-                        loading: false,
-                      });
-                    });
+                  this.props.signup(
+                    this.state.email,
+                    this.state.password,
+                    this.state.confPassword
+                  );
                 }}
               />
             </View>
@@ -169,6 +161,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
+  loading: state.users.loading,
   errors: state.users.errors,
 });
 

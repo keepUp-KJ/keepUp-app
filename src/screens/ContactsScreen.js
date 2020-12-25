@@ -39,9 +39,7 @@ class ContactsScreen extends React.Component {
 
   componentDidMount() {
     this.props.sync();
-    this.props.get(this.props.user._id).then(() => {
-      this.setState({ loading: false });
-    });
+    this.props.get(this.props.user._id);
   }
 
   renderContact = (itemData) => (
@@ -185,7 +183,7 @@ class ContactsScreen extends React.Component {
             alignItems: rejected ? null : "center",
           }}
         >
-          {this.state.loading ? (
+          {this.props.loading ? (
             <ActivityIndicator color={Colors.primaryColor} />
           ) : (
             <FlatList
@@ -257,6 +255,7 @@ const mapStateToProps = (state) => ({
   contacts: state.contacts.contacts,
   accepted: state.contacts.acceptedContacts,
   pending: state.contacts.pendingContacts,
+  loading: state.contacts.loading,
 });
 
 const mapDispatchToProps = {

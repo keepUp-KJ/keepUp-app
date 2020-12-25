@@ -8,6 +8,7 @@ import {
   SIGNOUT,
   FORGOT_PASSWORD,
   RESET,
+  LOADING,
 } from "../actions/users";
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   errors: {},
   loginError: "",
   confirm: false,
+  loading: null,
 };
 
 const usersReducer = (state = initialState, action) => {
@@ -28,16 +30,19 @@ const usersReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload,
+        loading: false,
       };
     case ERROR:
       return {
         ...state,
         errors: action.payload,
+        loading: false,
       };
     case LOGIN_ERROR:
       return {
         ...state,
         loginError: action.error,
+        loading: false,
       };
     case HIDE_ERROR:
       return {
@@ -76,6 +81,11 @@ const usersReducer = (state = initialState, action) => {
       return {
         ...state,
         confirm: false,
+      };
+    case LOADING:
+      return {
+        ...state,
+        loading: true,
       };
     default:
       return state;

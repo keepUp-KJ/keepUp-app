@@ -109,14 +109,9 @@ class LoginScreen extends React.Component {
               btnColor={Colors.primaryColor}
               fontSize={12}
               bold
-              loading={this.state.loading}
+              loading={this.props.loading}
               onPress={() => {
-                this.setState({ loading: true });
-                this.props
-                  .login(this.state.email, this.state.password)
-                  .then(() => {
-                    this.setState({ loading: false });
-                  });
+                this.props.login(this.state.email, this.state.password);
               }}
             />
 
@@ -206,6 +201,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   token: state.users.token,
   error: state.users.loginError,
+  loading: state.users.loading,
 });
 
 const mapDispatchToProps = {

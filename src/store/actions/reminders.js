@@ -1,5 +1,7 @@
 export const SET_REMINDERS = "SET_REMINDERS";
 export const CREATE_REMINDER = "CREATE_REMINDER";
+export const LOADING = "LOADING";
+export const DONE = "DONE";
 
 import { AsyncStorage } from "react-native";
 import { navigate } from "../../navigation/navigationRef";
@@ -65,6 +67,7 @@ export const addReminder = (date, contact, occasion, notify) => async (
 };
 
 export const setupAccount = (contacts, userId) => async (dispatch) => {
+  dispatch({ type: LOADING });
   fetch("https://rocky-mesa-61495.herokuapp.com/contacts", {
     method: "POST",
     headers: {
@@ -105,6 +108,9 @@ export const setupAccount = (contacts, userId) => async (dispatch) => {
           JSON.stringify(contactReminders)
         );
       }
+      dispatch({
+        type: DONE,
+      });
     });
 };
 

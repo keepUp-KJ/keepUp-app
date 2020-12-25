@@ -8,6 +8,7 @@ export const HIDE_ERROR = "HIDE_ERROR";
 export const HIDE_LOGIN_ERROR = "HIDE_LOGIN_ERROR";
 export const SIGNOUT = "SIGNOUT";
 export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
+export const LOADING = "LOADING";
 
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
@@ -15,6 +16,9 @@ import { navigate } from "../../navigation/navigationRef";
 import { AsyncStorage } from "react-native";
 
 export const login = (email, password) => async (dispatch) => {
+  dispatch({
+    type: LOADING,
+  });
   fetch("https://rocky-mesa-61495.herokuapp.com/users/login", {
     method: "POST",
     headers: {
@@ -44,6 +48,9 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 export const signup = (email, password, confPassword) => async (dispatch) => {
+  dispatch({
+    type: LOADING,
+  });
   fetch("https://rocky-mesa-61495.herokuapp.com/users", {
     method: "POST",
     headers: {

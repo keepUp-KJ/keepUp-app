@@ -1,6 +1,4 @@
 import {
-  ACCEPT_CONTACT,
-  REJECT_CONTACT,
   SYNC_CONTACTS,
   SET_CONTACTS,
   ADD_CONTACT,
@@ -14,6 +12,7 @@ const initialState = {
   monthlyContacts: [],
   acceptedContacts: [],
   pendingContacts: [],
+  loading: null,
 };
 
 const contactsReducer = (state = initialState, action) => {
@@ -29,6 +28,7 @@ const contactsReducer = (state = initialState, action) => {
         dailyContacts: [],
         weeklyContacts: [],
         monthlyContacts: [],
+        loading: true,
       };
     case SET_CONTACTS:
       return {
@@ -42,6 +42,7 @@ const contactsReducer = (state = initialState, action) => {
               (item) => item.contactId === contact.contact.id
             )
         ),
+        loading: false,
       };
     case ADD_CONTACT:
       const index = state.contacts.findIndex(

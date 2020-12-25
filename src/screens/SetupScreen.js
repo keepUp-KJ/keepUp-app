@@ -6,8 +6,6 @@ import { setupAccount } from "../store/actions/reminders";
 import Colors from "../constants/Colors";
 
 class SetupScreen extends React.Component {
-  state = { loading: true };
-
   componentDidMount() {
     this.props
       .setup(
@@ -15,17 +13,14 @@ class SetupScreen extends React.Component {
         this.props.user._id
       )
       .then(() => {
-        setTimeout(() => {
-          this.setState({ loading: false });
-          this.props.navigation.navigate("Home");
-        }, 2500);
+        this.props.navigation.navigate("Home");
       });
   }
 
   render() {
     return (
       <SafeAreaView style={styles.screen}>
-        {this.state.loading ? (
+        {this.props.loading ? (
           <View>
             <ActivityIndicator size="large" color={Colors.primaryColor} />
             <Text style={styles.text}>Setting Up {"\n"} Your Account</Text>
@@ -53,6 +48,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   user: state.users.user,
   contacts: state.contacts.contacts,
+  loading: state.reminders.loading,
 });
 
 const mapDispatchToProps = {
