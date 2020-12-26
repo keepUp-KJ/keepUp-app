@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Navigator from "./src/navigation/Navigator";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
@@ -10,6 +10,9 @@ import settingsReducer from "./src/store/reducers/settings";
 import { setNavigator } from "./src/navigation/navigationRef";
 import { StatusBar } from "react-native";
 import * as Fonts from "expo-font";
+import { ActivityIndicator, View } from "react-native";
+import TextComp from "./src/components/TextComp";
+import Colors from "./src/constants/Colors";
 
 const rootReducer = combineReducers({
   contacts: contactsReducer,
@@ -20,21 +23,44 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
-Fonts.loadAsync({
-  regular: require("./assets/Lato-Regular.ttf"),
-  bold: require("./assets/Lato-Black.ttf"),
-});
-
 let App = () => {
+  const [loading, setLoading] = useState(true);
+
   StatusBar.setBarStyle("dark-content");
+
+  Fonts.loadAsync({
+    regular: require("./assets/Lato-Regular.ttf"),
+    bold: require("./assets/Lato-Black.ttf"),
+  }).then(() => {
+    setLoading(false);
+  });
 
   return (
     <Provider store={store}>
-      <Navigator
-        ref={(navigator) => {
-          setNavigator(navigator);
-        }}
-      />
+      {loading ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: Colors.primaryColor,
+          }}
+        >
+          <TextComp
+            bold
+            style={{ fontSize: 50, marginBottom: 20, color: "white" }}
+          >
+            Keep Up
+          </TextComp>
+          <ActivityIndicator size="large" color="white" />
+        </View>
+      ) : (
+        <Navigator
+          ref={(navigator) => {
+            setNavigator(navigator);
+          }}
+        />
+      )}
     </Provider>
   );
 };
