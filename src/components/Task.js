@@ -1,37 +1,52 @@
 import React from "react";
-import { View, StyleSheet, Animated, TouchableOpacity } from "react-native";
+import { Dimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Animated,
+  TouchableOpacity,
+  PanResponder,
+} from "react-native";
 import Colors from "../constants/Colors";
 import TextComp from "./TextComp";
 
 const Task = (props) => {
-  const _animatedWidth = new Animated.Value(0);
-
-  function setCompleted() {
-    Animated.timing(_animatedWidth, {
-      toValue: 300,
-      duration: 500,
-      useNativeDriver: false,
-    }).start();
-  }
+  const taskXPos = new Animated.Value(0);
+  const taskPanResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onPanResponderMove: (evt, gs) => {
+      taskXPos.setValue(gs.dx);
+    },
+    onPanResponderRelease: (evt, gs) => {
+      const width = Dimensions.get("window").width;
+      if (gs.dx < -1 * width * 0.4) {
+        Animated.timing(taskXPos, {
+          toValue: -1 * width,
+          duration: 250,
+          useNativeDriver: false,
+        }).start(({ finished }) => {
+          if (finished) {
+            props.completeTask();
+          }
+        });
+      } else {
+        taskXPos.setValue(0);
+      }
+    },
+  });
 
   return (
-    <TouchableOpacity style={styles.task} onPress={setCompleted}>
+    <Animated.View
+      {...taskPanResponder.panHandlers}
+      style={{ ...styles.task, left: taskXPos }}
+    >
       <View style={styles.container}>
-        {/* <Animated.View
-          style={{
-            width: _animatedWidth,
-            borderWidth: 1.5,
-            borderColor: Colors.secondary,
-            position: "absolute",
-            borderRadius: 10,
-          }}
-        /> */}
         <TextComp style={styles.taskText}>
           Call {props.reminder.contacts[0].firstName}{" "}
           {props.reminder.contacts[0].lastName}
         </TextComp>
       </View>
-    </TouchableOpacity>
+    </Animated.View>
   );
 };
 

@@ -4,6 +4,7 @@ export const SYNC_CONTACTS = "SYNC_CONTACTS";
 export const SET_CONTACTS = "SET_CONTACTS";
 export const ADD_CONTACT = "ADD_CONTACT";
 export const REMOVE_CONTACT = "REMOVE_CONTACT";
+export const EDIT_CONTACT = "EDIT_CONTACT";
 
 import * as Contacts from "expo-contacts";
 

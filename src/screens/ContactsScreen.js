@@ -17,10 +17,10 @@ import RejectedContact from "../components/Contacts/RejectedContact";
 import { connect } from "react-redux";
 import ContactCard from "../components/Contacts/ContactCard";
 import {
-  acceptContact,
-  rejectContact,
   getContactDecisions,
   syncContacts,
+  editContact,
+  acceptContact,
 } from "../store/actions/contacts";
 import { Ionicons } from "@expo/vector-icons";
 import { ActivityIndicator } from "react-native";
@@ -115,6 +115,9 @@ class ContactsScreen extends React.Component {
                 });
             }}
             onReject={() => {}}
+            onEdit={(frequency, notify) => {
+              this.props.edit(this.state.activeContact._id, frequency, notify);
+            }}
             pending={pending}
             accepted={accepted}
             visible={this.state.visible}
@@ -275,10 +278,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  accept: acceptContact,
-  reject: rejectContact,
   get: getContactDecisions,
   sync: syncContacts,
+  edit: editContact,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactsScreen);

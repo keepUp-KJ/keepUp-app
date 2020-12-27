@@ -3,6 +3,7 @@ import {
   SET_CONTACTS,
   ADD_CONTACT,
   REMOVE_CONTACT,
+  EDIT_CONTACT,
   ACCEPT_CONTACT,
 } from "../actions/contacts.js";
 
@@ -21,7 +22,12 @@ const contactsReducer = (state = initialState, action) => {
     case SYNC_CONTACTS:
       const updatedContacts = [];
       action.payload.forEach((contact) => {
-        const newContact = { contact, accepted: false, frequency: null };
+        const newContact = {
+          contact,
+          accepted: false,
+          frequency: null,
+          notify: null,
+        };
         updatedContacts.push(newContact);
       });
       return {
@@ -51,6 +57,7 @@ const contactsReducer = (state = initialState, action) => {
       );
       state.contacts[index].accepted = true;
       state.contacts[index].frequency = action.frequency;
+      state.contacts[index].notify = "On the same day";
 
       if (action.frequency === "daily")
         return {
@@ -114,6 +121,20 @@ const contactsReducer = (state = initialState, action) => {
           monthlyContacts: updatedContacts,
         };
       }
+    case EDIT_CONTACT:
+      const contactIndex = state.acceptedContacts.findIndex(
+        (contact) => contact._id === action.contactId
+      );
+      console.log(contactIndex);
+      if (contactIndex !== -1) {
+        state.acceptedContacts[contactIndex].frequency = action.frequency;
+        state.acceptedContacts[contactIndex].notify = action.notify;
+        return {
+          acceptedContacts: state.acceptedContacts,
+        };
+      }
+    case ACCEPT_CONTACT: {
+    }
     default:
       return state;
   }

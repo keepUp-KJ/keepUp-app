@@ -39,7 +39,7 @@ const ContactCard = (props) => {
   ];
 
   const [frequencyValue, setFrequencyValue] = useState(props.contact.frequency);
-  const [notifyValue, setNotifyValue] = useState("On the same day");
+  const [notifyValue, setNotifyValue] = useState(props.contact.notify);
 
   return (
     <Overlay
@@ -59,6 +59,7 @@ const ContactCard = (props) => {
               style={{ padding: 5 }}
               onPress={() => {
                 setEditing(!editing);
+                editing ? props.onEdit(frequencyValue, notifyValue) : null;
               }}
             >
               <TextComp style={(styles.headerText, styles.text)}>
