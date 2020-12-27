@@ -9,33 +9,33 @@ import { navigate } from "../../navigation/navigationRef";
 import moment from "moment";
 
 export const getReminders = (userId) => async (dispatch) => {
-  await AsyncStorage.getItem(
-    `@KeepUp:${userId}/ContactReminders`,
-    (err, result) => {
-      if (result) {
-        dispatch({
-          type: SET_REMINDERS,
-          reminders: JSON.parse(result),
-        });
-      } else {
-        fetch(`https://rocky-mesa-61495.herokuapp.com/reminders/${userId}`, {
-          method: "GET",
-        })
-          .then((res) => res.json())
-          .then((json) => {
-            dispatch({
-              type: SET_REMINDERS,
-              reminders: json.reminders,
-            });
-            AsyncStorage.setItem(
-              `@KeepUp:${userId}/ContactReminders`,
-              JSON.stringify(json.reminders)
-            );
-          });
-      }
-    }
-  );
+  // await AsyncStorage.getItem(
+  //   `@KeepUp:${userId}/ContactReminders`,
+  //   (err, result) => {
+  //     if (result) {
+  //       dispatch({
+  //         type: SET_REMINDERS,
+  //         reminders: JSON.parse(result),
+  //       });
+  //     } else {
+  fetch(`https://rocky-mesa-61495.herokuapp.com/reminders/${userId}`, {
+    method: "GET",
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      dispatch({
+        type: SET_REMINDERS,
+        reminders: json.reminders,
+      });
+      AsyncStorage.setItem(
+        `@KeepUp:${userId}/ContactReminders`,
+        JSON.stringify(json.reminders)
+      );
+    });
 };
+// }
+// );
+// };
 
 export const addReminder = (date, contacts, occasion, notify) => async (
   dispatch

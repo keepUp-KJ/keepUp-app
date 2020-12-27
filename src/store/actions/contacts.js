@@ -80,3 +80,30 @@ export const acceptContact = (userId, contact, frequency) => async (
       }
     });
 };
+
+export const editContact = (contactId, frequency, notify) => async (
+  dispatch
+) => {
+  fetch("https://rocky-mesa-61495.herokuapp.com/users/contacts", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      contactId,
+      frequency,
+      notify,
+    }),
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.response) {
+        dispatch({
+          type: EDIT_CONTACT,
+          contactId,
+          frequency,
+          notify,
+        });
+      }
+    });
+};
