@@ -99,32 +99,43 @@ class ContactsScreen extends React.Component {
 
     return (
       <SafeAreaView style={styles.screen}>
-        {this.state.activeContact !== null && (
-          <ContactCard
-            onAccept={(frequency) => {
-              this.props
-                .accept(
-                  this.props.user._id,
-                  this.state.pendingContact,
-                  frequency
-                )
-                .then(() => {
-                  this.setState({
-                    visible: false,
+        {this.state.activeContact !== null &&
+          this.state.pendingContact !== null && (
+            <ContactCard
+              onAccept={(frequency) => {
+                this.props
+                  .accept(
+                    this.props.user._id,
+                    this.state.pendingContact,
+                    frequency
+                  )
+                  .then(() => {
+                    this.setState({
+                      visible: false,
+                    });
                   });
-                });
-            }}
-            onReject={() => {}}
-            onEdit={(frequency, notify) => {
-              this.props.edit(this.state.activeContact._id, frequency, notify);
-            }}
-            pending={pending}
-            accepted={accepted}
-            visible={this.state.visible}
-            contact={this.state.activeContact}
-            close={() => this.setState({ visible: false, activeContact: null })}
-          />
-        )}
+              }}
+              onReject={() => {}}
+              onEdit={(frequency, notify) => {
+                this.props.edit(
+                  this.state.activeContact._id,
+                  frequency,
+                  notify
+                );
+              }}
+              pending={pending}
+              accepted={accepted}
+              visible={this.state.visible}
+              contact={this.state.activeContact}
+              close={() =>
+                this.setState({
+                  visible: false,
+                  activeContact: null,
+                  pendingContact: null,
+                })
+              }
+            />
+          )}
         <View style={{ ...styles.headerContainer, flex: 0.08 }}>
           {this.state.search ? (
             <View style={styles.searchContainer}>
@@ -278,6 +289,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+  accept: acceptContact,
   get: getContactDecisions,
   sync: syncContacts,
   edit: editContact,

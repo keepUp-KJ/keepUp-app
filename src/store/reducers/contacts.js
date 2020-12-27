@@ -76,19 +76,17 @@ const contactsReducer = (state = initialState, action) => {
         };
     case ACCEPT_CONTACT:
       const x = state.contacts.findIndex(
-        (contact) => contact === action.payload
+        (contact) => contact === action.contact
       );
 
       state.contacts[x].accepted = true;
       state.contacts[x].frequency = action.frequency;
 
-      const updatedPendingList = state.pendingContacts.filter((contact) => {
-        contact.contact.id !== action.payload.contact.id;
-      });
-
       return {
         ...state,
-        pendingContacts: updatedPendingList,
+        pendingContacts: state.pendingContacts.filter(
+          (contact) => !contact.accepted
+        ),
       };
     case REMOVE_CONTACT:
       const i = state.contacts.findIndex(
@@ -133,8 +131,6 @@ const contactsReducer = (state = initialState, action) => {
           acceptedContacts: state.acceptedContacts,
         };
       }
-    case ACCEPT_CONTACT: {
-    }
     default:
       return state;
   }

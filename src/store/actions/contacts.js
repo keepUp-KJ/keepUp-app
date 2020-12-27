@@ -74,7 +74,7 @@ export const acceptContact = (userId, contact, frequency) => async (
       if (json.response) {
         dispatch({
           type: ACCEPT_CONTACT,
-          payload: contact,
+          contact,
           frequency,
         });
       }
