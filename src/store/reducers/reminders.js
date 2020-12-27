@@ -1,4 +1,4 @@
-import { SET_REMINDERS, DONE } from "../actions/reminders";
+import { SET_REMINDERS, DONE, SET_COMPLETED } from "../actions/reminders";
 
 const initialState = {
   reminders: [],
@@ -19,6 +19,18 @@ const remindersReducer = (state = initialState, action) => {
         ...state,
         loading: false,
       };
+    }
+    case SET_COMPLETED: {
+      const index = state.reminders.findIndex(
+        (reminder) => reminder._id === action.id
+      );
+
+      if (index !== -1) {
+        state.reminders[index].completed = true;
+        return {
+          reminders: state.reminders,
+        };
+      }
     }
     default:
       return state;

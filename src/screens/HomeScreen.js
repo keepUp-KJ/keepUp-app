@@ -5,13 +5,14 @@ import moment from "moment";
 import Colors from "../constants/Colors";
 import Task from "../components/Task";
 import { connect } from "react-redux";
-import { getReminders } from "../store/actions/reminders";
+import { getReminders, setCompleted } from "../store/actions/reminders";
 import { Calendar } from "react-native-event-week";
 import TextComp from "../components/TextComp";
 
 class HomeScreen extends React.Component {
   state = {
     date: new Date(),
+    done: false,
   };
 
   componentDidMount() {
@@ -59,17 +60,20 @@ class HomeScreen extends React.Component {
             <FlatList
               showsVerticalScrollIndicator={false}
               data={this.props.reminders.filter(
-                (reminder) => reminder.date === today
+                (reminder) =>
+                  reminder.date === today && reminder.completed === false
               )}
               renderItem={(itemData) => (
                 <Task
                   reminder={itemData.item}
                   completeTask={() => {
-                    console.log("YOO");
+                    this.props.complete(itemData.item._id).then(() => {
+                      console.log(this.props.reminders);
+                    });
                   }}
                 />
               )}
-              keyExtractor={(item) => item._id || item.contacts[0].id}
+              keyExtractor={(item) => item._id}
             />
           </View>
         </View>
@@ -110,6 +114,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   get: getReminders,
+  complete: setCompleted,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

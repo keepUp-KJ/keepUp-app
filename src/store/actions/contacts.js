@@ -4,6 +4,7 @@ export const SYNC_CONTACTS = "SYNC_CONTACTS";
 export const SET_CONTACTS = "SET_CONTACTS";
 export const ADD_CONTACT = "ADD_CONTACT";
 export const REMOVE_CONTACT = "REMOVE_CONTACT";
+export const EDIT_CONTACT = "EDIT_CONTACT";
 
 import * as Contacts from "expo-contacts";
 
@@ -52,4 +53,31 @@ export const removeContact = (contact, frequency) => async (dispatch) => {
     payload: contact,
     frequency,
   });
+};
+
+export const editContact = (contactId, frequency, notify) => async (
+  dispatch
+) => {
+  fetch("https://rocky-mesa-61495.herokuapp.com/users/contacts", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      contactId,
+      frequency,
+      notify,
+    }),
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.response) {
+        dispatch({
+          type: EDIT_CONTACT,
+          contactId,
+          frequency,
+          notify,
+        });
+      }
+    });
 };

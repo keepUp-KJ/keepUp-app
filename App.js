@@ -8,10 +8,9 @@ import remindersReducer from "./src/store/reducers/reminders";
 import contactsReducer from "./src/store/reducers/contacts";
 import settingsReducer from "./src/store/reducers/settings";
 import { setNavigator } from "./src/navigation/navigationRef";
-import { StatusBar } from "react-native";
+import { StatusBar, Text } from "react-native";
 import * as Fonts from "expo-font";
 import { ActivityIndicator, View } from "react-native";
-import TextComp from "./src/components/TextComp";
 import Colors from "./src/constants/Colors";
 
 const rootReducer = combineReducers({
@@ -46,12 +45,9 @@ let App = () => {
             backgroundColor: Colors.primaryColor,
           }}
         >
-          <TextComp
-            bold
-            style={{ fontSize: 50, marginBottom: 20, color: "white" }}
-          >
+          <Text style={{ fontSize: 50, marginBottom: 20, color: "white" }}>
             Keep Up
-          </TextComp>
+          </Text>
           <ActivityIndicator size="large" color="white" />
         </View>
       ) : (
