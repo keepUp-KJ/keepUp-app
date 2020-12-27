@@ -20,9 +20,7 @@ class ConfirmSelectionScreen extends React.Component {
             : Colors.primaryColor,
       }}
     >
-      <TextComp style={styles.contactText}>
-        {itemData.item.contact.name}
-      </TextComp>
+      <TextComp style={styles.contactText}>{itemData.item.info.name}</TextComp>
     </TouchableOpacity>
   );
 
@@ -53,9 +51,9 @@ class ConfirmSelectionScreen extends React.Component {
             showsVerticalScrollIndicator={false}
             numColumns={3}
             data={this.props.contacts.filter(
-              (contact) => contact.accepted === true
+              (contact) => contact.isAccepted === true
             )}
-            keyExtractor={(item) => item.contact.id}
+            keyExtractor={(item) => item.info.id}
             renderItem={this.renderContact}
           />
         </View>

@@ -8,7 +8,7 @@ import Colors from "../../constants/Colors";
 class SetupScreen extends React.Component {
   componentDidMount() {
     this.props.setup(
-      this.props.contacts.filter((contact) => contact.accepted === true),
+      this.props.contacts.filter((contact) => contact.isAccepted === true),
       this.props.user._id
     );
   }

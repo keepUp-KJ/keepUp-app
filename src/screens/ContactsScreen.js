@@ -35,7 +35,6 @@ class ContactsScreen extends React.Component {
     search: false,
     filteredContacts: [],
     loading: true,
-    pendingContact: null,
   };
 
   componentDidMount() {
@@ -50,20 +49,12 @@ class ContactsScreen extends React.Component {
       onPress={() => {
         this.setState({
           visible: true,
-          pendingContact: itemData.item,
-          activeContact:
-            this.state.activeTab === "Pending"
-              ? itemData.item.contact
-              : itemData.item,
+          activeContact: itemData.item,
         });
       }}
     >
       <TextComp style={styles.text}>
-        {this.state.activeTab === "Pending"
-          ? itemData.item.contact.firstName +
-            " " +
-            (itemData.item.contact.lastName || "")
-          : itemData.item.firstName + " " + (itemData.item.lastName || "")}
+        {itemData.item.info.firstName} {itemData.item.info.lastName}
       </TextComp>
     </TouchableOpacity>
   );
@@ -99,43 +90,37 @@ class ContactsScreen extends React.Component {
 
     return (
       <SafeAreaView style={styles.screen}>
-        {this.state.activeContact !== null &&
-          this.state.pendingContact !== null && (
-            <ContactCard
-              onAccept={(frequency) => {
-                this.props
-                  .accept(
-                    this.props.user._id,
-                    this.state.pendingContact,
-                    frequency
-                  )
-                  .then(() => {
-                    this.setState({
-                      visible: false,
-                    });
+        {this.state.activeContact !== null && (
+          <ContactCard
+            onAccept={(frequency) => {
+              this.props
+                .accept(
+                  this.props.user._id,
+                  this.state.activeContact,
+                  frequency
+                )
+                .then(() => {
+                  this.setState({
+                    visible: false,
                   });
-              }}
-              onReject={() => {}}
-              onEdit={(frequency, notify) => {
-                this.props.edit(
-                  this.state.activeContact._id,
-                  frequency,
-                  notify
-                );
-              }}
-              pending={pending}
-              accepted={accepted}
-              visible={this.state.visible}
-              contact={this.state.activeContact}
-              close={() =>
-                this.setState({
-                  visible: false,
-                  activeContact: null,
-                  pendingContact: null,
-                })
-              }
-            />
-          )}
+                });
+            }}
+            onReject={() => {}}
+            onEdit={(frequency, notify) => {
+              this.props.edit(this.state.activeContact._id, frequency, notify);
+            }}
+            pending={pending}
+            accepted={accepted}
+            visible={this.state.visible}
+            contact={this.state.activeContact}
+            close={() =>
+              this.setState({
+                visible: false,
+                activeContact: null,
+              })
+            }
+          />
+        )}
         <View style={{ ...styles.headerContainer, flex: 0.08 }}>
           {this.state.search ? (
             <View style={styles.searchContainer}>
@@ -162,12 +147,10 @@ class ContactsScreen extends React.Component {
                       ? this.props.accepted
                       : null;
                     const updatedContacts = currentList.filter((contact) => {
-                      const contactInfo = pending ? contact.contact : contact;
-
                       const name = String.prototype.toUpperCase.call(
-                        (contactInfo.firstName || "") +
+                        (contact.info.firstName || "") +
                           " " +
-                          (contactInfo.lastName || "")
+                          (contact.info.lastName || "")
                       );
 
                       const search = String.prototype.toUpperCase.call(text);
@@ -234,7 +217,7 @@ class ContactsScreen extends React.Component {
                 rejected ? this.renderRejectedContact : this.renderContact
               }
               numColumns={accepted || pending ? 3 : null}
-              keyExtractor={(item) => (pending ? item.contact.id : item._id)}
+              keyExtractor={(item) => item.info.id}
             />
           )}
         </View>

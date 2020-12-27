@@ -23,8 +23,9 @@ const contactsReducer = (state = initialState, action) => {
       const updatedContacts = [];
       action.payload.forEach((contact) => {
         const newContact = {
-          contact,
-          accepted: false,
+          info: contact,
+          isAccepted: false,
+          isRejected: false,
           frequency: null,
           notify: null,
         };
@@ -41,13 +42,11 @@ const contactsReducer = (state = initialState, action) => {
       return {
         ...state,
         acceptedContacts: action.payload.filter(
-          (contact) => contact.status === "Accepted"
+          (contact) => contact.isAccepted
         ),
         pendingContacts: state.contacts.filter(
           (contact) =>
-            !action.payload.find(
-              (item) => item.contactId === contact.contact.id
-            )
+            !action.payload.find((item) => item.info.id === contact.info.id)
         ),
         loading: false,
       };
@@ -55,7 +54,7 @@ const contactsReducer = (state = initialState, action) => {
       const index = state.contacts.findIndex(
         (contact) => contact === action.payload
       );
-      state.contacts[index].accepted = true;
+      state.contacts[index].isAccepted = true;
       state.contacts[index].frequency = action.frequency;
       state.contacts[index].notify = "On the same day";
 
@@ -79,20 +78,20 @@ const contactsReducer = (state = initialState, action) => {
         (contact) => contact === action.contact
       );
 
-      state.contacts[x].accepted = true;
+      state.contacts[x].isAccepted = true;
       state.contacts[x].frequency = action.frequency;
 
       return {
         ...state,
         pendingContacts: state.pendingContacts.filter(
-          (contact) => !contact.accepted
+          (contact) => !contact.isAccepted
         ),
       };
     case REMOVE_CONTACT:
       const i = state.contacts.findIndex(
         (contact) => contact === action.payload
       );
-      state.contacts[i].accepted = false;
+      state.contacts[i].isAccepted = false;
 
       if (action.frequency === "daily") {
         const updatedContacts = state.dailyContacts.filter(

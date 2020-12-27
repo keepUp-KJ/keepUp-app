@@ -21,16 +21,11 @@ const remindersReducer = (state = initialState, action) => {
       };
     }
     case SET_COMPLETED: {
-      const index = state.reminders.findIndex(
-        (reminder) => reminder._id === action.id
-      );
-
-      if (index !== -1) {
-        state.reminders[index].completed = true;
-        return {
-          reminders: state.reminders,
-        };
-      }
+      return {
+        reminders: state.reminders.filter(
+          (reminder) => reminder._id !== action.id
+        ),
+      };
     }
     default:
       return state;

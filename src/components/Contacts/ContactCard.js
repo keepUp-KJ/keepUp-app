@@ -81,7 +81,7 @@ const ContactCard = (props) => {
             }}
             numberOfLines={2}
           >
-            {props.contact.firstName} {props.contact.lastName}
+            {props.contact.info.firstName} {props.contact.info.lastName}
           </TextComp>
           <TextComp
             style={{
@@ -89,7 +89,7 @@ const ContactCard = (props) => {
               color: Colors.secondary,
             }}
           >
-            {props.contact.status ? "Accepted" : "Pending"}
+            {props.contact.isAccepted ? "Accepted" : "Pending"}
           </TextComp>
           {props.pending ? (
             <View style={styles.container}>

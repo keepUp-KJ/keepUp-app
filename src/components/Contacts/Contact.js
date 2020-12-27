@@ -9,7 +9,8 @@ const Contact = (props) => {
       style={{
         ...styles.card,
         backgroundColor:
-          props.contact.accepted && props.frequency === props.contact.frequency
+          props.contact.isAccepted &&
+          props.frequency === props.contact.frequency
             ? props.frequency === "weekly"
               ? Colors.blue
               : props.frequency === "monthly"
@@ -19,7 +20,7 @@ const Contact = (props) => {
       }}
       activeOpacity={0.6}
       onPress={() => {
-        props.contact.accepted === false
+        props.contact.isAccepted === false
           ? props.addContact()
           : props.removeContact();
       }}
@@ -28,13 +29,13 @@ const Contact = (props) => {
         style={{
           ...styles.text,
           color:
-            props.contact.accepted &&
+            props.contact.isAccepted &&
             props.frequency === props.contact.frequency
               ? "white"
               : Colors.secondary,
         }}
       >
-        {props.contact.contact.name}
+        {props.contact.info.name}
       </TextComp>
     </TouchableOpacity>
   );

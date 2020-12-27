@@ -33,9 +33,6 @@ export const getReminders = (userId) => async (dispatch) => {
       );
     });
 };
-// }
-// );
-// };
 
 export const addReminder = (date, contacts, occasion, notify) => async (
   dispatch

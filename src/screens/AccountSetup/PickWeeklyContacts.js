@@ -63,16 +63,16 @@ class PickWeeklyContacts extends React.Component {
           .filter(
             (contact) =>
               !this.props.dailyContacts.find(
-                (item) => item.contact.id === contact.contact.id
+                (item) => item.info.id === contact.info.id
               )
           )
           .sort((a, b) => {
-            if (a.contact.firstName < b.contact.firstName) return -1;
-            if (a.contact.firstName > b.contact.firstName) return 1;
+            if (a.info.firstName < b.info.firstName) return -1;
+            if (a.info.firstName > b.info.firstName) return 1;
           })
       : this.state.filteredContacts.sort((a, b) => {
-          if (a.contact.firstName < b.contact.firstName) return -1;
-          if (a.contact.firstName > b.contact.firstName) return 1;
+          if (a.info.firstName < b.info.firstName) return -1;
+          if (a.info.firstName > b.info.firstName) return 1;
         });
 
     return (
@@ -118,9 +118,9 @@ class PickWeeklyContacts extends React.Component {
                 const updatedContacts = this.props.contacts.filter(
                   (contact) => {
                     const name = String.prototype.toUpperCase.call(
-                      (contact.contact.firstName || "") +
+                      (contact.info.firstName || "") +
                         " " +
-                        (contact.contact.lastName || "")
+                        (contact.info.lastName || "")
                     );
 
                     const search = String.prototype.toUpperCase.call(text);
@@ -141,7 +141,7 @@ class PickWeeklyContacts extends React.Component {
             ListHeaderComponent={this.renderHeader}
             showsVerticalScrollIndicator={false}
             data={contacts}
-            keyExtractor={(item) => item.contact.id}
+            keyExtractor={(item) => item.info.id}
             renderItem={(itemData) => (
               <Contact
                 frequency="weekly"
