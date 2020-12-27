@@ -53,3 +53,29 @@ export const removeContact = (contact, frequency) => async (dispatch) => {
     frequency,
   });
 };
+
+export const acceptContact = (userId, contact, frequency) => async (
+  dispatch
+) => {
+  fetch(`https://rocky-mesa-61495.herokuapp.com/contacts/accept`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userId,
+      contact,
+      frequency,
+    }),
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.response) {
+        dispatch({
+          type: ACCEPT_CONTACT,
+          payload: contact,
+          frequency,
+        });
+      }
+    });
+};

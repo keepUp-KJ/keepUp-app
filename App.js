@@ -26,7 +26,7 @@ Fonts.loadAsync({
 });
 
 let App = () => {
-  StatusBar.setBarStyle("dark-content");
+  StatusBar.setBarStyle("light-content");
 
   return (
     <Provider store={store}>

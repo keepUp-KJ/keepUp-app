@@ -38,7 +38,7 @@ const SettingsItem = (props) => {
       {props.dropdown ? (
         <View style={{ width: "80%", marginHorizontal: 20 }}>
           <DropDownPicker
-            zIndex={2}
+            zIndex={props.zindex}
             style={{ borderWidth: 0 }}
             items={props.dropdownItems}
             defaultValue={props.value}
@@ -47,7 +47,9 @@ const SettingsItem = (props) => {
               height: 40,
               marginVertical: 15,
             }}
-            itemStyle={{ justifyContent: "flex-start" }}
+            itemStyle={{
+              justifyContent: "flex-start",
+            }}
             labelStyle={{
               color: Colors.secondary,
               fontFamily: "Futura",

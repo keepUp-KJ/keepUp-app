@@ -35,6 +35,7 @@ class ContactsScreen extends React.Component {
     search: false,
     filteredContacts: [],
     loading: true,
+    pendingContact: null,
   };
 
   componentDidMount() {
@@ -49,6 +50,7 @@ class ContactsScreen extends React.Component {
       onPress={() => {
         this.setState({
           visible: true,
+          pendingContact: itemData.item,
           activeContact:
             this.state.activeTab === "Pending"
               ? itemData.item.contact
@@ -99,7 +101,19 @@ class ContactsScreen extends React.Component {
       <SafeAreaView style={styles.screen}>
         {this.state.activeContact !== null && (
           <ContactCard
-            onAccept={() => {}}
+            onAccept={(frequency) => {
+              this.props
+                .accept(
+                  this.props.user._id,
+                  this.state.pendingContact,
+                  frequency
+                )
+                .then(() => {
+                  this.setState({
+                    visible: false,
+                  });
+                });
+            }}
             onReject={() => {}}
             pending={pending}
             accepted={accepted}

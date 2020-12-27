@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import { Overlay } from "react-native-elements";
 import Colors from "../../constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Dropdown from "../Dropdown";
 import TextComp from "../TextComp";
 
@@ -92,14 +92,33 @@ const ContactCard = (props) => {
           </TextComp>
           {props.pending ? (
             <View style={styles.container}>
-              <TouchableOpacity style={styles.btn}>
-                <Ionicons name="md-person-add" size={23} color="white" />
+              {/* Daily */}
+              <TouchableOpacity
+                style={styles.btn}
+                onPress={() => {
+                  props.onAccept("daily");
+                }}
+              >
+                <Ionicons name="ios-today" size={23} color="white" />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.btn}>
-                <Ionicons name="ios-send" size={23} color="white" />
+              {/* Weekly */}
+              <TouchableOpacity
+                style={styles.btn}
+                onPress={() => {
+                  props.onAccept("weekly");
+                }}
+              >
+                <MaterialIcons name="repeat" size={23} color="white" />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.btn}>
-                <Ionicons name="ios-gift" size={23} color="white" />
+              {/* Monthly */}
+              <TouchableOpacity
+                style={styles.btn}
+                onPress={() => {
+                  props.onAccept("monthly");
+                }}
+                s
+              >
+                <MaterialIcons name="repeat-one" size={23} color="white" />
               </TouchableOpacity>
             </View>
           ) : (

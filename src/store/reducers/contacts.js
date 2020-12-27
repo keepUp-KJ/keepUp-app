@@ -3,6 +3,7 @@ import {
   SET_CONTACTS,
   ADD_CONTACT,
   REMOVE_CONTACT,
+  ACCEPT_CONTACT,
 } from "../actions/contacts.js";
 
 const initialState = {
@@ -66,6 +67,22 @@ const contactsReducer = (state = initialState, action) => {
           ...state,
           monthlyContacts: [...state.monthlyContacts, action.payload],
         };
+    case ACCEPT_CONTACT:
+      const x = state.contacts.findIndex(
+        (contact) => contact === action.payload
+      );
+
+      state.contacts[x].accepted = true;
+      state.contacts[x].frequency = action.frequency;
+
+      const updatedPendingList = state.pendingContacts.filter((contact) => {
+        contact.contact.id !== action.payload.contact.id;
+      });
+
+      return {
+        ...state,
+        pendingContacts: updatedPendingList,
+      };
     case REMOVE_CONTACT:
       const i = state.contacts.findIndex(
         (contact) => contact === action.payload
