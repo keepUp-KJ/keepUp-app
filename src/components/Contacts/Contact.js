@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import Colors from "../../constants/Colors";
 import TextComp from "../TextComp";
 
@@ -8,19 +8,21 @@ const Contact = (props) => {
     <TouchableOpacity
       style={{
         ...styles.card,
-        backgroundColor:
-          props.contact.isAccepted &&
-          props.frequency === props.contact.frequency
+        backgroundColor: props.contact.isAccepted
+          ? props.frequency === props.contact.frequency
             ? props.frequency === "weekly"
               ? Colors.blue
               : props.frequency === "monthly"
               ? Colors.babyBlue
               : Colors.primaryColor
-            : "rgb(248, 249, 253)",
+            : "rgb(248, 249, 253)"
+          : props.contact.isRejected
+          ? Colors.tomato
+          : "rgb(248, 249, 253)",
       }}
       activeOpacity={0.6}
       onPress={() => {
-        props.contact.isAccepted === false
+        props.contact.isAccepted === false && props.contact.isRejected === false
           ? props.addContact()
           : props.removeContact();
       }}
@@ -29,7 +31,7 @@ const Contact = (props) => {
         style={{
           ...styles.text,
           color:
-            props.contact.isAccepted &&
+            (props.contact.isAccepted || props.contact.isRejected) &&
             props.frequency === props.contact.frequency
               ? "white"
               : Colors.secondary,
@@ -43,8 +45,8 @@ const Contact = (props) => {
 
 const styles = StyleSheet.create({
   card: {
-    height: 100,
-    width: 100,
+    height: Dimensions.get("window").width / 4,
+    width: Dimensions.get("window").width / 4,
     justifyContent: "center",
     alignItems: "center",
     margin: 5,

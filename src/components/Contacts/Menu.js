@@ -23,7 +23,11 @@ const Menu = (props) => {
               props.onChange(item);
             }}
           >
-            {item.toUpperCase()}
+            {item === "Accepted"
+              ? "FRIENDS"
+              : item === "Rejected"
+              ? "BLACKLIST"
+              : item.toUpperCase()}
           </TextComp>
         </View>
       ))}

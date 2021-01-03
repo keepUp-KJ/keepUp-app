@@ -1,4 +1,9 @@
-import { SET_REMINDERS, DONE, SET_COMPLETED } from "../actions/reminders";
+import {
+  SET_REMINDERS,
+  DONE,
+  SET_COMPLETED,
+  ADD_CONTACT,
+} from "../actions/reminders";
 
 const initialState = {
   reminders: [],
@@ -25,6 +30,12 @@ const remindersReducer = (state = initialState, action) => {
         reminders: state.reminders.filter(
           (reminder) => reminder._id !== action.id
         ),
+      };
+    }
+    case ADD_CONTACT: {
+      return {
+        ...state,
+        contacts: [...state.contacts, action.contact],
       };
     }
     default:

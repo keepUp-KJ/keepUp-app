@@ -14,6 +14,7 @@ const initialState = {
   monthlyContacts: [],
   acceptedContacts: [],
   pendingContacts: [],
+  rejectedContacts: [],
   loading: null,
 };
 
@@ -36,6 +37,7 @@ const contactsReducer = (state = initialState, action) => {
         dailyContacts: [],
         weeklyContacts: [],
         monthlyContacts: [],
+        rejectedContacts: [],
         loading: true,
       };
     case SET_CONTACTS:
@@ -48,15 +50,25 @@ const contactsReducer = (state = initialState, action) => {
           (contact) =>
             !action.payload.find((item) => item.info.id === contact.info.id)
         ),
+        rejectedContacts: action.payload.filter(
+          (contact) => contact.isRejected
+        ),
         loading: false,
       };
     case ADD_CONTACT:
       const index = state.contacts.findIndex(
         (contact) => contact === action.payload
       );
-      state.contacts[index].isAccepted = true;
-      state.contacts[index].frequency = action.frequency;
-      state.contacts[index].notify = "On the same day";
+
+      if (action.frequency !== null) {
+        state.contacts[index].isAccepted = true;
+        state.contacts[index].frequency = action.frequency;
+        state.contacts[index].notify = "On the same day";
+      } else {
+        state.contacts[index].isRejected = true;
+        state.contacts[index].frequency = action.frequency;
+        state.contacts[index].notify = null;
+      }
 
       if (action.frequency === "daily")
         return {
@@ -73,6 +85,12 @@ const contactsReducer = (state = initialState, action) => {
           ...state,
           monthlyContacts: [...state.monthlyContacts, action.payload],
         };
+      else {
+        return {
+          ...state,
+          rejectedContacts: [...state.rejectedContacts, action.payload],
+        };
+      }
     case ACCEPT_CONTACT:
       const x = state.contacts.findIndex(
         (contact) => contact === action.contact
@@ -80,18 +98,25 @@ const contactsReducer = (state = initialState, action) => {
 
       state.contacts[x].isAccepted = true;
       state.contacts[x].frequency = action.frequency;
+      state.contacts[x].notify = "On the same day";
 
       return {
         ...state,
         pendingContacts: state.pendingContacts.filter(
           (contact) => !contact.isAccepted
         ),
+        acceptedContacts: [...state.acceptedContacts, state.contacts[x]],
       };
     case REMOVE_CONTACT:
       const i = state.contacts.findIndex(
         (contact) => contact === action.payload
       );
-      state.contacts[i].isAccepted = false;
+
+      if (action.frequency !== null) {
+        state.contacts[i].isAccepted = false;
+      } else {
+        state.contacts[i].isRejected = false;
+      }
 
       if (action.frequency === "daily") {
         const updatedContacts = state.dailyContacts.filter(
@@ -117,16 +142,24 @@ const contactsReducer = (state = initialState, action) => {
           ...state,
           monthlyContacts: updatedContacts,
         };
+      } else {
+        const updatedContacts = state.rejectedContacts.filter(
+          (contact) => contact !== action.payload
+        );
+        return {
+          ...state,
+          rejectedContacts: updatedContacts,
+        };
       }
     case EDIT_CONTACT:
       const contactIndex = state.acceptedContacts.findIndex(
         (contact) => contact._id === action.contactId
       );
-      console.log(contactIndex);
       if (contactIndex !== -1) {
         state.acceptedContacts[contactIndex].frequency = action.frequency;
         state.acceptedContacts[contactIndex].notify = action.notify;
         return {
+          ...state,
           acceptedContacts: state.acceptedContacts,
         };
       }

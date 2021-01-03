@@ -12,17 +12,28 @@ import Colors from "../../constants/Colors";
 import Input from "../../components/Input";
 import Header from "../../components/Header";
 import { connect } from "react-redux";
-import { addContact, removeContact } from "../../store/actions/contacts";
-import { MaterialIcons, Ionicons } from "@expo/vector-icons";
+import {
+  syncContacts,
+  addContact,
+  removeContact,
+} from "../../store/actions/contacts";
+import { MaterialIcons } from "@expo/vector-icons";
 import TextComp from "../../components/TextComp";
 
-class PickMonthlyContacts extends React.Component {
+class PickRejected extends React.Component {
   state = {
     filteredContacts: [],
     input: "",
     visible: false,
     activeContact: {},
   };
+
+  componentDidMount() {
+    const back = this.props.navigation.getParam("back");
+    if (!back) {
+      this.props.sync();
+    }
+  }
 
   alert = () =>
     Alert.alert(
@@ -43,39 +54,21 @@ class PickMonthlyContacts extends React.Component {
   renderHeader = () => {
     return (
       <TextComp style={styles.text}>
-        Pick Contacts that you wish to contact{" "}
-        <TextComp
-          bold
-          style={{
-            color: Colors.babyBlue,
-            fontSize: 17,
-          }}
-        >
-          MONTHLY
-        </TextComp>
+        Pick Contacts that you do{" "}
+        <TextComp bold style={{ color: Colors.tomato }}>
+          NOT
+        </TextComp>{" "}
+        want to contact
       </TextComp>
     );
   };
 
   render() {
     const contacts = !this.state.input
-      ? this.props.contacts
-          .filter(
-            (contact) =>
-              !this.props.dailyContacts.find(
-                (item) => item.info.id === contact.info.id
-              ) &&
-              !this.props.weeklyContacts.find(
-                (item) => item.info.id === contact.info.id
-              ) &&
-              !this.props.rejectedContacts.find(
-                (item) => item.info.id === contact.info.id
-              )
-          )
-          .sort((a, b) => {
-            if (a.info.firstName < b.info.firstName) return -1;
-            if (a.info.firstName > b.info.firstName) return 1;
-          })
+      ? this.props.contacts.sort((a, b) => {
+          if (a.info.firstName < b.info.firstName) return -1;
+          if (a.info.firstName > b.info.firstName) return 1;
+        })
       : this.state.filteredContacts.sort((a, b) => {
           if (a.info.firstName < b.info.firstName) return -1;
           if (a.info.firstName > b.info.firstName) return 1;
@@ -85,16 +78,6 @@ class PickMonthlyContacts extends React.Component {
       <SafeAreaView style={styles.screen}>
         <View style={styles.container}>
           <Header
-            leftComponent={
-              <Ionicons
-                name="md-arrow-back"
-                size={25}
-                color={Colors.secondary}
-                onPress={() => {
-                  this.props.navigation.navigate("PickWeekly");
-                }}
-              />
-            }
             centerComponent={
               <View>
                 <TextComp bold style={styles.headerText}>
@@ -102,9 +85,9 @@ class PickMonthlyContacts extends React.Component {
                 </TextComp>
                 <TextComp
                   bold
-                  style={{ ...styles.headerText, color: Colors.babyBlue }}
+                  style={{ ...styles.headerText, color: Colors.tomato }}
                 >
-                  {this.props.monthlyContacts.length} CONTACTS SELECTED
+                  {this.props.rejectedContacts.length} CONTACTS SELECTED
                 </TextComp>
               </View>
             }
@@ -139,7 +122,7 @@ class PickMonthlyContacts extends React.Component {
             />
           </View>
         </View>
-        {/* CONTACTS */}
+        {/* CONTACTS + DONE BUTTON */}
         <View style={{ flex: 0.8 }}>
           <FlatList
             ListHeaderComponent={this.renderHeader}
@@ -148,13 +131,13 @@ class PickMonthlyContacts extends React.Component {
             keyExtractor={(item) => item.info.id}
             renderItem={(itemData) => (
               <Contact
-                frequency="monthly"
+                frequency={null}
                 contact={itemData.item}
                 addContact={() => {
-                  this.props.add(itemData.item, "monthly");
+                  this.props.add(itemData.item, null);
                 }}
                 removeContact={() => {
-                  this.props.remove(itemData.item, "monthly");
+                  this.props.remove(itemData.item, null);
                 }}
               />
             )}
@@ -165,7 +148,7 @@ class PickMonthlyContacts extends React.Component {
           <TouchableOpacity
             style={styles.btnContainer}
             onPress={() => {
-              this.props.navigation.navigate("ConfirmSelection");
+              this.props.navigation.navigate("PickContacts");
             }}
           >
             <MaterialIcons name="arrow-forward" size={24} color="white" />
@@ -222,19 +205,15 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
+  user: state.users.user,
   contacts: state.contacts.contacts,
-  dailyContacts: state.contacts.dailyContacts,
-  weeklyContacts: state.contacts.weeklyContacts,
-  monthlyContacts: state.contacts.monthlyContacts,
   rejectedContacts: state.contacts.rejectedContacts,
 });
 
 const mapDispatchToProps = {
   add: addContact,
   remove: removeContact,
+  sync: syncContacts,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PickMonthlyContacts);
+export default connect(mapStateToProps, mapDispatchToProps)(PickRejected);

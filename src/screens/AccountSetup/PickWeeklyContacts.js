@@ -64,6 +64,9 @@ class PickWeeklyContacts extends React.Component {
             (contact) =>
               !this.props.dailyContacts.find(
                 (item) => item.info.id === contact.info.id
+              ) &&
+              !this.props.rejectedContacts.find(
+                (item) => item.info.id === contact.info.id
               )
           )
           .sort((a, b) => {
@@ -85,9 +88,7 @@ class PickWeeklyContacts extends React.Component {
                 size={25}
                 color={Colors.secondary}
                 onPress={() => {
-                  this.props.navigation.navigate("PickContacts", {
-                    back: true,
-                  });
+                  this.props.navigation.navigate("PickContacts");
                 }}
               />
             }
@@ -221,6 +222,7 @@ const mapStateToProps = (state) => ({
   contacts: state.contacts.contacts,
   dailyContacts: state.contacts.dailyContacts,
   weeklyContacts: state.contacts.weeklyContacts,
+  rejectedContacts: state.contacts.rejectedContacts,
 });
 
 const mapDispatchToProps = {

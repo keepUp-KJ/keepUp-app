@@ -25,6 +25,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { ActivityIndicator } from "react-native";
 import TextComp from "../components/TextComp";
+import { Dimensions } from "react-native";
 
 class ContactsScreen extends React.Component {
   state = {
@@ -83,6 +84,22 @@ class ContactsScreen extends React.Component {
     />
   );
 
+  search = (currentList, text) => {
+    const updatedContacts = currentList.filter((contact) => {
+      const name = String.prototype.toUpperCase.call(
+        (contact.info.firstName || "") + " " + (contact.info.lastName || "")
+      );
+
+      const search = String.prototype.toUpperCase.call(text);
+      return name.indexOf(search) > -1;
+    });
+
+    this.setState({
+      filteredContacts: updatedContacts,
+      searchInput: text,
+    });
+  };
+
   render() {
     const accepted = this.state.activeTab === "Accepted";
     const rejected = this.state.activeTab === "Rejected";
@@ -102,6 +119,7 @@ class ContactsScreen extends React.Component {
                 .then(() => {
                   this.setState({
                     visible: false,
+                    activeContact: null,
                   });
                 });
             }}
@@ -111,6 +129,7 @@ class ContactsScreen extends React.Component {
             }}
             pending={pending}
             accepted={accepted}
+            rejected={rejected}
             visible={this.state.visible}
             contact={this.state.activeContact}
             close={() =>
@@ -145,21 +164,9 @@ class ContactsScreen extends React.Component {
                       ? this.props.pending
                       : accepted
                       ? this.props.accepted
-                      : null;
-                    const updatedContacts = currentList.filter((contact) => {
-                      const name = String.prototype.toUpperCase.call(
-                        (contact.info.firstName || "") +
-                          " " +
-                          (contact.info.lastName || "")
-                      );
+                      : this.props.rejected;
 
-                      const search = String.prototype.toUpperCase.call(text);
-                      return name.indexOf(search) > -1;
-                    });
-                    this.setState({
-                      filteredContacts: updatedContacts,
-                      searchInput: text,
-                    });
+                    this.search(currentList, text);
                   }}
                 />
               </View>
@@ -189,13 +196,23 @@ class ContactsScreen extends React.Component {
             active={this.state.activeTab}
             onChange={(activeTab) => {
               this.setState({ activeTab });
+              if (this.state.searchInput) {
+                const currentList =
+                  activeTab === "Pending"
+                    ? this.props.pending
+                    : activeTab === "Accepted"
+                    ? this.props.accepted
+                    : this.props.rejected;
+                this.search(currentList, this.state.searchInput);
+              }
             }}
           />
         </View>
         <View
           style={{
             flex: 0.75,
-            alignItems: rejected ? null : "center",
+            alignItems: this.props.loading ? "center" : "flex-start",
+            marginHorizontal: Dimensions.get("window").width / 11,
           }}
         >
           {this.props.loading ? (
@@ -203,7 +220,6 @@ class ContactsScreen extends React.Component {
           ) : (
             <FlatList
               showsVerticalScrollIndicator={false}
-              key={accepted || pending ? "1" : "0"}
               data={
                 this.state.searchInput
                   ? this.state.filteredContacts
@@ -211,12 +227,12 @@ class ContactsScreen extends React.Component {
                   ? this.props.accepted
                   : pending
                   ? this.props.pending
+                  : rejected
+                  ? this.props.rejected
                   : null
               }
-              renderItem={
-                rejected ? this.renderRejectedContact : this.renderContact
-              }
-              numColumns={accepted || pending ? 3 : null}
+              renderItem={this.renderContact}
+              numColumns={3}
               keyExtractor={(item) => item.info.id}
             />
           )}
@@ -247,8 +263,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   card: {
-    height: 100,
-    width: 100,
+    height: Dimensions.get("window").width / 4,
+    width: Dimensions.get("window").width / 4,
     justifyContent: "center",
     alignItems: "center",
     margin: 5,
@@ -257,9 +273,9 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: "center",
-    color: Colors.secondary,
     fontSize: 14,
     paddingHorizontal: 5,
+    color: Colors.secondary,
   },
 });
 
@@ -268,6 +284,7 @@ const mapStateToProps = (state) => ({
   contacts: state.contacts.contacts,
   accepted: state.contacts.acceptedContacts,
   pending: state.contacts.pendingContacts,
+  rejected: state.contacts.rejectedContacts,
   loading: state.contacts.loading,
 });
 

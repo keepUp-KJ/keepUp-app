@@ -3,6 +3,7 @@ export const CREATE_REMINDER = "CREATE_REMINDER";
 export const DONE = "DONE";
 export const ERROR = "ERROR";
 export const SET_COMPLETED = "SET_COMPLETED";
+export const ADD_CONTACT = "ADD_CONTACT";
 
 import { AsyncStorage } from "react-native";
 import { navigate } from "../../navigation/navigationRef";
@@ -109,7 +110,12 @@ export const setupAccount = (contacts, userId) => async (dispatch) => {
   navigate("Home");
 };
 
-export const addContactsToReminder = () => async (dispatch) => {};
+export const addContactsToReminder = (contact) => async (dispatch) => {
+  dispatch({
+    type: ADD_CONTACT,
+    contact,
+  });
+};
 
 export const setCompleted = (reminderId) => async (dispatch) => {
   dispatch({

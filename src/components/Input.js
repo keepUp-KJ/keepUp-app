@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Keyboard } from "react-native";
 import { TextInput, StyleSheet, View } from "react-native";
 import Colors from "../constants/Colors";
 import TextComp from "./TextComp";
@@ -20,6 +21,10 @@ const Input = (props) => {
       </TextComp>
       <TextInput
         {...props}
+        autoCorrect={false}
+        onSubmitEditing={() => {
+          Keyboard.dismiss();
+        }}
         autoFocus={props.auto}
         blurOnSubmit={true}
         onFocus={() => {

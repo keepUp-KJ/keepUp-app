@@ -4,6 +4,7 @@ import { Overlay } from "react-native-elements";
 import Colors from "../../constants/Colors";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Dropdown from "../Dropdown";
+import Btn from "../Btn";
 import TextComp from "../TextComp";
 
 const ContactCard = (props) => {
@@ -44,15 +45,12 @@ const ContactCard = (props) => {
   return (
     <Overlay
       isVisible={props.visible}
-      overlayStyle={{
-        ...styles.overlay,
-        backgroundColor: "rgb(248, 249, 253)",
-      }}
+      overlayStyle={styles.overlay}
       onBackdropPress={() => {
         props.close();
       }}
     >
-      <View style={{ marginVertical: 10 }}>
+      <View style={{ marginVertical: 0 }}>
         <View style={styles.header}>
           {props.accepted ? (
             <TouchableOpacity
@@ -69,9 +67,11 @@ const ContactCard = (props) => {
           ) : null}
         </View>
         <View style={styles.body}>
-          <View style={styles.photo}>
-            <Ionicons name="md-person" size={60} color="white" />
-          </View>
+          {(props.pending || props.accepted) && (
+            <View style={styles.photo}>
+              <Ionicons name="md-person" size={60} color="white" />
+            </View>
+          )}
           <TextComp
             bold
             style={{
@@ -89,7 +89,7 @@ const ContactCard = (props) => {
               color: Colors.secondary,
             }}
           >
-            {props.contact.isAccepted ? "Accepted" : "Pending"}
+            {props.contact.info.mobile}
           </TextComp>
           {props.pending ? (
             <View style={styles.container}>
@@ -117,12 +117,11 @@ const ContactCard = (props) => {
                 onPress={() => {
                   props.onAccept("monthly");
                 }}
-                s
               >
                 <MaterialIcons name="repeat-one" size={23} color="white" />
               </TouchableOpacity>
             </View>
-          ) : (
+          ) : props.accepted ? (
             <View style={styles.acceptedContainer}>
               <View style={styles.textContainer}>
                 <TextComp style={styles.text}>Frequency</TextComp>
@@ -161,6 +160,10 @@ const ContactCard = (props) => {
                   </TextComp>
                 )}
               </View>
+            </View>
+          ) : (
+            <View style={styles.rejectedContainer}>
+              <Btn title="Unreject" btnColor={Colors.tomato} />
             </View>
           )}
         </View>
@@ -208,6 +211,7 @@ const styles = StyleSheet.create({
   overlay: {
     width: Dimensions.get("window").width / 1.3,
     borderRadius: 35,
+    backgroundColor: "rgb(248, 249, 253)",
   },
   container: {
     width: "100%",
@@ -219,6 +223,10 @@ const styles = StyleSheet.create({
   acceptedContainer: {
     marginTop: 20,
     height: 140,
+  },
+  rejectedContainer: {
+    width: "100%",
+    marginTop: 20,
   },
   btn: {
     backgroundColor: Colors.primaryColor,

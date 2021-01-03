@@ -5,6 +5,7 @@ import SignupScreen from "../screens/Signup/SignupScreen";
 import VerifyEmailScreen from "../screens/Signup/VerifyEmailScreen";
 import LoadingScreen from "../screens/Signup/LoadingScreen";
 
+import PickRejected from "../screens/AccountSetup/PickRejected";
 import PickContactsScreen from "../screens/AccountSetup/PickContactsScreen";
 import PickWeeklyContacts from "../screens/AccountSetup/PickWeeklyContacts";
 import PickMonthlyContacts from "../screens/AccountSetup/PickMonthlyContacts";
@@ -33,6 +34,7 @@ const Navigator = createSwitchNavigator(
     PickContacts: PickContactsScreen,
     PickWeekly: PickWeeklyContacts,
     PickMonthly: PickMonthlyContacts,
+    PickRejected,
     ForgotPassword: ForgotPasswordScreen,
     RenewPassword: RenewPasswordScreen,
     VerifyEmail: VerifyEmailScreen,
@@ -49,7 +51,7 @@ const Navigator = createSwitchNavigator(
     Profile: ProfileScreen,
   },
   {
-    // initialRouteName: "RenewPassword",
+    // initialRouteName: "PickRejected",
   }
 );
 

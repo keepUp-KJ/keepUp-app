@@ -6,7 +6,6 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   Keyboard,
-  FlatList,
 } from "react-native";
 import Btn from "../components/Btn";
 import Input from "../components/Input";
@@ -18,6 +17,9 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { addContactsToReminder, addReminder } from "../store/actions/reminders";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import TextComp from "../components/TextComp";
+import ContactsPopup from "../components/Contacts/ContactsPopup";
+import ReminderContactsList from "../components/ReminderContactsList";
+
 class AddReminderScreen extends React.Component {
   state = {
     date: new Date(),
@@ -25,14 +27,11 @@ class AddReminderScreen extends React.Component {
     notify: "On the same day",
     open: false,
     title: "",
+    visible: false,
+    input: "",
   };
 
   render() {
-    const CONTACTS = [
-      // { firstName: "Khaled", lastName: "Magued" },
-      // { firstName: "Jana", lastName: "Hamdy" },
-    ];
-    CONTACTS.unshift({});
     let dropdownItems = [
       {
         label: "On the same day",
@@ -51,6 +50,7 @@ class AddReminderScreen extends React.Component {
         value: "None",
       },
     ];
+
     return (
       <TouchableWithoutFeedback
         onPress={() => {
@@ -58,6 +58,17 @@ class AddReminderScreen extends React.Component {
         }}
       >
         <SafeAreaView style={styles.screen}>
+          <ContactsPopup
+            visible={this.state.visible}
+            contacts={this.props.contacts}
+            addContact={(contact) => {
+              this.props.add(contact);
+            }}
+            close={() => {
+              this.setState({ visible: false });
+            }}
+          />
+
           <View style={styles.header}>
             <Header
               leftComponent={
@@ -117,7 +128,6 @@ class AddReminderScreen extends React.Component {
             </TouchableOpacity>
             {this.state.show ? (
               <DateTimePicker
-                testID="dateTimePicker"
                 value={this.state.date}
                 mode="date"
                 onChange={(event, date) => this.setState({ date })}
@@ -151,36 +161,14 @@ class AddReminderScreen extends React.Component {
                 this.setState({ notify: item.value });
               }}
             />
-            <FlatList
-              ListHeaderComponent={
-                <TextComp style={{ ...styles.text, marginVertical: 5 }}>
-                  Contacts
-                </TextComp>
-              }
-              data={CONTACTS}
-              keyExtractor={(item) => item.firstName}
-              numColumns={4}
-              renderItem={(itemData) => (
-                <TouchableOpacity
-                  style={{
-                    ...styles.contactContainer,
-                    backgroundColor: itemData.index === 0 ? "white" : "#e6e6e6",
-                    borderWidth: itemData.index === 0 ? 1.5 : 1,
-                  }}
-                  onPress={() => {
-                    itemData.index === 0 ? this.props.add() : null;
-                  }}
-                >
-                  {itemData.index === 0 ? (
-                    <Ionicons name="ios-add" size={40} color="#e6e6e6" />
-                  ) : (
-                    <TextComp style={styles.contactText}>
-                      {itemData.item.firstName.charAt(0).toUpperCase() +
-                        itemData.item.lastName.charAt(0).toUpperCase()}
-                    </TextComp>
-                  )}
-                </TouchableOpacity>
+
+            <ReminderContactsList
+              data={this.props.reminderContacts.filter(
+                (contact) => contact === null
               )}
+              onOpen={() => {
+                this.setState({ visible: true });
+              }}
             />
           </View>
           <View style={styles.footer}>
@@ -220,10 +208,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.secondary,
   },
-  contactText: {
-    fontSize: 20,
-    color: Colors.secondary,
-  },
   body: {
     flex: 0.8,
     marginHorizontal: 30,
@@ -243,16 +227,7 @@ const styles = StyleSheet.create({
     height: 45,
     marginVertical: 15,
   },
-  contactContainer: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    alignItems: "center",
-    justifyContent: "center",
-    margin: 5,
-    borderColor: "#e6e6e6",
-    borderStyle: "dashed",
-  },
+
   dateContainer: {
     marginVertical: 5,
     borderWidth: 0.5,
@@ -269,7 +244,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  contacts: state.reminders.contacts,
+  reminderContacts: state.reminders.contacts,
+  contacts: state.contacts.contacts,
 });
 
 const mapDispatchToProps = {

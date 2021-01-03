@@ -17,7 +17,7 @@ import {
   addContact,
   removeContact,
 } from "../../store/actions/contacts";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import TextComp from "../../components/TextComp";
 
 class PickContactsScreen extends React.Component {
@@ -27,13 +27,6 @@ class PickContactsScreen extends React.Component {
     visible: false,
     activeContact: {},
   };
-
-  componentDidMount() {
-    const back = this.props.navigation.getParam("back");
-    if (!back) {
-      this.props.sync();
-    }
-  }
 
   alert = () =>
     Alert.alert(
@@ -70,10 +63,17 @@ class PickContactsScreen extends React.Component {
 
   render() {
     const contacts = !this.state.input
-      ? this.props.contacts.sort((a, b) => {
-          if (a.info.firstName < b.info.firstName) return -1;
-          if (a.info.firstName > b.info.firstName) return 1;
-        })
+      ? this.props.contacts
+          .filter(
+            (contact) =>
+              !this.props.rejectedContacts.find(
+                (item) => item.info.id === contact.info.id
+              )
+          )
+          .sort((a, b) => {
+            if (a.info.firstName < b.info.firstName) return -1;
+            if (a.info.firstName > b.info.firstName) return 1;
+          })
       : this.state.filteredContacts.sort((a, b) => {
           if (a.info.firstName < b.info.firstName) return -1;
           if (a.info.firstName > b.info.firstName) return 1;
@@ -83,6 +83,18 @@ class PickContactsScreen extends React.Component {
       <SafeAreaView style={styles.screen}>
         <View style={styles.container}>
           <Header
+            leftComponent={
+              <Ionicons
+                name="md-arrow-back"
+                size={25}
+                color={Colors.secondary}
+                onPress={() => {
+                  this.props.navigation.navigate("PickRejected", {
+                    back: true,
+                  });
+                }}
+              />
+            }
             centerComponent={
               <View>
                 <TextComp bold style={styles.headerText}>
@@ -213,6 +225,7 @@ const mapStateToProps = (state) => ({
   user: state.users.user,
   contacts: state.contacts.contacts,
   dailyContacts: state.contacts.dailyContacts,
+  rejectedContacts: state.contacts.rejectedContacts,
 });
 
 const mapDispatchToProps = {

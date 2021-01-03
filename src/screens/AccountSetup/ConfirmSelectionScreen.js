@@ -13,11 +13,13 @@ class ConfirmSelectionScreen extends React.Component {
       style={{
         ...styles.card,
         backgroundColor:
-          itemData.item.frequency === "weekly"
+          itemData.item.frequency === "daily"
+            ? Colors.primaryColor
+            : itemData.item.frequency === "weekly"
             ? Colors.blue
             : itemData.item.frequency === "monthly"
             ? Colors.babyBlue
-            : Colors.primaryColor,
+            : Colors.tomato,
       }}
     >
       <TextComp style={styles.contactText}>{itemData.item.info.name}</TextComp>
@@ -25,6 +27,14 @@ class ConfirmSelectionScreen extends React.Component {
   );
 
   render() {
+    const contacts = this.props.contacts
+      .filter(
+        (contact) => contact.isAccepted === true || contact.isRejected === true
+      )
+      .sort((a, b) => {
+        if (a.isRejected < b.isRejected) return -1;
+      });
+
     return (
       <SafeAreaView style={styles.screen}>
         <View style={{ flex: 0.15, justifyContent: "center" }}>
@@ -50,9 +60,7 @@ class ConfirmSelectionScreen extends React.Component {
           <FlatList
             showsVerticalScrollIndicator={false}
             numColumns={3}
-            data={this.props.contacts.filter(
-              (contact) => contact.isAccepted === true
-            )}
+            data={contacts}
             keyExtractor={(item) => item.info.id}
             renderItem={this.renderContact}
           />
