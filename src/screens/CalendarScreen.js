@@ -57,7 +57,7 @@ class CalendarScreen extends React.Component {
                       date
                     ) +
                     " " +
-                    day.day +
+                    ("0" + day.day).slice(-2) +
                     ", " +
                     day.year,
                 });
@@ -73,7 +73,13 @@ class CalendarScreen extends React.Component {
               data={this.props.reminders.filter(
                 (reminder) => reminder.date === this.state.date.toString()
               )}
-              renderItem={(itemData) => <Task reminder={itemData.item} />}
+              renderItem={(itemData) =>
+                itemData.item.contacts.map((contact) => (
+                  <View key={contact.info.id}>
+                    <Task contact={contact} reminder={itemData.item} />
+                  </View>
+                ))
+              }
               keyExtractor={(item) => item._id || item.contacts[0].id}
             />
           </View>

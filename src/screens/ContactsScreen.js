@@ -21,6 +21,7 @@ import {
   syncContacts,
   editContact,
   acceptContact,
+  rejectContact,
 } from "../store/actions/contacts";
 import { Ionicons } from "@expo/vector-icons";
 import { ActivityIndicator } from "react-native";
@@ -123,7 +124,16 @@ class ContactsScreen extends React.Component {
                   });
                 });
             }}
-            onReject={() => {}}
+            onReject={() => {
+              this.props
+                .reject(this.props.user._id, this.state.activeContact)
+                .then(() => {
+                  this.setState({
+                    visible: false,
+                    activeContact: null,
+                  });
+                });
+            }}
             onEdit={(frequency, notify) => {
               this.props.edit(this.state.activeContact._id, frequency, notify);
             }}
@@ -212,7 +222,8 @@ class ContactsScreen extends React.Component {
           style={{
             flex: 0.75,
             alignItems: this.props.loading ? "center" : "flex-start",
-            marginHorizontal: Dimensions.get("window").width / 11,
+            marginHorizontal: 20,
+            // marginHorizontal: Dimensions.get("window").width / 11,
           }}
         >
           {this.props.loading ? (
@@ -220,6 +231,7 @@ class ContactsScreen extends React.Component {
           ) : (
             <FlatList
               showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
               data={
                 this.state.searchInput
                   ? this.state.filteredContacts
@@ -263,8 +275,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   card: {
-    height: Dimensions.get("window").width / 4,
-    width: Dimensions.get("window").width / 4,
+    height: Dimensions.get("window").width / 3.7,
+    width: Dimensions.get("window").width / 3.7,
     justifyContent: "center",
     alignItems: "center",
     margin: 5,
@@ -293,6 +305,7 @@ const mapDispatchToProps = {
   get: getContactDecisions,
   sync: syncContacts,
   edit: editContact,
+  reject: rejectContact,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactsScreen);

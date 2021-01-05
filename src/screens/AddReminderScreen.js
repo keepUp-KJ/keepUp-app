@@ -19,6 +19,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import TextComp from "../components/TextComp";
 import ContactsPopup from "../components/Contacts/ContactsPopup";
 import ReminderContactsList from "../components/ReminderContactsList";
+import moment from "moment";
 
 class AddReminderScreen extends React.Component {
   state = {
@@ -99,6 +100,7 @@ class AddReminderScreen extends React.Component {
               onChangeText={(title) => {
                 this.setState({ title });
               }}
+              error={this.props.error}
             />
             <View style={styles.container}>
               <TextComp style={styles.text}>Date</TextComp>
@@ -128,8 +130,10 @@ class AddReminderScreen extends React.Component {
             </TouchableOpacity>
             {this.state.show ? (
               <DateTimePicker
+                testID="dateTimePicker"
                 value={this.state.date}
                 mode="date"
+                display="default"
                 onChange={(event, date) => this.setState({ date })}
               />
             ) : null}
@@ -164,10 +168,10 @@ class AddReminderScreen extends React.Component {
 
             <ReminderContactsList
               data={this.props.reminderContacts.filter(
-                (contact) => contact === null
+                (contact) => contact !== null
               )}
-              onOpen={() => {
-                this.setState({ visible: true });
+              onOpen={(index) => {
+                index === 0 && this.setState({ visible: true });
               }}
             />
           </View>
@@ -178,8 +182,9 @@ class AddReminderScreen extends React.Component {
               style={{ width: "80%", alignSelf: "center" }}
               onPress={() => {
                 this.props.create(
+                  this.props.user,
                   this.state.date,
-                  this.props.contacts,
+                  this.props.reminderContacts,
                   this.state.title,
                   this.state.notify
                 );
@@ -244,8 +249,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
+  user: state.users.user,
   reminderContacts: state.reminders.contacts,
   contacts: state.contacts.contacts,
+  error: state.reminders.error,
 });
 
 const mapDispatchToProps = {

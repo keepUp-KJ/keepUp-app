@@ -5,6 +5,7 @@ import {
   REMOVE_CONTACT,
   EDIT_CONTACT,
   ACCEPT_CONTACT,
+  REJECT_CONTACT,
 } from "../actions/contacts.js";
 
 const initialState = {
@@ -107,6 +108,21 @@ const contactsReducer = (state = initialState, action) => {
         ),
         acceptedContacts: [...state.acceptedContacts, state.contacts[x]],
       };
+    case REJECT_CONTACT: {
+      const id = state.contacts.findIndex(
+        (contact) => contact === action.contact
+      );
+
+      state.contacts[id].isRejected = true;
+
+      return {
+        ...state,
+        pendingContacts: state.pendingContacts.filter(
+          (contact) => !contact.isRejected
+        ),
+        rejectedContacts: [...state.rejectedContacts, state.contacts[id]],
+      };
+    }
     case REMOVE_CONTACT:
       const i = state.contacts.findIndex(
         (contact) => contact === action.payload

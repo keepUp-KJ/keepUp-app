@@ -13,14 +13,18 @@ const ReminderContactsList = (props) => {
           backgroundColor: itemData.index === 0 ? "white" : "#e6e6e6",
           borderWidth: itemData.index === 0 ? 1.5 : 1,
         }}
-        onPress={props.onOpen}
+        onPress={() => {
+          props.onOpen(itemData.index);
+        }}
       >
         {itemData.index === 0 ? (
           <Ionicons name="ios-add" size={40} color="#e6e6e6" />
         ) : (
           <TextComp style={styles.contactText}>
             {itemData.item.info.firstName.charAt(0).toUpperCase() +
-              itemData.item.info.lastName.charAt(0).toUpperCase()}
+              (itemData.item.info.lastName
+                ? itemData.item.info.lastName.charAt(0).toUpperCase()
+                : "")}
           </TextComp>
         )}
       </TouchableOpacity>

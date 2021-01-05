@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { Overlay } from "react-native-elements";
-import { View, StyleSheet, Dimensions, FlatList, Text } from "react-native";
+import { View, StyleSheet, Dimensions, FlatList } from "react-native";
 import Input from "../Input";
 import TextComp from "../TextComp";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const ContactsPopup = (props) => {
   const [input, setInput] = useState("");
   const [contacts, setContacts] = useState([]);
+  const [added, setAdded] = useState(false);
+  const [activeContact, setActiveContact] = useState({});
 
   return (
     <Overlay
@@ -59,14 +61,24 @@ const ContactsPopup = (props) => {
               </TextComp>
               <TouchableOpacity
                 onPress={() => {
-                  props.addContact(itemData.item);
+                  props.addContact(itemData.item, itemData.index);
+                  setActiveContact(itemData.item);
+                  setAdded(!added);
                 }}
               >
-                <Ionicons
-                  name="ios-add"
-                  size={25}
-                  color={Colors.primaryColor}
-                />
+                {added && itemData.item === activeContact ? (
+                  <AntDesign
+                    name="minus"
+                    size={25}
+                    color={Colors.primaryColor}
+                  />
+                ) : (
+                  <Ionicons
+                    name="ios-add"
+                    size={25}
+                    color={Colors.primaryColor}
+                  />
+                )}
               </TouchableOpacity>
             </View>
           )}

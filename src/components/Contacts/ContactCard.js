@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { View, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import { Overlay } from "react-native-elements";
 import Colors from "../../constants/Colors";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  MaterialIcons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import Dropdown from "../Dropdown";
 import Btn from "../Btn";
 import TextComp from "../TextComp";
@@ -89,37 +93,68 @@ const ContactCard = (props) => {
               color: Colors.secondary,
             }}
           >
-            {props.contact.info.mobile}
+            {props.pending
+              ? props.contact.info.phoneNumbers[0].number
+              : props.contact.info.mobile}
           </TextComp>
           {props.pending ? (
             <View style={styles.container}>
               {/* Daily */}
-              <TouchableOpacity
-                style={styles.btn}
-                onPress={() => {
-                  props.onAccept("daily");
-                }}
-              >
-                <Ionicons name="ios-today" size={23} color="white" />
-              </TouchableOpacity>
+              <View style={styles.btnContainer}>
+                <TouchableOpacity
+                  style={styles.btn}
+                  onPress={() => {
+                    props.onAccept("daily");
+                  }}
+                >
+                  <MaterialIcons name="today" size={23} color="white" />
+                </TouchableOpacity>
+                <TextComp>Daily</TextComp>
+              </View>
               {/* Weekly */}
-              <TouchableOpacity
-                style={styles.btn}
-                onPress={() => {
-                  props.onAccept("weekly");
-                }}
-              >
-                <MaterialIcons name="repeat" size={23} color="white" />
-              </TouchableOpacity>
+              <View style={styles.btnContainer}>
+                <TouchableOpacity
+                  style={styles.btn}
+                  onPress={() => {
+                    props.onAccept("weekly");
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="calendar-week"
+                    size={23}
+                    color="white"
+                  />
+                </TouchableOpacity>
+                <TextComp>Weekly</TextComp>
+              </View>
               {/* Monthly */}
-              <TouchableOpacity
-                style={styles.btn}
-                onPress={() => {
-                  props.onAccept("monthly");
-                }}
-              >
-                <MaterialIcons name="repeat-one" size={23} color="white" />
-              </TouchableOpacity>
+              <View style={styles.btnContainer}>
+                <TouchableOpacity
+                  style={styles.btn}
+                  onPress={() => {
+                    props.onAccept("monthly");
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="calendar-month"
+                    size={23}
+                    color="white"
+                  />
+                </TouchableOpacity>
+                <TextComp>Monthly</TextComp>
+              </View>
+              {/* Reject */}
+              <View style={styles.btnContainer}>
+                <TouchableOpacity
+                  style={{ ...styles.btn, backgroundColor: Colors.tomato }}
+                  onPress={() => {
+                    props.onReject();
+                  }}
+                >
+                  <MaterialIcons name="close" size={23} color="white" />
+                </TouchableOpacity>
+                <TextComp>Reject</TextComp>
+              </View>
             </View>
           ) : props.accepted ? (
             <View style={styles.acceptedContainer}>
@@ -235,6 +270,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 5,
+  },
+  btnContainer: {
+    alignItems: "center",
   },
 });
 

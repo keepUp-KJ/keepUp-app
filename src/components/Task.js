@@ -1,60 +1,29 @@
 import React from "react";
-import { Dimensions } from "react-native";
-import {
-  View,
-  StyleSheet,
-  Animated,
-  TouchableOpacity,
-  PanResponder,
-} from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import Colors from "../constants/Colors";
 import TextComp from "./TextComp";
 
 const Task = (props) => {
-  const taskXPos = new Animated.Value(0);
-  const taskPanResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onPanResponderMove: (evt, gs) => {
-      taskXPos.setValue(gs.dx);
-    },
-    onPanResponderRelease: (evt, gs) => {
-      const width = Dimensions.get("window").width;
-      if (gs.dx < -1 * width * 0.4) {
-        Animated.timing(taskXPos, {
-          toValue: -1 * width,
-          duration: 250,
-          useNativeDriver: false,
-        }).start(({ finished }) => {
-          if (finished) {
-            props.completeTask();
-          }
-        });
-      } else {
-        taskXPos.setValue(0);
-      }
-    },
-  });
-
   return (
-    <Animated.View
-      {...taskPanResponder.panHandlers}
-      style={{ ...styles.task, left: taskXPos }}
-    >
+    <TouchableOpacity style={styles.task} onPress={props.completeTask}>
+      <TextComp bold style={styles.occasion}>
+        {" "}
+        {props.reminder.occasion
+          ? props.reminder.occasion.toUpperCase()
+          : "CALL"}
+      </TextComp>
       <View style={styles.container}>
         <TextComp style={styles.taskText}>
-          Call {props.reminder.contacts[0].firstName}{" "}
-          {props.reminder.contacts[0].lastName}
+          {props.contact.info.firstName} {props.contact.info.lastName}
         </TextComp>
       </View>
-    </Animated.View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   task: {
     marginHorizontal: 30,
-    flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
     padding: 25,
     borderRadius: 15,
@@ -62,11 +31,18 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   taskText: {
-    marginLeft: 10,
     fontSize: 16,
     color: Colors.secondary,
   },
-  container: { flexDirection: "row", alignItems: "center" },
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  occasion: {
+    fontSize: 12,
+    marginBottom: 5,
+    color: Colors.secondary,
+  },
 });
 
 export default Task;

@@ -81,6 +81,30 @@ export const acceptContact = (userId, contact, frequency) => async (
     });
 };
 
+export const rejectContact = (userId, contact) => async (dispatch) => {
+  fetch(`https://rocky-mesa-61495.herokuapp.com/contacts/reject`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userId,
+      contact,
+    }),
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.response) {
+        dispatch({
+          type: REJECT_CONTACT,
+          contact,
+        });
+      } else {
+        console.log(json.error);
+      }
+    });
+};
+
 export const editContact = (contactId, frequency, notify) => async (
   dispatch
 ) => {

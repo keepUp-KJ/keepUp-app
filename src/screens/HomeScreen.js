@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { getReminders, setCompleted } from "../store/actions/reminders";
 import { Calendar } from "react-native-event-week";
 import TextComp from "../components/TextComp";
+import { ActivityIndicator } from "react-native";
 
 class HomeScreen extends React.Component {
   state = {
@@ -57,24 +58,31 @@ class HomeScreen extends React.Component {
             />
           </View>
           <View style={{ flex: 0.73 }}>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={this.props.reminders.filter(
-                (reminder) =>
-                  reminder.date === today && reminder.completed === false
-              )}
-              renderItem={(itemData) => (
-                <Task
-                  reminder={itemData.item}
-                  completeTask={() => {
-                    this.props.complete(itemData.item._id).then(() => {
-                      console.log(this.props.reminders);
-                    });
-                  }}
-                />
-              )}
-              keyExtractor={(item) => item._id}
-            />
+            {this.props.loading ? (
+              <ActivityIndicator size="small" color={Colors.primaryColor} />
+            ) : (
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={this.props.reminders.filter(
+                  (reminder) =>
+                    reminder.date === today && reminder.completed === false
+                )}
+                renderItem={(itemData) =>
+                  itemData.item.contacts.map((contact) => (
+                    <View key={contact.info.id}>
+                      <Task
+                        contact={contact}
+                        reminder={itemData.item}
+                        completeTask={() => {
+                          this.props.complete(itemData.item._id, contact);
+                        }}
+                      />
+                    </View>
+                  ))
+                }
+                keyExtractor={(item) => item._id}
+              />
+            )}
           </View>
         </View>
 
@@ -110,6 +118,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   user: state.users.user,
   reminders: state.reminders.reminders,
+  loading: state.reminders.loading,
 });
 
 const mapDispatchToProps = {
