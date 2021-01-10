@@ -4,14 +4,9 @@ import { connect } from "react-redux";
 import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import TextComp from "../../components/TextComp";
+import Btn from "../../components/Btn";
 
 class ProfileScreen extends React.Component {
-  state = {
-    birthday: false,
-    dailyCalls: false,
-    incompleteTask: false,
-  };
-
   render() {
     return (
       <SafeAreaView style={styles.screen}>
@@ -35,21 +30,65 @@ class ProfileScreen extends React.Component {
           </View>
         </View>
         <View style={styles.body}>
-          <View style={styles.labelContainer}>
-            <TextComp style={styles.label}>First Name</TextComp>
-            <TextComp style={styles.text}>Khaled</TextComp>
-          </View>
-          <View style={styles.labelContainer}>
-            <TextComp style={styles.label}>Last Name</TextComp>
-            <TextComp style={styles.text}>Magued</TextComp>
-          </View>
-          <View style={styles.labelContainer}>
-            <TextComp style={styles.label}>Email</TextComp>
-            <TextComp style={styles.text}>{this.props.user.email}</TextComp>
-          </View>
-          <View style={styles.labelContainer}>
-            <TextComp style={styles.label}>Mobile</TextComp>
-            <TextComp style={styles.text}>01063795325</TextComp>
+          <View>
+            <View style={styles.labelContainer}>
+              <TextComp style={styles.label}>First Name</TextComp>
+              {this.props.user.firstName ? (
+                <TextComp style={styles.text}>
+                  {this.props.user.firstName}
+                </TextComp>
+              ) : (
+                <TextComp
+                  style={{
+                    ...styles.text,
+                    color: Colors.secondary,
+                    marginLeft: 2,
+                  }}
+                >
+                  -
+                </TextComp>
+              )}
+            </View>
+            <View style={styles.labelContainer}>
+              <TextComp style={styles.label}>Last Name</TextComp>
+              {this.props.user.lastName ? (
+                <TextComp style={styles.text}>
+                  {this.props.user.lastName}
+                </TextComp>
+              ) : (
+                <TextComp
+                  style={{
+                    ...styles.text,
+                    color: Colors.secondary,
+                    marginLeft: 2,
+                  }}
+                >
+                  -
+                </TextComp>
+              )}
+            </View>
+            <View style={styles.labelContainer}>
+              <TextComp style={styles.label}>Email</TextComp>
+              <TextComp style={styles.text}>{this.props.user.email}</TextComp>
+            </View>
+            <View style={styles.labelContainer}>
+              <TextComp style={styles.label}>Mobile</TextComp>
+              {this.props.user.mobile ? (
+                <TextComp style={styles.text}>
+                  {this.props.user.mobile}
+                </TextComp>
+              ) : (
+                <TextComp
+                  style={{
+                    ...styles.text,
+                    color: Colors.secondary,
+                    marginLeft: 2,
+                  }}
+                >
+                  -
+                </TextComp>
+              )}
+            </View>
           </View>
         </View>
       </SafeAreaView>
@@ -74,6 +113,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
+    fontFamily: "regular",
   },
   title: {
     color: "white",
@@ -90,6 +130,10 @@ const styles = StyleSheet.create({
   },
   labelContainer: {
     marginVertical: 20,
+  },
+  btnContainer: {
+    flex: 0.3,
+    justifyContent: "center",
   },
 });
 

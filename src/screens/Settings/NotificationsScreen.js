@@ -5,14 +5,41 @@ import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import SettingsItem from "../../components/Settings/SettingsItem";
 import TextComp from "../../components/TextComp";
+import { getSettings, updateSettings } from "../../store/actions/settings";
 
 class NotificationsScreen extends React.Component {
   state = {
-    birthday: false,
-    dailyCalls: false,
-    incompleteTask: false,
+    settings: {
+      birthdayNotification: null,
+      dailyCallNotification: null,
+      incompleteTaskNotification: null,
+      birthdayReminder: null,
+      callReminder: null,
+      incompleteTaskReminder: null,
+    },
   };
-  componentDidMount() {}
+
+  componentDidMount() {
+    this.props.get().then(() => {
+      setTimeout(() => {
+        this.setState({
+          settings: {
+            birthdayNotification: this.props.settings.birthdayNotification,
+            dailyCallNotification: this.props.settings.dailyCallNotification,
+            incompleteTaskNotification: this.props.settings
+              .incompleteTaskNotification,
+            birthdayReminder: this.props.settings.birthdayReminder,
+            callReminder: this.props.settings.callReminder,
+            incompleteTaskReminder: this.props.settings.incompleteTaskReminder,
+          },
+        });
+      }, 250);
+    });
+  }
+
+  componentWillUnmount() {
+    this.props.update(this.props.user._id, this.state.settings);
+  }
 
   render() {
     return (
@@ -42,9 +69,11 @@ class NotificationsScreen extends React.Component {
             title="Birthdays"
             text="A notification will be sent for your contacts birthdays"
             switch
-            value={this.state.birthday}
-            onValueChange={(birthday) => {
-              this.setState({ birthday });
+            value={this.state.settings.birthdayNotification}
+            onValueChange={(birthdayNotification) => {
+              this.setState({
+                settings: { ...this.state.settings, birthdayNotification },
+              });
             }}
           />
           <SettingsItem
@@ -52,9 +81,11 @@ class NotificationsScreen extends React.Component {
             title="Daily calls"
             switch
             text="A notification will be sent for contacts you wish to contact daily"
-            value={this.state.dailyCalls}
-            onValueChange={(dailyCalls) => {
-              this.setState({ dailyCalls });
+            value={this.state.settings.dailyCallNotification}
+            onValueChange={(dailyCallNotification) => {
+              this.setState({
+                settings: { ...this.state.settings, dailyCallNotification },
+              });
             }}
           />
           <SettingsItem
@@ -62,10 +93,13 @@ class NotificationsScreen extends React.Component {
             title="Incomplete task"
             switch
             text="A notification will be sent if you do not complete a task before its required time"
-            value={this.state.incompleteTask}
-            onValueChange={(incompleteTask) => {
+            value={this.state.settings.incompleteTaskNotification}
+            onValueChange={(incompleteTaskNotification) => {
               this.setState({
-                incompleteTask,
+                settings: {
+                  ...this.state.settings,
+                  incompleteTaskNotification,
+                },
               });
             }}
           />
@@ -101,6 +135,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   user: state.users.user,
+  settings: state.settings.settings,
 });
 
-export default connect(mapStateToProps)(NotificationsScreen);
+const mapDispatchToProps = {
+  get: getSettings,
+  update: updateSettings,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NotificationsScreen);

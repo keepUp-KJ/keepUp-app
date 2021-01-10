@@ -73,13 +73,7 @@ class CalendarScreen extends React.Component {
               data={this.props.reminders.filter(
                 (reminder) => reminder.date === this.state.date.toString()
               )}
-              renderItem={(itemData) =>
-                itemData.item.contacts.map((contact) => (
-                  <View key={contact.info.id}>
-                    <Task contact={contact} reminder={itemData.item} />
-                  </View>
-                ))
-              }
+              renderItem={(itemData) => <Task reminder={itemData.item} />}
               keyExtractor={(item) => item._id || item.contacts[0].id}
             />
           </View>

@@ -12,13 +12,41 @@ import { Ionicons } from "@expo/vector-icons";
 import SettingsItem from "../../components/Settings/SettingsItem";
 import TextComp from "../../components/TextComp";
 import { Fragment } from "react";
+import { getSettings, updateSettings } from "../../store/actions/settings";
 
 class GeneralSettings extends React.Component {
   state = {
-    birthday: "On the same day",
-    dailyCalls: "On the same day",
-    incompleteTask: "One day after",
+    settings: {
+      birthdayNotification: null,
+      dailyCallNotification: null,
+      incompleteTaskNotification: null,
+      birthdayReminder: null,
+      callReminder: null,
+      incompleteTaskReminder: null,
+    },
   };
+
+  componentDidMount() {
+    this.props.get().then(() => {
+      setTimeout(() => {
+        this.setState({
+          settings: {
+            birthdayNotification: this.props.settings.birthdayNotification,
+            dailyCallNotification: this.props.settings.dailyCallNotification,
+            incompleteTaskNotification: this.props.settings
+              .incompleteTaskNotification,
+            birthdayReminder: this.props.settings.birthdayReminder,
+            callReminder: this.props.settings.callReminder,
+            incompleteTaskReminder: this.props.settings.incompleteTaskReminder,
+          },
+        });
+      }, 250);
+    });
+  }
+
+  componentWillUnmount() {
+    this.props.update(this.props.user._id, this.state.settings);
+  }
 
   render() {
     let options = [
@@ -86,10 +114,13 @@ class GeneralSettings extends React.Component {
                   titleColor={Colors.babyBlue}
                   title="Birthday reminder"
                   text="Reminder of your accepted contacts birthdays"
-                  value={this.state.birthday}
+                  value={this.state.settings.birthdayReminder}
                   onChangeItem={(item) => {
                     this.setState({
-                      birthday: item.value,
+                      settings: {
+                        ...this.state.settings,
+                        birthdayReminder: item.value,
+                      },
                     });
                   }}
                 />
@@ -101,10 +132,13 @@ class GeneralSettings extends React.Component {
                   titleColor={Colors.babyBlue}
                   title="Daily Calls reminder"
                   text="Reminder of your accepted contacts birthdays"
-                  value={this.state.dailyCalls}
+                  value={this.state.settings.callReminder}
                   onChangeItem={(item) => {
                     this.setState({
-                      dailyCalls: item.value,
+                      settings: {
+                        ...this.state.settings,
+                        callReminder: item.value,
+                      },
                     });
                   }}
                 />
@@ -116,10 +150,13 @@ class GeneralSettings extends React.Component {
                   titleColor={Colors.babyBlue}
                   title="Incomplete Task reminder"
                   text="Reminder of your accepted contacts birthdays"
-                  value={this.state.incompleteTask}
+                  value={this.state.settings.incompleteTaskReminder}
                   onChangeItem={(item) => {
                     this.setState({
-                      incompleteTask: item.value,
+                      settings: {
+                        ...this.state.settings,
+                        incompleteTaskReminder: item.value,
+                      },
                     });
                   }}
                 />
@@ -159,8 +196,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   user: state.users.user,
+  settings: state.settings.settings,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  get: getSettings,
+  update: updateSettings,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(GeneralSettings);

@@ -8,7 +8,6 @@ export const LOADING = "LOADING";
 
 import { AsyncStorage } from "react-native";
 import { navigate } from "../../navigation/navigationRef";
-import moment from "moment";
 
 export const getReminders = (userId) => async (dispatch) => {
   // await AsyncStorage.getItem(
@@ -120,10 +119,20 @@ export const addContactsToReminder = (contact) => async (dispatch) => {
   });
 };
 
-export const setCompleted = (reminderId, contact) => async (dispatch) => {
-  dispatch({
-    type: SET_COMPLETED,
-    id: reminderId,
-    contact,
-  });
+export const setCompleted = (reminderId) => async (dispatch) => {
+  fetch(
+    `https://rocky-mesa-61495.herokuapp.com/reminders/${reminderId}/completed`,
+    {
+      method: "PATCH",
+    }
+  )
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.response) {
+        dispatch({
+          type: SET_COMPLETED,
+          id: reminderId,
+        });
+      }
+    });
 };
