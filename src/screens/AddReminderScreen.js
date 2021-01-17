@@ -186,7 +186,8 @@ class AddReminderScreen extends React.Component {
                   this.state.date,
                   this.props.reminderContacts,
                   this.state.title,
-                  this.state.notify
+                  this.state.notify,
+                  this.props.user.token
                 );
               }}
             />

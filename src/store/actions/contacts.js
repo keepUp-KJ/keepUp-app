@@ -26,9 +26,12 @@ export const syncContacts = () => async (dispatch) => {
   }
 };
 
-export const getContactDecisions = (id) => async (dispatch) => {
+export const getContactDecisions = (id, token) => async (dispatch) => {
   fetch(`https://rocky-mesa-61495.herokuapp.com/users/${id}/contacts`, {
     method: "GET",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
   })
     .then((res) => res.json())
     .then((json) => {
@@ -55,13 +58,14 @@ export const removeContact = (contact, frequency) => async (dispatch) => {
   });
 };
 
-export const acceptContact = (userId, contact, frequency) => async (
+export const acceptContact = (userId, contact, frequency, token) => async (
   dispatch
 ) => {
   fetch(`https://rocky-mesa-61495.herokuapp.com/contacts/accept`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
     },
     body: JSON.stringify({
       userId,
@@ -81,11 +85,12 @@ export const acceptContact = (userId, contact, frequency) => async (
     });
 };
 
-export const rejectContact = (userId, contact) => async (dispatch) => {
+export const rejectContact = (userId, contact, token) => async (dispatch) => {
   fetch(`https://rocky-mesa-61495.herokuapp.com/contacts/reject`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
     },
     body: JSON.stringify({
       userId,
@@ -105,13 +110,14 @@ export const rejectContact = (userId, contact) => async (dispatch) => {
     });
 };
 
-export const editContact = (contactId, frequency, notify) => async (
+export const editContact = (contactId, frequency, notify, token) => async (
   dispatch
 ) => {
   fetch("https://rocky-mesa-61495.herokuapp.com/users/contacts", {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
     },
     body: JSON.stringify({
       contactId,

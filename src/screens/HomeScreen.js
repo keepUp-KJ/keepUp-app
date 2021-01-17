@@ -9,7 +9,6 @@ import { getReminders, setCompleted } from "../store/actions/reminders";
 import { Calendar } from "react-native-event-week";
 import TextComp from "../components/TextComp";
 import { ActivityIndicator } from "react-native";
-import * as Notifications from "expo-notifications";
 class HomeScreen extends React.Component {
   state = {
     date: new Date(),
@@ -52,35 +51,23 @@ class HomeScreen extends React.Component {
     return list;
   }
 
-  async notifyUser() {
-    Notifications.setNotificationHandler({
-      handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: true,
-        shouldSetBadge: true,
-      }),
-    });
-
-    const trigger = new Date();
-    // trigger.setHours(16);
-    // trigger.setMinutes(18);
-    // trigger.setSeconds(0);
-
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "TODAY",
-        body: `${this.getNotificationList()}`,
-      },
-      trigger: {
-        seconds: 1,
-      },
-    });
-  }
-
   componentDidMount() {
-    this.props.get(this.props.user._id).then(() => {
+    this.props.get(this.props.user._id, this.props.user.token).then(() => {
       setTimeout(() => {
-        this.notifyUser();
+        fetch("https://exp.host/--/api/v2/push/send", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Accept-Encoding": "gzip, deflate",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            to: this.props.user.pushToken,
+            data: { extraData: "Some data" },
+            title: "TODAY",
+            body: `${this.getNotificationList()}`,
+          }),
+        });
       }, 1000);
     });
   }
@@ -123,7 +110,10 @@ class HomeScreen extends React.Component {
                   <Task
                     reminder={itemData.item}
                     completeTask={() => {
-                      this.props.complete(itemData.item._id);
+                      this.props.complete(
+                        itemData.item._id,
+                        this.props.user.token
+                      );
                     }}
                   />
                 )}
@@ -170,6 +160,7 @@ const mapStateToProps = (state) => ({
   user: state.users.user,
   reminders: state.reminders.reminders,
   loading: state.reminders.loading,
+  token: state.users.pushToken,
 });
 
 const mapDispatchToProps = {

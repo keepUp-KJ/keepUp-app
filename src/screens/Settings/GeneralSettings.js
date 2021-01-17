@@ -27,7 +27,7 @@ class GeneralSettings extends React.Component {
   };
 
   componentDidMount() {
-    this.props.get().then(() => {
+    this.props.get(this.props.user._id, this.props.user.token).then(() => {
       setTimeout(() => {
         this.setState({
           settings: {
@@ -40,12 +40,16 @@ class GeneralSettings extends React.Component {
             incompleteTaskReminder: this.props.settings.incompleteTaskReminder,
           },
         });
-      }, 250);
+      }, 500);
     });
   }
 
   componentWillUnmount() {
-    this.props.update(this.props.user._id, this.state.settings);
+    this.props.update(
+      this.props.user._id,
+      this.state.settings,
+      this.props.user.token
+    );
   }
 
   render() {

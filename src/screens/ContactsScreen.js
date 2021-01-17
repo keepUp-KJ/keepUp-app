@@ -40,8 +40,9 @@ class ContactsScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.props.sync();
-    this.props.get(this.props.user._id);
+    this.props.sync().then(() => {
+      this.props.get(this.props.user._id, this.props.user.token);
+    });
   }
 
   renderContact = (itemData) => (
@@ -115,7 +116,8 @@ class ContactsScreen extends React.Component {
                 .accept(
                   this.props.user._id,
                   this.state.activeContact,
-                  frequency
+                  frequency,
+                  this.props.user.token
                 )
                 .then(() => {
                   this.setState({
@@ -126,7 +128,11 @@ class ContactsScreen extends React.Component {
             }}
             onReject={() => {
               this.props
-                .reject(this.props.user._id, this.state.activeContact)
+                .reject(
+                  this.props.user._id,
+                  this.state.activeContact,
+                  this.props.user.token
+                )
                 .then(() => {
                   this.setState({
                     visible: false,
@@ -135,7 +141,12 @@ class ContactsScreen extends React.Component {
                 });
             }}
             onEdit={(frequency, notify) => {
-              this.props.edit(this.state.activeContact._id, frequency, notify);
+              this.props.edit(
+                this.state.activeContact._id,
+                frequency,
+                notify,
+                this.props.user.token
+              );
             }}
             pending={pending}
             accepted={accepted}

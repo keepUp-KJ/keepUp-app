@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navigator from "./src/navigation/Navigator";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import thunk from "redux-thunk";
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import Constants from "expo-constants";
@@ -25,7 +25,16 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
-let App = () => {
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+    };
+  },
+});
+
+const App = () => {
   const [loading, setLoading] = useState(true);
 
   StatusBar.setBarStyle("dark-content");
@@ -37,42 +46,29 @@ let App = () => {
     setLoading(false);
   });
 
-  async function registerForPushNotificationsAsync() {
-    let token;
-    if (Constants.isDevice) {
-      const { status: existingStatus } = await Permissions.getAsync(
-        Permissions.NOTIFICATIONS
-      );
-      let finalStatus = existingStatus;
-      if (existingStatus !== "granted") {
-        const { status } = await Permissions.askAsync(
-          Permissions.NOTIFICATIONS
-        );
-        finalStatus = status;
-      }
-      if (finalStatus !== "granted") {
-        alert("Failed to get push token for push notification!");
-        return;
-      }
-      token = (await Notifications.getExpoPushTokenAsync()).data;
-    } else {
-      alert("Must use physical device for Push Notifications");
-    }
-
-    if (Platform.OS === "android") {
-      Notifications.setNotificationChannelAsync("default", {
-        name: "default",
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: "#FF231F7C",
-      });
-    }
-
-    return token;
-  }
-
   useEffect(() => {
-    registerForPushNotificationsAsync();
+    Permissions.getAsync(Permissions.NOTIFICATIONS)
+      .then((statusObj) => {
+        if (statusObj.status !== "granted") {
+          return Permissions.askAsync(Permissions.NOTIFICATIONS);
+        }
+        return statusObj;
+      })
+      .then((statusObj) => {
+        if (statusObj.status !== "granted") {
+          throw new Error("Permission not granted!");
+        }
+      })
+      .then(() => {
+        return Notifications.getExpoPushTokenAsync();
+      })
+      .then((response) => {
+        const token = response.data;
+      })
+      .catch((err) => {
+        console.log(err);
+        return null;
+      });
   }, []);
 
   return (
@@ -89,6 +85,7 @@ let App = () => {
           <Text style={{ fontSize: 50, marginBottom: 20, color: "white" }}>
             Keep Up
           </Text>
+
           <ActivityIndicator size="large" color="white" />
         </View>
       ) : (

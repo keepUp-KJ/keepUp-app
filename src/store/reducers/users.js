@@ -14,7 +14,7 @@ import {
 const initialState = {
   user: {},
   errors: {},
-  loginError: "",
+  loginError: null,
   confirm: false,
   loading: null,
 };
@@ -87,6 +87,7 @@ const usersReducer = (state = initialState, action) => {
         ...state,
         loading: true,
       };
+
     default:
       return state;
   }

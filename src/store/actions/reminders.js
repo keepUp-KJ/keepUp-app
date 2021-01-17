@@ -9,7 +9,7 @@ export const LOADING = "LOADING";
 import { AsyncStorage } from "react-native";
 import { navigate } from "../../navigation/navigationRef";
 
-export const getReminders = (userId) => async (dispatch) => {
+export const getReminders = (userId, token) => async (dispatch) => {
   // await AsyncStorage.getItem(
   //   `@KeepUp:${userId}/ContactReminders`,
   //   (err, result) => {
@@ -22,6 +22,9 @@ export const getReminders = (userId) => async (dispatch) => {
   dispatch({ type: LOADING });
   fetch(`https://rocky-mesa-61495.herokuapp.com/reminders/${userId}`, {
     method: "GET",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
   })
     .then((res) => res.json())
     .then((json) => {
@@ -36,12 +39,18 @@ export const getReminders = (userId) => async (dispatch) => {
     });
 };
 
-export const addReminder = (userId, date, contacts, occasion, notify) => async (
-  dispatch
-) => {
+export const addReminder = (
+  userId,
+  date,
+  contacts,
+  occasion,
+  notify,
+  token
+) => async (dispatch) => {
   fetch("https://rocky-mesa-61495.herokuapp.com/reminders", {
     method: "POST",
     headers: {
+      Authorization: "Bearer " + token,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -119,11 +128,14 @@ export const addContactsToReminder = (contact) => async (dispatch) => {
   });
 };
 
-export const setCompleted = (reminderId) => async (dispatch) => {
+export const setCompleted = (reminderId, token) => async (dispatch) => {
   fetch(
     `https://rocky-mesa-61495.herokuapp.com/reminders/${reminderId}/completed`,
     {
       method: "PATCH",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
     }
   )
     .then((res) => res.json())

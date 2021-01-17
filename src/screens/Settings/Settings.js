@@ -8,8 +8,6 @@ import { signout } from "../../store/actions/users";
 import TextComp from "../../components/TextComp";
 
 class Settings extends React.Component {
-  componentDidMount() {}
-
   render() {
     return (
       <SafeAreaView style={styles.screen}>
