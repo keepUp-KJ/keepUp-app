@@ -96,7 +96,7 @@ export const tryLocalSignin = () => async (dispatch) => {
 };
 
 export const verifyEmail = (email, code) => async (dispatch) => {
-  fetch("https://rocky-mesa-61495.herokuapp.com/users/verify-email", {
+  fetch("http://localhost:3000/users/verify-email", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -108,14 +108,17 @@ export const verifyEmail = (email, code) => async (dispatch) => {
   })
     .then((res) => res.json())
     .then((json) => {
-      if (json.error)
+      if (json.error) {
         dispatch({
           type: LOGIN_ERROR,
           error: json.error,
         });
-      dispatch({
-        type: RESET,
-      });
+      } else {
+        dispatch({
+          type: RESET,
+        });
+        navigate("PickRejected");
+      }
     });
 };
 

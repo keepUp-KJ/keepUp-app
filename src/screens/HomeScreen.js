@@ -1,5 +1,11 @@
 import React from "react";
-import { View, StyleSheet, SafeAreaView, FlatList } from "react-native";
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
 import TabNav from "../components/Tab/TabNav";
 import moment from "moment";
 import Colors from "../constants/Colors";
@@ -8,7 +14,7 @@ import { connect } from "react-redux";
 import { getReminders, setCompleted } from "../store/actions/reminders";
 import { Calendar } from "react-native-event-week";
 import TextComp from "../components/TextComp";
-import { ActivityIndicator } from "react-native";
+import * as Notifications from "expo-notifications";
 class HomeScreen extends React.Component {
   state = {
     date: new Date(),
@@ -31,45 +37,53 @@ class HomeScreen extends React.Component {
       });
       rem.occasion
         ? list.push(
-            rem.occasion +
-              " with " +
-              rem.contacts[0].info.firstName +
-              " " +
-              rem.contacts[0].info.lastName +
-              " & " +
-              (rem.contacts.length - 1) +
-              " others"
+            `${rem.occasion} with ${rem.contacts[0].info.firstName} ${
+              rem.contacts[0].info.lastName || ""
+            } & ${rem.contacts.length - 1} others`
           )
         : list.push(
-            " Call " +
-              rem.contacts[0].info.firstName +
-              " " +
-              rem.contacts[0].info.lastName
+            `Call ${rem.contacts[0].info.firstName} ${
+              rem.contacts[0].info.lastName || ""
+            }`
           );
     });
 
     return list;
   }
 
-  componentDidMount() {
-    this.props.get(this.props.user._id, this.props.user.token).then(() => {
-      setTimeout(() => {
-        fetch("https://exp.host/--/api/v2/push/send", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Accept-Encoding": "gzip, deflate",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            to: this.props.user.pushToken,
-            data: { extraData: "Some data" },
-            title: "TODAY",
-            body: `${this.getNotificationList()}`,
-          }),
-        });
-      }, 1000);
+  scheduleNotifications = () => {
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "TODAY",
+        body: `${this.getNotificationList()}`,
+      },
+      trigger: {
+        hour: 17,
+        minute: 0,
+        second: 0,
+      },
     });
+
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "YOU FORGOT YALAAA!!",
+        body: `${this.getNotificationList()}`,
+      },
+      trigger: {
+        hour: 0,
+        minute: 0,
+        second: 0,
+      },
+    });
+  };
+
+  componentDidMount() {
+    this.props.get(this.props.user._id, this.props.user.token);
+    // .then(() => {
+    //   setTimeout(() => {
+    //     this.scheduleNotifications();
+    //   }, 1000);
+    // });
   }
 
   render() {
@@ -110,10 +124,25 @@ class HomeScreen extends React.Component {
                   <Task
                     reminder={itemData.item}
                     completeTask={() => {
-                      this.props.complete(
-                        itemData.item._id,
-                        this.props.user.token
-                      );
+                      this.props
+                        .complete(itemData.item._id, this.props.user.token)
+                        .then(() => {
+                          setTimeout(() => {
+                            Notifications.getAllScheduledNotificationsAsync(
+                              (res) => {
+                                const index = res.findIndex(
+                                  (reminder) =>
+                                    reminder.content.title === "TODAY"
+                                );
+                                Notifications.cancelScheduledNotificationAsync(
+                                  res[index].identifier
+                                ).then(() => {
+                                  this.scheduleNotifications();
+                                });
+                              }
+                            );
+                          }, 1000);
+                        });
                     }}
                   />
                 )}

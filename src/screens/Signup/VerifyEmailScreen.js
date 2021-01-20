@@ -82,13 +82,7 @@ class VerifyEmailScreen extends React.Component {
                 fontSize={12}
                 bold
                 onPress={() =>
-                  this.props
-                    .verify(this.props.user.email, this.state.code)
-                    .then(() => {
-                      this.props.navigation.navigate("PickRejected", {
-                        userId: this.props.user._id,
-                      });
-                    })
+                  this.props.verify(this.props.user.email, this.state.code)
                 }
               />
             </View>

@@ -59,12 +59,6 @@ const App = () => {
           throw new Error("Permission not granted!");
         }
       })
-      .then(() => {
-        return Notifications.getExpoPushTokenAsync();
-      })
-      .then((response) => {
-        const token = response.data;
-      })
       .catch((err) => {
         console.log(err);
         return null;
