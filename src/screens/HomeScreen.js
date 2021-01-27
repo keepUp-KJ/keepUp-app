@@ -14,7 +14,6 @@ import { connect } from "react-redux";
 import { getReminders, setCompleted } from "../store/actions/reminders";
 import { Calendar } from "react-native-event-week";
 import TextComp from "../components/TextComp";
-import * as Notifications from "expo-notifications";
 class HomeScreen extends React.Component {
   state = {
     date: new Date(),
@@ -23,67 +22,37 @@ class HomeScreen extends React.Component {
 
   today = moment().format("MMM DD, YYYY");
 
-  getNotificationList() {
-    let list = [];
+  // async getNotificationList() {
+  //   let list = [];
 
-    const todayReminders = this.props.reminders.filter(
-      (reminder) => reminder.date === this.today && !reminder.completed
-    );
+  //   const reminders = JSON.parse(
+  //     await AsyncStorage.getItem(`@KeepUp:${this.props.user._id}/reminders`)
+  //   );
 
-    todayReminders.forEach((rem) => {
-      let contacts = [];
-      rem.contacts.forEach((contact) => {
-        contacts.push(contact.firstName);
-      });
-      rem.occasion
-        ? list.push(
-            `${rem.occasion} with ${rem.contacts[0].info.firstName} ${
-              rem.contacts[0].info.lastName || ""
-            } & ${rem.contacts.length - 1} others`
-          )
-        : list.push(
-            `Call ${rem.contacts[0].info.firstName} ${
-              rem.contacts[0].info.lastName || ""
-            }`
-          );
-    });
-
-    return list;
-  }
-
-  scheduleNotifications = () => {
-    Notifications.scheduleNotificationAsync({
-      content: {
-        title: "TODAY",
-        body: `${this.getNotificationList()}`,
-      },
-      trigger: {
-        hour: 17,
-        minute: 0,
-        second: 0,
-      },
-    });
-
-    Notifications.scheduleNotificationAsync({
-      content: {
-        title: "YOU FORGOT YALAAA!!",
-        body: `${this.getNotificationList()}`,
-      },
-      trigger: {
-        hour: 0,
-        minute: 0,
-        second: 0,
-      },
-    });
-  };
+  //   reminders
+  //     .filter((reminder) => reminder.date === this.today && !reminder.completed)
+  //     .forEach((rem) => {
+  //       let contacts = [];
+  //       rem.contacts.forEach((contact) => {
+  //         contacts.push(contact.firstName);
+  //       });
+  //       rem.occasion
+  //         ? list.push(
+  //             `${rem.occasion} with ${rem.contacts[0].info.firstName} ${
+  //               rem.contacts[0].info.lastName || ""
+  //             } & ${rem.contacts.length - 1} others`
+  //           )
+  //         : list.push(
+  //             `Call ${rem.contacts[0].info.firstName} ${
+  //               rem.contacts[0].info.lastName || ""
+  //             }`
+  //           );
+  //     });
+  //   return list;
+  // }
 
   componentDidMount() {
     this.props.get(this.props.user._id, this.props.user.token);
-    // .then(() => {
-    //   setTimeout(() => {
-    //     this.scheduleNotifications();
-    //   }, 1000);
-    // });
   }
 
   render() {
@@ -114,7 +83,7 @@ class HomeScreen extends React.Component {
                 ListEmptyComponent={
                   <TextComp style={styles.text}>No more reminders</TextComp>
                 }
-                keyExtractor={(item) => item._id}
+                keyExtractor={(item) => item.contacts[0].info.id}
                 showsVerticalScrollIndicator={false}
                 data={this.props.reminders.filter(
                   (reminder) =>
@@ -124,25 +93,10 @@ class HomeScreen extends React.Component {
                   <Task
                     reminder={itemData.item}
                     completeTask={() => {
-                      this.props
-                        .complete(itemData.item._id, this.props.user.token)
-                        .then(() => {
-                          setTimeout(() => {
-                            Notifications.getAllScheduledNotificationsAsync(
-                              (res) => {
-                                const index = res.findIndex(
-                                  (reminder) =>
-                                    reminder.content.title === "TODAY"
-                                );
-                                Notifications.cancelScheduledNotificationAsync(
-                                  res[index].identifier
-                                ).then(() => {
-                                  this.scheduleNotifications();
-                                });
-                              }
-                            );
-                          }, 1000);
-                        });
+                      this.props.complete(
+                        itemData.item._id,
+                        this.props.user.token
+                      );
                     }}
                   />
                 )}

@@ -29,7 +29,6 @@ const contactsReducer = (state = initialState, action) => {
           isAccepted: false,
           isRejected: false,
           frequency: null,
-          notify: null,
         };
         updatedContacts.push(newContact);
       });
@@ -64,11 +63,9 @@ const contactsReducer = (state = initialState, action) => {
       if (action.frequency !== null) {
         state.contacts[index].isAccepted = true;
         state.contacts[index].frequency = action.frequency;
-        state.contacts[index].notify = "On the same day";
       } else {
         state.contacts[index].isRejected = true;
         state.contacts[index].frequency = action.frequency;
-        state.contacts[index].notify = null;
       }
 
       if (action.frequency === "daily")
@@ -99,7 +96,6 @@ const contactsReducer = (state = initialState, action) => {
 
       state.contacts[x].isAccepted = true;
       state.contacts[x].frequency = action.frequency;
-      state.contacts[x].notify = "On the same day";
 
       return {
         ...state,
@@ -173,7 +169,6 @@ const contactsReducer = (state = initialState, action) => {
       );
       if (contactIndex !== -1) {
         state.acceptedContacts[contactIndex].frequency = action.frequency;
-        state.acceptedContacts[contactIndex].notify = action.notify;
         return {
           ...state,
           acceptedContacts: state.acceptedContacts,

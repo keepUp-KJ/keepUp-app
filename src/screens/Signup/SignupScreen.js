@@ -58,6 +58,7 @@ class SignupScreen extends React.Component {
           <View style={{ ...styles.container, flex: 0.5 }}>
             <View style={{ width: "80%" }}>
               <Input
+                auto
                 value={this.state.email}
                 onChangeText={(email) => {
                   this.props.hideError("email");

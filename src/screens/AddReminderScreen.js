@@ -182,11 +182,10 @@ class AddReminderScreen extends React.Component {
               style={{ width: "80%", alignSelf: "center" }}
               onPress={() => {
                 this.props.create(
-                  this.props.user,
+                  this.props.user._id,
                   this.state.date,
                   this.props.reminderContacts,
                   this.state.title,
-                  this.state.notify,
                   this.props.user.token
                 );
               }}

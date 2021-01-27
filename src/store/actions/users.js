@@ -96,7 +96,8 @@ export const tryLocalSignin = () => async (dispatch) => {
 };
 
 export const verifyEmail = (email, code) => async (dispatch) => {
-  fetch("http://localhost:3000/users/verify-email", {
+  dispatch({ type: LOADING });
+  fetch("https://rocky-mesa-61495.herokuapp.com/users/verify-email", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

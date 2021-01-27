@@ -11,7 +11,7 @@ import Colors from "../../constants/Colors";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import Btn from "../../components/Btn";
 import { connect } from "react-redux";
-import { verifyEmail } from "../../store/actions/users";
+import { hideLoginError, verifyEmail } from "../../store/actions/users";
 import TextComp from "../../components/TextComp";
 
 class VerifyEmailScreen extends React.Component {
@@ -70,6 +70,7 @@ class VerifyEmailScreen extends React.Component {
                   this.setState({ code });
                 }}
                 onCodeChanged={(code) => {
+                  if (this.props.error) this.props.hide();
                   this.setState({ code });
                 }}
               />
@@ -81,6 +82,7 @@ class VerifyEmailScreen extends React.Component {
                 btnColor={Colors.primaryColor}
                 fontSize={12}
                 bold
+                loading={this.props.loading}
                 onPress={() =>
                   this.props.verify(this.props.user.email, this.state.code)
                 }
@@ -134,10 +136,12 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   user: state.users.user,
   error: state.users.loginError,
+  loading: state.users.loading,
 });
 
 const mapDispatchToProps = {
   verify: verifyEmail,
+  hide: hideLoginError,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(VerifyEmailScreen);

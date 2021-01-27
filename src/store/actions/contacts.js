@@ -6,6 +6,7 @@ export const ADD_CONTACT = "ADD_CONTACT";
 export const REMOVE_CONTACT = "REMOVE_CONTACT";
 export const EDIT_CONTACT = "EDIT_CONTACT";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Contacts from "expo-contacts";
 
 export const syncContacts = () => async (dispatch) => {
@@ -27,19 +28,27 @@ export const syncContacts = () => async (dispatch) => {
 };
 
 export const getContactDecisions = (id, token) => async (dispatch) => {
-  fetch(`https://rocky-mesa-61495.herokuapp.com/users/${id}/contacts`, {
-    method: "GET",
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-  })
-    .then((res) => res.json())
-    .then((json) => {
-      dispatch({
-        type: SET_CONTACTS,
-        payload: json.contacts,
-      });
+  const contacts = await AsyncStorage.getItem(`@KeepUp:${id}/contacts`);
+  if (contacts) {
+    dispatch({
+      type: SET_CONTACTS,
+      payload: JSON.parse(contacts),
     });
+  } else {
+    fetch(`https://rocky-mesa-61495.herokuapp.com/users/${id}/contacts`, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        dispatch({
+          type: SET_CONTACTS,
+          payload: json.contacts,
+        });
+      });
+  }
 };
 
 export const addContact = (contact, frequency) => async (dispatch) => {
@@ -110,7 +119,7 @@ export const rejectContact = (userId, contact, token) => async (dispatch) => {
     });
 };
 
-export const editContact = (contactId, frequency, notify, token) => async (
+export const editContact = (contactId, frequency, token) => async (
   dispatch
 ) => {
   fetch("https://rocky-mesa-61495.herokuapp.com/users/contacts", {
@@ -122,7 +131,6 @@ export const editContact = (contactId, frequency, notify, token) => async (
     body: JSON.stringify({
       contactId,
       frequency,
-      notify,
     }),
   })
     .then((res) => res.json())
@@ -132,7 +140,6 @@ export const editContact = (contactId, frequency, notify, token) => async (
           type: EDIT_CONTACT,
           contactId,
           frequency,
-          notify,
         });
       }
     });

@@ -10,9 +10,13 @@ import {
 import Dropdown from "../Dropdown";
 import Btn from "../Btn";
 import TextComp from "../TextComp";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const ContactCard = (props) => {
   const [editing, setEditing] = useState(false);
+  const [weeklyValue, setWeeklyValue] = useState("sunday");
+  const [dailyValue, setDailyValue] = useState(Date.now());
+  const [frequencyValue, setFrequencyValue] = useState(props.contact.frequency);
 
   const frequencyItems = [
     {
@@ -28,23 +32,41 @@ const ContactCard = (props) => {
       value: "monthly",
     },
   ];
-  const notifyItems = [
+  const weeklyItems = [
     {
-      label: "On the same day",
-      value: "On the same day",
+      label: "Sunday",
+      value: "sunday",
     },
     {
-      label: "One day before",
-      value: "One day before",
+      label: "Monday",
+      value: "monday",
     },
     {
-      label: "One week before",
-      value: "One week before",
+      label: "Tuesday",
+      value: "tuesday",
+    },
+    {
+      label: "Wednesday",
+      value: "wednesday",
+    },
+    {
+      label: "Thursday",
+      value: "thursday",
+    },
+    {
+      label: "Friday",
+      value: "friday",
+    },
+    {
+      label: "Saturday",
+      value: "saturday",
     },
   ];
 
-  const [frequencyValue, setFrequencyValue] = useState(props.contact.frequency);
-  const [notifyValue, setNotifyValue] = useState(props.contact.notify);
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setDailyValue(currentDate);
+  };
 
   return (
     <Overlay
@@ -61,7 +83,7 @@ const ContactCard = (props) => {
               style={{ padding: 5 }}
               onPress={() => {
                 setEditing(!editing);
-                editing ? props.onEdit(frequencyValue, notifyValue) : null;
+                editing ? props.onEdit(frequencyValue) : null;
               }}
             >
               <TextComp style={(styles.headerText, styles.text)}>
@@ -78,11 +100,7 @@ const ContactCard = (props) => {
           )}
           <TextComp
             bold
-            style={{
-              ...styles.text,
-              fontSize: 25,
-              textAlign: "center",
-            }}
+            style={{ ...styles.text, fontSize: 25, textAlign: "center" }}
             numberOfLines={2}
           >
             {props.contact.info.firstName} {props.contact.info.lastName}
@@ -175,23 +193,34 @@ const ContactCard = (props) => {
                     {frequencyValue.toUpperCase()}
                   </TextComp>
                 )}
-
-                <TextComp style={{ ...styles.text, marginTop: 20 }}>
-                  Notify
-                </TextComp>
+              </View>
+              <View style={styles.textContainer}>
+                <TextComp style={styles.text}>Remind on</TextComp>
                 {editing ? (
-                  <Dropdown
-                    zIndex={1}
-                    items={notifyItems}
-                    value={notifyValue}
-                    setValue={(item) => setNotifyValue(item.value)}
-                  />
+                  props.contact.frequency === "weekly" ? (
+                    <Dropdown
+                      zIndex={2}
+                      items={weeklyItems}
+                      value={weeklyValue}
+                      setValue={(item) => setWeeklyValue(item.value)}
+                    />
+                  ) : props.contact.frequency === "daily" ? (
+                    <DateTimePicker
+                      style={{ height: 50 }}
+                      value={dailyValue}
+                      display="spinner"
+                      mode="time"
+                      onChange={onChange}
+                    />
+                  ) : null
                 ) : (
                   <TextComp
                     bold
                     style={{ ...styles.text, ...styles.selectedValue }}
                   >
-                    {notifyValue.toUpperCase()}
+                    {props.contact.frequency === "weekly"
+                      ? weeklyValue.toUpperCase()
+                      : dailyValue}
                   </TextComp>
                 )}
               </View>
@@ -210,6 +239,7 @@ const ContactCard = (props) => {
 const styles = StyleSheet.create({
   text: {
     textAlign: "center",
+    fontSize: 16,
   },
   textContainer: {
     marginVertical: 10,
@@ -257,7 +287,7 @@ const styles = StyleSheet.create({
   },
   acceptedContainer: {
     marginTop: 20,
-    height: 140,
+    height: 150,
   },
   rejectedContainer: {
     width: "100%",

@@ -81,6 +81,7 @@ const usersReducer = (state = initialState, action) => {
       return {
         ...state,
         confirm: false,
+        loading: false,
       };
     case LOADING:
       return {

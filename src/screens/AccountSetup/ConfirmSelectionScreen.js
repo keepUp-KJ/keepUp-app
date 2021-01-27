@@ -65,7 +65,6 @@ class ConfirmSelectionScreen extends React.Component {
             renderItem={this.renderContact}
           />
         </View>
-
         <View style={styles.footer}>
           <TouchableOpacity
             style={styles.btn}

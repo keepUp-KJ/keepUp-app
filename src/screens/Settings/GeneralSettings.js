@@ -17,7 +17,8 @@ import { getSettings, updateSettings } from "../../store/actions/settings";
 class GeneralSettings extends React.Component {
   state = {
     settings: {
-      birthdayNotification: null,
+      monthlyCallNotification: null,
+      weeklyCallNotification: null,
       dailyCallNotification: null,
       incompleteTaskNotification: null,
       birthdayReminder: null,
@@ -26,31 +27,31 @@ class GeneralSettings extends React.Component {
     },
   };
 
-  componentDidMount() {
-    this.props.get(this.props.user._id, this.props.user.token).then(() => {
-      setTimeout(() => {
-        this.setState({
-          settings: {
-            birthdayNotification: this.props.settings.birthdayNotification,
-            dailyCallNotification: this.props.settings.dailyCallNotification,
-            incompleteTaskNotification: this.props.settings
-              .incompleteTaskNotification,
-            birthdayReminder: this.props.settings.birthdayReminder,
-            callReminder: this.props.settings.callReminder,
-            incompleteTaskReminder: this.props.settings.incompleteTaskReminder,
-          },
-        });
-      }, 500);
-    });
-  }
+  // componentDidMount() {
+  //   this.props.get(this.props.user._id, this.props.user.token).then(() => {
+  //     setTimeout(() => {
+  //       this.setState({
+  //         settings: {
+  //           birthdayNotification: this.props.settings.birthdayNotification,
+  //           dailyCallNotification: this.props.settings.dailyCallNotification,
+  //           incompleteTaskNotification: this.props.settings
+  //             .incompleteTaskNotification,
+  //           birthdayReminder: this.props.settings.birthdayReminder,
+  //           callReminder: this.props.settings.callReminder,
+  //           incompleteTaskReminder: this.props.settings.incompleteTaskReminder,
+  //         },
+  //       });
+  //     }, 500);
+  //   });
+  // }
 
-  componentWillUnmount() {
-    this.props.update(
-      this.props.user._id,
-      this.state.settings,
-      this.props.user.token
-    );
-  }
+  // componentWillUnmount() {
+  //   this.props.update(
+  //     this.props.user._id,
+  //     this.state.settings,
+  //     this.props.user.token
+  //   );
+  // }
 
   render() {
     let options = [
@@ -111,24 +112,6 @@ class GeneralSettings extends React.Component {
               </View>
             </View>
             <View style={styles.body}>
-              <View style={{ zIndex: 3 }}>
-                <SettingsItem
-                  dropdown
-                  dropdownItems={options}
-                  titleColor={Colors.babyBlue}
-                  title="Birthday reminder"
-                  text="Reminder of your accepted contacts birthdays"
-                  value={this.state.settings.birthdayReminder}
-                  onChangeItem={(item) => {
-                    this.setState({
-                      settings: {
-                        ...this.state.settings,
-                        birthdayReminder: item.value,
-                      },
-                    });
-                  }}
-                />
-              </View>
               <View style={{ zIndex: 2 }}>
                 <SettingsItem
                   dropdown

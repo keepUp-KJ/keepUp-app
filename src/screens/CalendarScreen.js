@@ -74,7 +74,7 @@ class CalendarScreen extends React.Component {
                 (reminder) => reminder.date === this.state.date.toString()
               )}
               renderItem={(itemData) => <Task reminder={itemData.item} />}
-              keyExtractor={(item) => item._id || item.contacts[0].id}
+              keyExtractor={(item) => item.contacts[0].info.id}
             />
           </View>
         </View>

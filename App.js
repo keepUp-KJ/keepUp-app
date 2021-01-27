@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Navigator from "./src/navigation/Navigator";
-import { Provider, useDispatch } from "react-redux";
+import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { combineReducers, createStore, applyMiddleware } from "redux";
-import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 import usersReducer from "./src/store/reducers/users";

@@ -1,5 +1,11 @@
 import React from "react";
-import { SafeAreaView, View, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { connect } from "react-redux";
 import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
@@ -10,32 +16,33 @@ import { getSettings, updateSettings } from "../../store/actions/settings";
 class NotificationsScreen extends React.Component {
   state = {
     settings: {
-      birthdayNotification: null,
-      dailyCallNotification: null,
-      incompleteTaskNotification: null,
+      monthlyCallNotification: true,
+      weeklyCallNotification: true,
+      dailyCallNotification: true,
+      incompleteTaskNotification: true,
       birthdayReminder: null,
       callReminder: null,
       incompleteTaskReminder: null,
     },
   };
 
-  componentDidMount() {
-    this.props.get(this.props.user._id, this.props.user.token).then(() => {
-      setTimeout(() => {
-        this.setState({
-          settings: {
-            birthdayNotification: this.props.settings.birthdayNotification,
-            dailyCallNotification: this.props.settings.dailyCallNotification,
-            incompleteTaskNotification: this.props.settings
-              .incompleteTaskNotification,
-            birthdayReminder: this.props.settings.birthdayReminder,
-            callReminder: this.props.settings.callReminder,
-            incompleteTaskReminder: this.props.settings.incompleteTaskReminder,
-          },
-        });
-      }, 500);
-    });
-  }
+  // componentDidMount() {
+  //   this.props.get(this.props.user._id, this.props.user.token).then(() => {
+  //     setTimeout(() => {
+  //       this.setState({
+  //         settings: {
+  //           birthdayNotification: this.props.settings.birthdayNotification,
+  //           dailyCallNotification: this.props.settings.dailyCallNotification,
+  //           incompleteTaskNotification: this.props.settings
+  //             .incompleteTaskNotification,
+  //           birthdayReminder: this.props.settings.birthdayReminder,
+  //           callReminder: this.props.settings.callReminder,
+  //           incompleteTaskReminder: this.props.settings.incompleteTaskReminder,
+  //         },
+  //       });
+  //     }, 500);
+  //   });
+  // }
 
   componentWillUnmount() {
     this.props.update(
@@ -67,19 +74,7 @@ class NotificationsScreen extends React.Component {
             </TextComp>
           </View>
         </View>
-        <View style={styles.body}>
-          <SettingsItem
-            titleColor={Colors.blue}
-            title="Birthdays"
-            text="A notification will be sent for your contacts birthdays"
-            switch
-            value={this.state.settings.birthdayNotification}
-            onValueChange={(birthdayNotification) => {
-              this.setState({
-                settings: { ...this.state.settings, birthdayNotification },
-              });
-            }}
-          />
+        <ScrollView style={styles.body}>
           <SettingsItem
             titleColor={Colors.blue}
             title="Daily calls"
@@ -89,6 +84,30 @@ class NotificationsScreen extends React.Component {
             onValueChange={(dailyCallNotification) => {
               this.setState({
                 settings: { ...this.state.settings, dailyCallNotification },
+              });
+            }}
+          />
+          <SettingsItem
+            titleColor={Colors.blue}
+            title="Weekly calls"
+            switch
+            text="A notification will be sent for contacts you wish to contact weekly"
+            value={this.state.settings.weeklyCallNotification}
+            onValueChange={(weeklyCallNotification) => {
+              this.setState({
+                settings: { ...this.state.settings, weeklyCallNotification },
+              });
+            }}
+          />
+          <SettingsItem
+            titleColor={Colors.blue}
+            title="Monthly calls"
+            switch
+            text="A notification will be sent for contacts you wish to contact monthly"
+            value={this.state.settings.monthlyCallNotification}
+            onValueChange={(monthlyCallNotification) => {
+              this.setState({
+                settings: { ...this.state.settings, monthlyCallNotification },
               });
             }}
           />
@@ -107,7 +126,7 @@ class NotificationsScreen extends React.Component {
               });
             }}
           />
-        </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }

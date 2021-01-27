@@ -4,15 +4,31 @@ import { SafeAreaView, View, StyleSheet, Text } from "react-native";
 import { connect } from "react-redux";
 import { setupAccount } from "../../store/actions/reminders";
 import Colors from "../../constants/Colors";
+import * as Notifications from "expo-notifications";
 
 class SetupScreen extends React.Component {
   componentDidMount() {
-    this.props.setup(
-      this.props.contacts.filter(
-        (contact) => contact.isAccepted || contact.isRejected
-      ),
-      this.props.user._id
-    );
+    this.props
+      .setup(
+        this.props.contacts.filter(
+          (contact) => contact.isAccepted || contact.isRejected
+        ),
+        this.props.user._id
+      )
+      .then(() => {
+        Notifications.scheduleNotificationAsync({
+          content: {
+            title: "ALOOOO",
+            body: `Don't forget to call your friends! Tap to view today's list`,
+          },
+          trigger: {
+            hour: 17,
+            minute: 0,
+            second: 0,
+            repeats: true,
+          },
+        });
+      });
   }
 
   render() {
