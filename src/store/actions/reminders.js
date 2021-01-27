@@ -5,38 +5,39 @@ export const ERROR = "ERROR";
 export const SET_COMPLETED = "SET_COMPLETED";
 export const ADD_CONTACT_TO_REMINDER = "ADD_CONTACT_TO_REMINDER";
 export const LOADING = "LOADING";
+export const CANCEL = "CANCEL";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { navigate } from "../../navigation/navigationRef";
 import moment from "moment";
 
 export const getReminders = (userId, token) => async (dispatch) => {
-  const reminders = await AsyncStorage.getItem(`@KeepUp:${userId}/reminders`);
-  if (reminders) {
-    dispatch({
-      type: SET_REMINDERS,
-      reminders: JSON.parse(reminders),
-    });
-  } else {
-    dispatch({ type: LOADING });
-    fetch(`https://rocky-mesa-61495.herokuapp.com/reminders/${userId}`, {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    })
-      .then((res) => res.json())
-      .then(async (json) => {
-        dispatch({
-          type: SET_REMINDERS,
-          reminders: json.reminders,
-        });
-        await AsyncStorage.setItem(
-          `@KeepUp:${userId}/reminders`,
-          JSON.stringify(json.reminders)
-        );
+  // const reminders = await AsyncStorage.getItem(`@KeepUp:${userId}/reminders`);
+  // if (reminders) {
+  //   dispatch({
+  //     type: SET_REMINDERS,
+  //     reminders: JSON.parse(reminders),
+  //   });
+  // } else {
+  dispatch({ type: LOADING });
+  fetch(`https://rocky-mesa-61495.herokuapp.com/reminders/${userId}`, {
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  })
+    .then((res) => res.json())
+    .then(async (json) => {
+      dispatch({
+        type: SET_REMINDERS,
+        reminders: json.reminders,
       });
-  }
+      await AsyncStorage.setItem(
+        `@KeepUp:${userId}/reminders`,
+        JSON.stringify(json.reminders)
+      );
+    });
+  // }
 };
 
 export const addReminder = (userId, date, contacts, occasion, token) => async (
@@ -145,7 +146,7 @@ export const setupAccount = (contacts, userId) => async (dispatch) => {
         dispatch({
           type: DONE,
         });
-        navigate("Home");
+        navigate("Loading");
       }
     });
 };
@@ -176,4 +177,18 @@ export const setCompleted = (reminderId, token) => async (dispatch) => {
         });
       }
     });
+};
+
+export const cancelReminder = () => async (dispatch) => {
+  dispatch({ type: CANCEL });
+  navigate("Home");
+};
+
+export const updateReminders = () => async (dispatch) => {
+  fetch("http://localhost:3000/reminders/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };

@@ -19,6 +19,7 @@ import ContactCard from "../components/Contacts/ContactCard";
 import {
   getContactDecisions,
   editContact,
+  syncContacts,
   acceptContact,
   rejectContact,
 } from "../store/actions/contacts";
@@ -313,6 +314,7 @@ const mapDispatchToProps = {
   get: getContactDecisions,
   edit: editContact,
   reject: rejectContact,
+  sync: syncContacts,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactsScreen);

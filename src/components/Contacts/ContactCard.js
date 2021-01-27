@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import { Overlay } from "react-native-elements";
 import Colors from "../../constants/Colors";
 import {
@@ -90,7 +96,14 @@ const ContactCard = (props) => {
         <View style={styles.body}>
           {(props.pending || props.accepted) && (
             <View style={styles.photo}>
-              <Ionicons name="md-person" size={60} color="white" />
+              {props.contact.info.imageAvailable ? (
+                <Image
+                  source={{ uri: props.contact.info.image.uri }}
+                  style={{ width: "100%", height: "100%" }}
+                />
+              ) : (
+                <Ionicons name="md-person" size={60} color="white" />
+              )}
             </View>
           )}
           <TextComp
@@ -267,6 +280,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 15,
     alignSelf: "center",
+    overflow: "hidden",
   },
   overlay: {
     width: Dimensions.get("window").width / 1.3,

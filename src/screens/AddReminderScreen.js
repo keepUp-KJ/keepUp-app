@@ -14,12 +14,15 @@ import Header from "../components/Header";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
-import { addContactsToReminder, addReminder } from "../store/actions/reminders";
+import {
+  addContactsToReminder,
+  addReminder,
+  cancelReminder,
+} from "../store/actions/reminders";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import TextComp from "../components/TextComp";
 import ContactsPopup from "../components/Contacts/ContactsPopup";
 import ReminderContactsList from "../components/ReminderContactsList";
-import moment from "moment";
 
 class AddReminderScreen extends React.Component {
   state = {
@@ -62,6 +65,7 @@ class AddReminderScreen extends React.Component {
           <ContactsPopup
             visible={this.state.visible}
             contacts={this.props.contacts}
+            pickedContacts={this.props.reminderContacts}
             addContact={(contact) => {
               this.props.add(contact);
             }}
@@ -75,7 +79,7 @@ class AddReminderScreen extends React.Component {
               leftComponent={
                 <TouchableOpacity
                   onPress={() => {
-                    this.props.navigation.navigate("Home");
+                    this.props.cancel();
                   }}
                 >
                   <Ionicons
@@ -258,6 +262,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   add: addContactsToReminder,
   create: addReminder,
+  cancel: cancelReminder,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddReminderScreen);

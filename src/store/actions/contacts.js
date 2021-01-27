@@ -18,6 +18,7 @@ export const syncContacts = () => async (dispatch) => {
         Contacts.Fields.ID,
         Contacts.Fields.Birthday,
         Contacts.Fields.PhoneNumbers,
+        Contacts.Fields.Image,
       ],
     });
     dispatch({
@@ -28,27 +29,27 @@ export const syncContacts = () => async (dispatch) => {
 };
 
 export const getContactDecisions = (id, token) => async (dispatch) => {
-  const contacts = await AsyncStorage.getItem(`@KeepUp:${id}/contacts`);
-  if (contacts) {
-    dispatch({
-      type: SET_CONTACTS,
-      payload: JSON.parse(contacts),
-    });
-  } else {
-    fetch(`https://rocky-mesa-61495.herokuapp.com/users/${id}/contacts`, {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        dispatch({
-          type: SET_CONTACTS,
-          payload: json.contacts,
-        });
+  // const contacts = await AsyncStorage.getItem(`@KeepUp:${id}/contacts`);
+  // if (contacts) {
+  //   dispatch({
+  //     type: SET_CONTACTS,
+  //     payload: JSON.parse(contacts),
+  //   });
+  // } else {
+  fetch(`https://rocky-mesa-61495.herokuapp.com/users/${id}/contacts`, {
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      dispatch({
+        type: SET_CONTACTS,
+        payload: json.contacts,
       });
-  }
+    });
+  // }
 };
 
 export const addContact = (contact, frequency) => async (dispatch) => {

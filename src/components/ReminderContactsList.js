@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet, TouchableOpacity } from "react-native";
+import { FlatList, StyleSheet, TouchableOpacity, Image } from "react-native";
 import Colors from "../constants/Colors";
 import TextComp from "./TextComp";
 import { Ionicons } from "@expo/vector-icons";
@@ -19,6 +19,11 @@ const ReminderContactsList = (props) => {
       >
         {itemData.index === 0 ? (
           <Ionicons name="ios-add" size={40} color="#e6e6e6" />
+        ) : itemData.item.info.imageAvailable ? (
+          <Image
+            source={{ uri: itemData.item.info.image.uri }}
+            style={{ height: "100%", width: "100%" }}
+          />
         ) : (
           <TextComp style={styles.contactText}>
             {itemData.item.info.firstName.charAt(0).toUpperCase() +
@@ -67,6 +72,7 @@ const styles = StyleSheet.create({
     margin: 5,
     borderColor: "#e6e6e6",
     borderStyle: "dashed",
+    overflow: "hidden",
   },
   contactText: {
     fontSize: 20,

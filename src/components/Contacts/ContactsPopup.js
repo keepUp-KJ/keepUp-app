@@ -1,18 +1,41 @@
 import React, { useState } from "react";
 import { Overlay } from "react-native-elements";
-import { View, StyleSheet, Dimensions, FlatList } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import Input from "../Input";
 import TextComp from "../TextComp";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 const ContactsPopup = (props) => {
   const [input, setInput] = useState("");
   const [contacts, setContacts] = useState([]);
-  const [added, setAdded] = useState(false);
-  const [activeContact, setActiveContact] = useState({});
 
+  const renderContact = (itemData) => (
+    <View style={styles.container}>
+      <TextComp>
+        {itemData.item.info.name.replace(RegExp(input, "g"), input)}
+      </TextComp>
+      <TouchableOpacity
+        onPress={() => {
+          props.addContact(itemData.item, itemData.index);
+        }}
+      >
+        {props.pickedContacts.find(
+          (contact) => contact.info.id === itemData.item.info.id
+        ) ? (
+          <AntDesign name="minus" size={20} color={Colors.primaryColor} />
+        ) : (
+          <Ionicons name="ios-add" size={25} color={Colors.primaryColor} />
+        )}
+      </TouchableOpacity>
+    </View>
+  );
   return (
     <Overlay
       isVisible={props.visible}
@@ -54,34 +77,7 @@ const ContactsPopup = (props) => {
           style={{ marginLeft: 10 }}
           data={input ? contacts : null}
           keyExtractor={(item) => item.info.id}
-          renderItem={(itemData) => (
-            <View style={styles.container}>
-              <TextComp>
-                {itemData.item.info.name.replace(RegExp(input, "g"), input)}
-              </TextComp>
-              <TouchableOpacity
-                onPress={() => {
-                  props.addContact(itemData.item, itemData.index);
-                  setActiveContact(itemData.item);
-                  setAdded(!added);
-                }}
-              >
-                {added && itemData.item === activeContact ? (
-                  <AntDesign
-                    name="minus"
-                    size={25}
-                    color={Colors.primaryColor}
-                  />
-                ) : (
-                  <Ionicons
-                    name="ios-add"
-                    size={25}
-                    color={Colors.primaryColor}
-                  />
-                )}
-              </TouchableOpacity>
-            </View>
-          )}
+          renderItem={renderContact}
         />
       </View>
     </Overlay>

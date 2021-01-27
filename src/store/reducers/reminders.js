@@ -6,6 +6,7 @@ import {
   ERROR,
   CREATE_REMINDER,
   LOADING,
+  CANCEL,
 } from "../actions/reminders";
 
 const initialState = {
@@ -69,6 +70,12 @@ const remindersReducer = (state = initialState, action) => {
       return {
         contacts: [],
         reminders: [...state.reminders, action.reminder],
+      };
+    }
+    case CANCEL: {
+      return {
+        ...state,
+        contacts: [],
       };
     }
     default:

@@ -11,7 +11,12 @@ import moment from "moment";
 import Colors from "../constants/Colors";
 import Task from "../components/Task";
 import { connect } from "react-redux";
-import { getReminders, setCompleted } from "../store/actions/reminders";
+import {
+  getReminders,
+  setCompleted,
+  updateReminders,
+  s,
+} from "../store/actions/reminders";
 import { Calendar } from "react-native-event-week";
 import TextComp from "../components/TextComp";
 class HomeScreen extends React.Component {
@@ -52,7 +57,9 @@ class HomeScreen extends React.Component {
   // }
 
   componentDidMount() {
-    this.props.get(this.props.user._id, this.props.user.token);
+    this.props.get(this.props.user._id, this.props.user.token).then(() => {
+      this.props.update();
+    });
   }
 
   render() {
@@ -149,6 +156,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   get: getReminders,
   complete: setCompleted,
+  update: updateReminders,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
