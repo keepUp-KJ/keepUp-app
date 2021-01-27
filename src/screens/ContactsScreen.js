@@ -18,7 +18,6 @@ import { connect } from "react-redux";
 import ContactCard from "../components/Contacts/ContactCard";
 import {
   getContactDecisions,
-  syncContacts,
   editContact,
   acceptContact,
   rejectContact,
@@ -40,9 +39,7 @@ class ContactsScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.props.sync().then(() => {
-      this.props.get(this.props.user._id, this.props.user.token);
-    });
+    this.props.get(this.props.user._id, this.props.user.token);
   }
 
   renderContact = (itemData) => (
@@ -314,7 +311,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   accept: acceptContact,
   get: getContactDecisions,
-  sync: syncContacts,
   edit: editContact,
   reject: rejectContact,
 };

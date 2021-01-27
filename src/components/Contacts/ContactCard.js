@@ -63,11 +63,6 @@ const ContactCard = (props) => {
     },
   ];
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setDailyValue(currentDate);
-  };
-
   return (
     <Overlay
       isVisible={props.visible}
@@ -76,8 +71,8 @@ const ContactCard = (props) => {
         props.close();
       }}
     >
-      <View style={{ marginVertical: 0 }}>
-        <View style={styles.header}>
+      <View>
+        {/* <View style={styles.header}>
           {props.accepted ? (
             <TouchableOpacity
               style={{ padding: 5 }}
@@ -91,7 +86,7 @@ const ContactCard = (props) => {
               </TextComp>
             </TouchableOpacity>
           ) : null}
-        </View>
+        </View> */}
         <View style={styles.body}>
           {(props.pending || props.accepted) && (
             <View style={styles.photo}>
@@ -194,7 +189,7 @@ const ContactCard = (props) => {
                   </TextComp>
                 )}
               </View>
-              <View style={styles.textContainer}>
+              {/* <View style={styles.textContainer}>
                 <TextComp style={styles.text}>Remind on</TextComp>
                 {editing ? (
                   props.contact.frequency === "weekly" ? (
@@ -223,7 +218,7 @@ const ContactCard = (props) => {
                       : dailyValue}
                   </TextComp>
                 )}
-              </View>
+              </View> */}
             </View>
           ) : (
             <View style={styles.rejectedContainer}>
@@ -260,7 +255,7 @@ const styles = StyleSheet.create({
   body: {
     width: "90%",
     justifyContent: "center",
-    marginBottom: 30,
+    marginVertical: 30,
     alignSelf: "center",
   },
   photo: {
@@ -287,7 +282,7 @@ const styles = StyleSheet.create({
   },
   acceptedContainer: {
     marginTop: 20,
-    height: 150,
+    height: 60,
   },
   rejectedContainer: {
     width: "100%",
