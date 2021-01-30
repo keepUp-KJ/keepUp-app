@@ -114,12 +114,15 @@ export const addContactsToReminder = (contact) => async (dispatch) => {
 };
 
 export const setCompleted = (reminderId, token) => async (dispatch) => {
-  fetch(`http://localhost:3000/reminders/${reminderId}/completed`, {
-    method: "PATCH",
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-  })
+  fetch(
+    `https://rocky-mesa-61495.herokuapp.com/reminders/${reminderId}/completed`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  )
     .then((res) => res.json())
     .then((json) => {
       if (json.response) {
