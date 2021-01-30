@@ -8,6 +8,8 @@ import {
   LOADING,
   CANCEL,
 } from "../actions/reminders";
+import * as Notifications from "expo-notifications";
+import moment from "moment";
 
 const initialState = {
   reminders: [],
@@ -38,11 +40,29 @@ const remindersReducer = (state = initialState, action) => {
       };
     }
     case SET_COMPLETED: {
+      const today = moment().format("MMM DD, YYYY");
+
       const updatedReminders = state.reminders.filter(
-        (reminder) => reminder._id !== action.id
+        (reminder) => reminder._id !== action.id && reminder.date === today
       );
 
-      // state.reminders[reminderIndex].completed = true;
+      if (updatedReminders.length === 0) {
+        Notifications.cancelScheduledNotificationAsync("forgotten").then(() => {
+          Notifications.scheduleNotificationAsync({
+            identifier: "forgotten",
+            content: {
+              title: "YOU FORGOT YALAAA",
+              body: "el so7ab f agaza",
+            },
+            trigger: {
+              weekday: ((moment().day() + 2) % 7) + 1,
+              hour: 0,
+              minute: 0,
+              repeats: true,
+            },
+          });
+        });
+      }
 
       return {
         reminders: updatedReminders,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import {
   SafeAreaView,
   View,
@@ -18,7 +18,7 @@ class NotificationsScreen extends React.Component {
     settings: {
       monthlyCallNotification: true,
       weeklyCallNotification: true,
-      dailyCallNotification: true,
+      dailyCallNotification: false,
       incompleteTaskNotification: true,
       birthdayReminder: null,
       callReminder: null,
@@ -54,80 +54,83 @@ class NotificationsScreen extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.screen}>
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate("Settings");
-            }}
-            style={{
-              flex: 0.6,
-              marginHorizontal: 20,
-              justifyContent: "center",
-            }}
-          >
-            <Ionicons name="md-arrow-back" size={25} color="white" />
-          </TouchableOpacity>
-          <View style={styles.container}>
-            <TextComp bold style={styles.text}>
-              Notifications
-            </TextComp>
+      <Fragment>
+        <SafeAreaView style={{ backgroundColor: Colors.blue }} />
+        <SafeAreaView style={styles.screen}>
+          <View style={styles.header}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("Settings");
+              }}
+              style={{
+                flex: 0.6,
+                marginHorizontal: 20,
+                justifyContent: "center",
+              }}
+            >
+              <Ionicons name="md-arrow-back" size={25} color="white" />
+            </TouchableOpacity>
+            <View style={styles.container}>
+              <TextComp bold style={styles.text}>
+                Notifications
+              </TextComp>
+            </View>
           </View>
-        </View>
-        <ScrollView style={styles.body}>
-          <SettingsItem
-            titleColor={Colors.blue}
-            title="Daily calls"
-            switch
-            text="A notification will be sent for contacts you wish to contact daily"
-            value={this.state.settings.dailyCallNotification}
-            onValueChange={(dailyCallNotification) => {
-              this.setState({
-                settings: { ...this.state.settings, dailyCallNotification },
-              });
-            }}
-          />
-          <SettingsItem
-            titleColor={Colors.blue}
-            title="Weekly calls"
-            switch
-            text="A notification will be sent for contacts you wish to contact weekly"
-            value={this.state.settings.weeklyCallNotification}
-            onValueChange={(weeklyCallNotification) => {
-              this.setState({
-                settings: { ...this.state.settings, weeklyCallNotification },
-              });
-            }}
-          />
-          <SettingsItem
-            titleColor={Colors.blue}
-            title="Monthly calls"
-            switch
-            text="A notification will be sent for contacts you wish to contact monthly"
-            value={this.state.settings.monthlyCallNotification}
-            onValueChange={(monthlyCallNotification) => {
-              this.setState({
-                settings: { ...this.state.settings, monthlyCallNotification },
-              });
-            }}
-          />
-          <SettingsItem
-            titleColor={Colors.blue}
-            title="Incomplete task"
-            switch
-            text="A notification will be sent if you do not complete a task before its required time"
-            value={this.state.settings.incompleteTaskNotification}
-            onValueChange={(incompleteTaskNotification) => {
-              this.setState({
-                settings: {
-                  ...this.state.settings,
-                  incompleteTaskNotification,
-                },
-              });
-            }}
-          />
-        </ScrollView>
-      </SafeAreaView>
+          <ScrollView style={styles.body}>
+            <SettingsItem
+              titleColor={Colors.blue}
+              title="Daily calls"
+              switch
+              text="A notification will be sent for contacts you wish to contact daily"
+              value={this.state.settings.dailyCallNotification}
+              onValueChange={(dailyCallNotification) => {
+                this.setState({
+                  settings: { ...this.state.settings, dailyCallNotification },
+                });
+              }}
+            />
+            <SettingsItem
+              titleColor={Colors.blue}
+              title="Weekly calls"
+              switch
+              text="A notification will be sent for contacts you wish to contact weekly"
+              value={this.state.settings.weeklyCallNotification}
+              onValueChange={(weeklyCallNotification) => {
+                this.setState({
+                  settings: { ...this.state.settings, weeklyCallNotification },
+                });
+              }}
+            />
+            <SettingsItem
+              titleColor={Colors.blue}
+              title="Monthly calls"
+              switch
+              text="A notification will be sent for contacts you wish to contact monthly"
+              value={this.state.settings.monthlyCallNotification}
+              onValueChange={(monthlyCallNotification) => {
+                this.setState({
+                  settings: { ...this.state.settings, monthlyCallNotification },
+                });
+              }}
+            />
+            <SettingsItem
+              titleColor={Colors.blue}
+              title="Incomplete task"
+              switch
+              text="A notification will be sent if you do not complete a task before its required time"
+              value={this.state.settings.incompleteTaskNotification}
+              onValueChange={(incompleteTaskNotification) => {
+                this.setState({
+                  settings: {
+                    ...this.state.settings,
+                    incompleteTaskNotification,
+                  },
+                });
+              }}
+            />
+          </ScrollView>
+        </SafeAreaView>
+      </Fragment>
     );
   }
 }
@@ -137,9 +140,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flex: 0.3,
+    flex: 0.25,
     backgroundColor: Colors.blue,
-    marginTop: -50,
   },
   container: {
     marginHorizontal: 20,
@@ -153,6 +155,7 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 0.7,
+    marginVertical: 20,
   },
 });
 

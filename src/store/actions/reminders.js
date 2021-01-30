@@ -6,10 +6,12 @@ export const SET_COMPLETED = "SET_COMPLETED";
 export const ADD_CONTACT_TO_REMINDER = "ADD_CONTACT_TO_REMINDER";
 export const LOADING = "LOADING";
 export const CANCEL = "CANCEL";
+export const UPDATE_REMINDER = "UPDATE_REMINDER";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { navigate } from "../../navigation/navigationRef";
 import moment from "moment";
+import * as Notifications from "expo-notifications";
 
 export const getReminders = (userId, token) => async (dispatch) => {
   // const reminders = await AsyncStorage.getItem(`@KeepUp:${userId}/reminders`);
@@ -94,55 +96,8 @@ export const setupAccount = (contacts, userId) => async (dispatch) => {
     .then((res) => res.json())
     .then(async (json) => {
       if (!json.error) {
-        const reminders = [];
-        const userContacts = [];
-
-        contacts.map((contact) => {
-          if (contact.isAccepted) {
-            const reminder = {
-              date:
-                contact.frequency === "weekly"
-                  ? moment().add(7, "days").format("MMM DD, YYYY")
-                  : contact.frequency === "monthly"
-                  ? moment().add(30, "days").format("MMM DD, YYYY")
-                  : moment().format("MMM DD, YYYY"),
-              contacts: [
-                {
-                  info: {
-                    id: contact.info.id,
-                    firstName: contact.info.firstName,
-                    lastName: contact.info.lastName,
-                  },
-                },
-              ],
-              occasion: null,
-              notify: "On the same day",
-              completed: false,
-            };
-            reminders.push(reminder);
-          }
-          const newContact = {
-            info: {
-              id: contact.info.id,
-              firstName: contact.info.firstName,
-              lastName: contact.info.lastName,
-              mobile: contact.info.phoneNumbers[0].number,
-            },
-            isAccepted: contact.isAccepted,
-            isRejected: contact.isRejected,
-            frequency: contact.frequency,
-            notify: contact.notify,
-          };
-          userContacts.push(newContact);
-        });
-        await AsyncStorage.setItem(
-          `@KeepUp:${userId}/reminders`,
-          JSON.stringify(reminders)
-        );
-        await AsyncStorage.setItem(
-          `@KeepUp:${userId}/contacts`,
-          JSON.stringify(userContacts)
-        );
+        scheduleNotifications();
+        // saveLocally(userId, contacts);
         dispatch({
           type: DONE,
         });
@@ -159,15 +114,12 @@ export const addContactsToReminder = (contact) => async (dispatch) => {
 };
 
 export const setCompleted = (reminderId, token) => async (dispatch) => {
-  fetch(
-    `https://rocky-mesa-61495.herokuapp.com/reminders/${reminderId}/completed`,
-    {
-      method: "PATCH",
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  )
+  fetch(`http://localhost:3000/reminders/${reminderId}/completed`, {
+    method: "PATCH",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  })
     .then((res) => res.json())
     .then((json) => {
       if (json.response) {
@@ -184,11 +136,100 @@ export const cancelReminder = () => async (dispatch) => {
   navigate("Home");
 };
 
-export const updateReminders = () => async (dispatch) => {
-  fetch("http://localhost:3000/reminders/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+const scheduleNotifications = () => {
+  //Weekly Notification (Sunday by default)
+  Notifications.scheduleNotificationAsync({
+    identifier: "weekly",
+    content: {
+      title: "TODAY",
+      body: "Don't forget to call your friends! Tap to view today's list",
+    },
+    trigger: {
+      weekday: 1,
+      hour: 17,
+      minute: 0,
+      repeats: true,
     },
   });
+
+  //Monthly Notification (Day 1 in the month by default)
+  Notifications.scheduleNotificationAsync({
+    identifier: "monthly",
+    content: {
+      title: "TODAY",
+      body: "Don't forget to call your friends! Tap to view today's list",
+    },
+    trigger: {
+      day: 1,
+      hour: 17,
+      minute: 0,
+      repeats: true,
+    },
+  });
+
+  //Daily Forgotten Notifications
+  Notifications.scheduleNotificationAsync({
+    identifier: "forgotten",
+    content: {
+      title: "YOU FORGOT YALAAA",
+      body: "el so7ab f agaza",
+    },
+    trigger: {
+      hour: 0,
+      minute: 0,
+      repeats: true,
+    },
+  });
+};
+
+const saveLocally = async (userId, contacts) => {
+  const reminders = [];
+  const userContacts = [];
+
+  contacts.map((contact) => {
+    if (contact.isAccepted) {
+      const reminder = {
+        date:
+          contact.frequency === "weekly"
+            ? moment().add(7, "days").format("MMM DD, YYYY")
+            : contact.frequency === "monthly"
+            ? moment().add(30, "days").format("MMM DD, YYYY")
+            : moment().format("MMM DD, YYYY"),
+        contacts: [
+          {
+            info: {
+              id: contact.info.id,
+              firstName: contact.info.firstName,
+              lastName: contact.info.lastName,
+            },
+          },
+        ],
+        occasion: null,
+        notify: "On the same day",
+        completed: false,
+      };
+      reminders.push(reminder);
+    }
+    const newContact = {
+      info: {
+        id: contact.info.id,
+        firstName: contact.info.firstName,
+        lastName: contact.info.lastName,
+        mobile: contact.info.phoneNumbers[0].number,
+      },
+      isAccepted: contact.isAccepted,
+      isRejected: contact.isRejected,
+      frequency: contact.frequency,
+      notify: contact.notify,
+    };
+    userContacts.push(newContact);
+  });
+  await AsyncStorage.setItem(
+    `@KeepUp:${userId}/reminders`,
+    JSON.stringify(reminders)
+  );
+  await AsyncStorage.setItem(
+    `@KeepUp:${userId}/contacts`,
+    JSON.stringify(userContacts)
+  );
 };

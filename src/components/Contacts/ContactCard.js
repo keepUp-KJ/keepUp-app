@@ -96,14 +96,14 @@ const ContactCard = (props) => {
         <View style={styles.body}>
           {(props.pending || props.accepted) && (
             <View style={styles.photo}>
-              {props.contact.info.imageAvailable ? (
+              {/* {props.contact.info.imageAvailable ? (
                 <Image
                   source={{ uri: props.contact.info.image.uri }}
                   style={{ width: "100%", height: "100%" }}
                 />
-              ) : (
-                <Ionicons name="md-person" size={60} color="white" />
-              )}
+              ) : ( */}
+              <Ionicons name="md-person" size={60} color="white" />
+              {/* )} */}
             </View>
           )}
           <TextComp

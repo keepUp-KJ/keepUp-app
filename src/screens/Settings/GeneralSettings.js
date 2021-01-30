@@ -13,6 +13,7 @@ import SettingsItem from "../../components/Settings/SettingsItem";
 import TextComp from "../../components/TextComp";
 import { Fragment } from "react";
 import { getSettings, updateSettings } from "../../store/actions/settings";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 class GeneralSettings extends React.Component {
   state = {
@@ -54,100 +55,56 @@ class GeneralSettings extends React.Component {
   // }
 
   render() {
-    let options = [
-      {
-        label: "On the same day",
-        value: "On the same day",
-      },
-      {
-        label: "One day before",
-        value: "One day before",
-      },
-      {
-        label: "One week before",
-        value: "One week before",
-      },
-      {
-        label: "None",
-        value: "None",
-      },
-    ];
-    let incompleteOptions = [
-      {
-        label: "One day after",
-        value: "One day after",
-      },
-      {
-        label: "One week after",
-        value: "One week after",
-      },
-      {
-        label: "None",
-        value: "None",
-      },
-    ];
-
     return (
       <Fragment>
         <SafeAreaView style={{ flex: 0, backgroundColor: Colors.babyBlue }} />
         <SafeAreaView style={styles.screen}>
-          <ScrollView style={{ flex: 1 }}>
-            <View style={styles.header}>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate("Settings");
-                }}
-                style={{
-                  flex: 0.6,
-                  marginHorizontal: 20,
-                  justifyContent: "center",
-                }}
-              >
-                <Ionicons name="md-arrow-back" size={25} color="white" />
-              </TouchableOpacity>
-              <View style={styles.container}>
-                <TextComp bold style={styles.text}>
-                  General
-                </TextComp>
-              </View>
+          <View style={styles.header}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("Settings");
+              }}
+              style={{
+                flex: 0.6,
+                marginHorizontal: 20,
+                justifyContent: "center",
+              }}
+            >
+              <Ionicons name="md-arrow-back" size={25} color="white" />
+            </TouchableOpacity>
+            <View style={styles.container}>
+              <TextComp bold style={styles.text}>
+                General
+              </TextComp>
             </View>
-            <View style={styles.body}>
-              <View style={{ zIndex: 2 }}>
-                <SettingsItem
-                  dropdown
-                  dropdownItems={options}
-                  titleColor={Colors.babyBlue}
-                  title="Daily Calls reminder"
-                  text="Reminder of your accepted contacts birthdays"
-                  value={this.state.settings.callReminder}
-                  onChangeItem={(item) => {
-                    this.setState({
-                      settings: {
-                        ...this.state.settings,
-                        callReminder: item.value,
-                      },
-                    });
-                  }}
-                />
-              </View>
-              <View style={{ zIndex: 1 }}>
-                <SettingsItem
-                  dropdown
-                  dropdownItems={incompleteOptions}
-                  titleColor={Colors.babyBlue}
-                  title="Incomplete Task reminder"
-                  text="Reminder of your accepted contacts birthdays"
-                  value={this.state.settings.incompleteTaskReminder}
-                  onChangeItem={(item) => {
-                    this.setState({
-                      settings: {
-                        ...this.state.settings,
-                        incompleteTaskReminder: item.value,
-                      },
-                    });
-                  }}
-                />
-              </View>
+          </View>
+          <ScrollView style={styles.body}>
+            <View style={styles.settingContainer}>
+              <TextComp style={{ color: Colors.babyBlue, fontSize: 22 }}>
+                Reminder at:
+              </TextComp>
+              <TextComp style={{ color: Colors.secondary, fontSize: 18 }}>
+                5:00 PM
+              </TextComp>
+              {/* <DateTimePicker value={new Date()} mode="time" /> */}
+            </View>
+            <View style={styles.settingContainer}>
+              <TextComp style={{ color: Colors.babyBlue, fontSize: 22 }}>
+                Weekly Reminder on:
+              </TextComp>
+              <TextComp style={{ color: Colors.secondary, fontSize: 18 }}>
+                Sunday
+              </TextComp>
+              {/* <DateTimePicker value={new Date()} mode="time" /> */}
+            </View>
+            <View style={styles.settingContainer}>
+              <TextComp style={{ color: Colors.babyBlue, fontSize: 22 }}>
+                Monthly Reminder on day:
+              </TextComp>
+              <TextComp style={{ color: Colors.secondary, fontSize: 18 }}>
+                15
+              </TextComp>
+              {/* <DateTimePicker value={new Date()} mode="time" /> */}
             </View>
           </ScrollView>
         </SafeAreaView>
@@ -161,15 +118,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flex: 0.3,
+    flex: 0.25,
     backgroundColor: Colors.babyBlue,
+  },
+  settingContainer: {
+    marginHorizontal: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginVertical: 20,
   },
   container: {
     marginHorizontal: 20,
     flex: 0.3,
     alignItems: "center",
     flexDirection: "row",
-    height: 100,
   },
   text: {
     color: "white",
