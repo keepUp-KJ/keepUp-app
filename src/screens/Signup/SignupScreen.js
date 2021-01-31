@@ -16,9 +16,12 @@ import TextComp from "../../components/TextComp";
 
 class SignupScreen extends React.Component {
   state = {
-    email: "",
-    password: "",
-    confPassword: "",
+    email: "jan1703299@miuegypt.edu.eg",
+    firstName: "jana",
+    lastName: "hamdy",
+    mobile: "01092631008",
+    password: "mypass",
+    confPassword: "mypass",
   };
 
   componentDidMount() {
@@ -58,6 +61,26 @@ class SignupScreen extends React.Component {
           <View style={{ ...styles.container, flex: 0.5 }}>
             <View style={{ width: "80%" }}>
               <Input
+                value={this.state.firstName}
+                onChangeText={(firstName) => {
+                  this.setState({ firstName });
+                }}
+                title="First Name"
+                placeholder="First Name"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+              <Input
+                value={this.state.lastName}
+                onChangeText={(lastName) => {
+                  this.setState({ lastName });
+                }}
+                title="Last Name"
+                placeholder="Last Name"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+              <Input
                 auto
                 value={this.state.email}
                 onChangeText={(email) => {
@@ -70,6 +93,16 @@ class SignupScreen extends React.Component {
                 autoCorrect={false}
                 keyboardType="email-address"
                 error={this.props.errors.email}
+              />
+              <Input
+                value={this.state.mobile}
+                onChangeText={(mobile) => {
+                  this.setState({ mobile });
+                }}
+                title="Mobile"
+                placeholder="Mobile"
+                autoCapitalize="none"
+                autoCorrect={false}
               />
               <Input
                 value={this.state.password}
@@ -110,6 +143,9 @@ class SignupScreen extends React.Component {
                 onPress={() => {
                   this.props.signup(
                     this.state.email,
+                    this.state.firstName,
+                    this.state.lastName,
+                    this.state.mobile,
                     this.state.password,
                     this.state.confPassword
                   );

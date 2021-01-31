@@ -47,17 +47,27 @@ export const login = (email, password) => async (dispatch) => {
     });
 };
 
-export const signup = (email, password, confPassword) => async (dispatch) => {
+export const signup = (
+  email,
+  firstName,
+  lastName,
+  mobile,
+  password,
+  confPassword
+) => async (dispatch) => {
   dispatch({
     type: LOADING,
   });
-  fetch("https://rocky-mesa-61495.herokuapp.com/users", {
+  fetch("http://localhost:3000/users", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
       email,
+      firstName,
+      lastName,
+      mobile,
       password,
       confPassword,
     }),
