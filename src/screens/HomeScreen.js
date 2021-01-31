@@ -57,9 +57,9 @@ class HomeScreen extends React.Component {
               <>
                 <FlatList
                   ListEmptyComponent={
-                    <TextComp style={styles.text}>No more reminders</TextComp>
+                    <TextComp style={styles.text}>No reminders</TextComp>
                   }
-                  keyExtractor={(item) => item.contacts[0].info.id}
+                  keyExtractor={(item) => item._id}
                   showsVerticalScrollIndicator={false}
                   data={this.props.reminders.filter(
                     (reminder) =>

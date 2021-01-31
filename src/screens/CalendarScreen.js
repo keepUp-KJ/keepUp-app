@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import Task from "../components/Task";
 import TextComp from "../components/TextComp";
 import { getReminders } from "../store/actions/reminders";
+import { ScrollView } from "react-native-gesture-handler";
 
 class CalendarScreen extends React.Component {
   state = {
@@ -47,7 +48,7 @@ class CalendarScreen extends React.Component {
             }
           />
         </View>
-        <View style={styles.body}>
+        <ScrollView style={styles.body}>
           <View style={styles.calendar}>
             {/* CALENDAR */}
             <MainCalendar
@@ -58,9 +59,9 @@ class CalendarScreen extends React.Component {
                 this.getSelectedDayEvents(day.dateString);
                 this.setState({
                   date:
-                    new Intl.DateTimeFormat("en-US", { month: "short" }).format(
-                      date
-                    ) +
+                    new Intl.DateTimeFormat("en-US", {
+                      month: "short",
+                    }).format(date) +
                     " " +
                     ("0" + day.day).slice(-2) +
                     ", " +
@@ -73,16 +74,15 @@ class CalendarScreen extends React.Component {
             <TextComp style={styles.date}>
               {this.state.date.toString()}
             </TextComp>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={this.props.reminders.filter(
+            {this.props.reminders
+              .filter(
                 (reminder) => reminder.date === this.state.date.toString()
-              )}
-              renderItem={(itemData) => <Task reminder={itemData.item} />}
-              keyExtractor={(item) => item.contacts[0].info.id}
-            />
+              )
+              .map((item) => (
+                <Task reminder={item} />
+              ))}
           </View>
-        </View>
+        </ScrollView>
         <TabNav active="calendar" />
       </SafeAreaView>
     );
