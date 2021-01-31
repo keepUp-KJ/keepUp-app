@@ -8,6 +8,7 @@ import TabNav from "../components/Tab/TabNav";
 import { connect } from "react-redux";
 import Task from "../components/Task";
 import TextComp from "../components/TextComp";
+import { getReminders } from "../store/actions/reminders";
 
 class CalendarScreen extends React.Component {
   state = {
@@ -28,6 +29,10 @@ class CalendarScreen extends React.Component {
       markedDates,
     });
   };
+
+  componentDidMount() {
+    this.props.get(this.props.user._id, this.props.user.token);
+  }
 
   render() {
     return (
@@ -110,7 +115,12 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
+  user: state.users.user,
   reminders: state.reminders.reminders,
 });
 
-export default connect(mapStateToProps)(CalendarScreen);
+const mapDispatchToProps = {
+  get: getReminders,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CalendarScreen);

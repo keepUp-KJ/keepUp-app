@@ -73,7 +73,6 @@ class AddReminderScreen extends React.Component {
               this.setState({ visible: false });
             }}
           />
-
           <View style={styles.header}>
             <Header
               leftComponent={
@@ -190,6 +189,7 @@ class AddReminderScreen extends React.Component {
                   this.state.date,
                   this.props.reminderContacts,
                   this.state.title,
+                  this.state.notify,
                   this.props.user.token
                 );
               }}

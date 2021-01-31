@@ -5,11 +5,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  StatusBar,
 } from "react-native";
 import { connect } from "react-redux";
 import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import SettingsItem from "../../components/Settings/SettingsItem";
 import TextComp from "../../components/TextComp";
 import { Fragment } from "react";
 import { getSettings, updateSettings } from "../../store/actions/settings";
@@ -57,6 +57,7 @@ class GeneralSettings extends React.Component {
   render() {
     return (
       <Fragment>
+        <StatusBar barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: Colors.babyBlue }} />
         <SafeAreaView style={styles.screen}>
           <View style={styles.header}>
@@ -64,13 +65,9 @@ class GeneralSettings extends React.Component {
               onPress={() => {
                 this.props.navigation.navigate("Settings");
               }}
-              style={{
-                flex: 0.6,
-                marginHorizontal: 20,
-                justifyContent: "center",
-              }}
+              style={styles.backContainer}
             >
-              <Ionicons name="md-arrow-back" size={25} color="white" />
+              <Ionicons name="md-arrow-back" size={30} color="white" />
             </TouchableOpacity>
             <View style={styles.container}>
               <TextComp bold style={styles.text}>
@@ -121,6 +118,12 @@ const styles = StyleSheet.create({
     flex: 0.25,
     backgroundColor: Colors.babyBlue,
   },
+  backContainer: {
+    marginHorizontal: 20,
+    marginTop: 5,
+    justifyContent: "center",
+    width: "5%",
+  },
   settingContainer: {
     marginHorizontal: 20,
     flexDirection: "row",
@@ -130,8 +133,8 @@ const styles = StyleSheet.create({
   },
   container: {
     marginHorizontal: 20,
-    flex: 0.3,
-    alignItems: "center",
+    flex: 0.8,
+    alignItems: "flex-end",
     flexDirection: "row",
   },
   text: {

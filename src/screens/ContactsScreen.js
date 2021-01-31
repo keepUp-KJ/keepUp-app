@@ -5,7 +5,6 @@ import {
   View,
   FlatList,
   TouchableOpacity,
-  Alert,
   Keyboard,
 } from "react-native";
 import Header from "../components/Header";
@@ -13,7 +12,6 @@ import Colors from "../constants/Colors";
 import TabNav from "../components/Tab/TabNav";
 import Menu from "../components/Contacts/Menu";
 import Input from "../components/Input";
-import RejectedContact from "../components/Contacts/RejectedContact";
 import { connect } from "react-redux";
 import ContactCard from "../components/Contacts/ContactCard";
 import {
@@ -22,6 +20,7 @@ import {
   syncContacts,
   acceptContact,
   rejectContact,
+  removeFromBlackList,
 } from "../store/actions/contacts";
 import { Ionicons } from "@expo/vector-icons";
 import { ActivityIndicator } from "react-native";
@@ -60,30 +59,6 @@ class ContactsScreen extends React.Component {
     </TouchableOpacity>
   );
 
-  renderRejectedContact = (itemData) => (
-    <RejectedContact
-      contact={itemData.item}
-      onPress={() =>
-        Alert.alert(
-          "Are you sure?",
-          "By accepting to unreject, this contact will go back to your pending list",
-          [
-            {
-              text: "Okay",
-              onPress: () => {
-                this.props.unreject(itemData.item);
-              },
-            },
-            {
-              text: "Cancel",
-              style: "destructive",
-            },
-          ]
-        )
-      }
-    />
-  );
-
   search = (currentList, text) => {
     const updatedContacts = currentList.filter((contact) => {
       const name = String.prototype.toUpperCase.call(
@@ -109,6 +84,17 @@ class ContactsScreen extends React.Component {
       <SafeAreaView style={styles.screen}>
         {this.state.activeContact !== null && (
           <ContactCard
+            pending={pending}
+            accepted={accepted}
+            rejected={rejected}
+            visible={this.state.visible}
+            contact={this.state.activeContact}
+            close={() =>
+              this.setState({
+                visible: false,
+                activeContact: null,
+              })
+            }
             onAccept={(frequency) => {
               this.props
                 .accept(
@@ -146,17 +132,13 @@ class ContactsScreen extends React.Component {
                 this.props.user.token
               );
             }}
-            pending={pending}
-            accepted={accepted}
-            rejected={rejected}
-            visible={this.state.visible}
-            contact={this.state.activeContact}
-            close={() =>
-              this.setState({
-                visible: false,
-                activeContact: null,
-              })
-            }
+            onRemove={() => {
+              this.props
+                .remove(this.state.activeContact, this.props.user.token)
+                .then(() => {
+                  this.setState({ visible: false, activeContact: null });
+                });
+            }}
           />
         )}
         <View style={{ ...styles.headerContainer, flex: 0.08 }}>
@@ -315,6 +297,7 @@ const mapDispatchToProps = {
   edit: editContact,
   reject: rejectContact,
   sync: syncContacts,
+  remove: removeFromBlackList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactsScreen);

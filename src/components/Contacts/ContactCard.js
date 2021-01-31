@@ -17,6 +17,7 @@ import Dropdown from "../Dropdown";
 import Btn from "../Btn";
 import TextComp from "../TextComp";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { Alert } from "react-native";
 
 const ContactCard = (props) => {
   const [editing, setEditing] = useState(false);
@@ -119,9 +120,7 @@ const ContactCard = (props) => {
               color: Colors.secondary,
             }}
           >
-            {props.pending
-              ? props.contact.info.phoneNumbers[0].number
-              : props.contact.info.mobile}
+            {props.contact.info.phoneNumbers[0].number}
           </TextComp>
           {props.pending ? (
             <View style={styles.container}>
@@ -235,7 +234,11 @@ const ContactCard = (props) => {
             </View>
           ) : (
             <View style={styles.rejectedContainer}>
-              <Btn title="Unreject" btnColor={Colors.tomato} />
+              <Btn
+                title="Remove from blacklist"
+                btnColor={Colors.tomato}
+                onPress={props.onRemove}
+              />
             </View>
           )}
         </View>

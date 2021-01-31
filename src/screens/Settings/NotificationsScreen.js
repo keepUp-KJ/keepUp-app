@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import { connect } from "react-redux";
 import Colors from "../../constants/Colors";
@@ -55,6 +56,7 @@ class NotificationsScreen extends React.Component {
   render() {
     return (
       <Fragment>
+        <StatusBar barStyle="light-content" />
         <SafeAreaView style={{ backgroundColor: Colors.blue }} />
         <SafeAreaView style={styles.screen}>
           <View style={styles.header}>
@@ -62,13 +64,9 @@ class NotificationsScreen extends React.Component {
               onPress={() => {
                 this.props.navigation.navigate("Settings");
               }}
-              style={{
-                flex: 0.6,
-                marginHorizontal: 20,
-                justifyContent: "center",
-              }}
+              style={styles.backContainer}
             >
-              <Ionicons name="md-arrow-back" size={25} color="white" />
+              <Ionicons name="md-arrow-back" size={30} color="white" />
             </TouchableOpacity>
             <View style={styles.container}>
               <TextComp bold style={styles.text}>
@@ -76,6 +74,7 @@ class NotificationsScreen extends React.Component {
               </TextComp>
             </View>
           </View>
+
           <ScrollView style={styles.body}>
             <SettingsItem
               titleColor={Colors.blue}
@@ -139,14 +138,20 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
+  backContainer: {
+    marginHorizontal: 20,
+    marginTop: 5,
+    justifyContent: "center",
+    width: "5%",
+  },
   header: {
     flex: 0.25,
     backgroundColor: Colors.blue,
   },
   container: {
     marginHorizontal: 20,
-    flex: 0.3,
-    alignItems: "center",
+    flex: 0.8,
+    alignItems: "flex-end",
     flexDirection: "row",
   },
   text: {

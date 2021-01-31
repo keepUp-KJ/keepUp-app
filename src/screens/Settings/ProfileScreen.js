@@ -1,97 +1,103 @@
-import React from "react";
-import { SafeAreaView, View, StyleSheet, TouchableOpacity } from "react-native";
+import React, { Fragment } from "react";
+import {
+  SafeAreaView,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  StatusBar,
+} from "react-native";
 import { connect } from "react-redux";
 import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import TextComp from "../../components/TextComp";
-import Btn from "../../components/Btn";
+import { ScrollView } from "react-native-gesture-handler";
 
 class ProfileScreen extends React.Component {
   render() {
     return (
-      <SafeAreaView style={styles.screen}>
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate("Settings");
-            }}
-            style={{
-              flex: 0.6,
-              marginHorizontal: 20,
-              justifyContent: "center",
-            }}
-          >
-            <Ionicons name="md-arrow-back" size={25} color="white" />
-          </TouchableOpacity>
-          <View style={styles.container}>
-            <TextComp bold style={styles.title}>
-              Profile
-            </TextComp>
-          </View>
-        </View>
-        <View style={styles.body}>
-          <View>
-            <View style={styles.labelContainer}>
-              <TextComp style={styles.label}>First Name</TextComp>
-              {this.props.user.firstName ? (
-                <TextComp style={styles.text}>
-                  {this.props.user.firstName}
-                </TextComp>
-              ) : (
-                <TextComp
-                  style={{
-                    ...styles.text,
-                    color: Colors.secondary,
-                    marginLeft: 2,
-                  }}
-                >
-                  -
-                </TextComp>
-              )}
-            </View>
-            <View style={styles.labelContainer}>
-              <TextComp style={styles.label}>Last Name</TextComp>
-              {this.props.user.lastName ? (
-                <TextComp style={styles.text}>
-                  {this.props.user.lastName}
-                </TextComp>
-              ) : (
-                <TextComp
-                  style={{
-                    ...styles.text,
-                    color: Colors.secondary,
-                    marginLeft: 2,
-                  }}
-                >
-                  -
-                </TextComp>
-              )}
-            </View>
-            <View style={styles.labelContainer}>
-              <TextComp style={styles.label}>Email</TextComp>
-              <TextComp style={styles.text}>{this.props.user.email}</TextComp>
-            </View>
-            <View style={styles.labelContainer}>
-              <TextComp style={styles.label}>Mobile</TextComp>
-              {this.props.user.mobile ? (
-                <TextComp style={styles.text}>
-                  {this.props.user.mobile}
-                </TextComp>
-              ) : (
-                <TextComp
-                  style={{
-                    ...styles.text,
-                    color: Colors.secondary,
-                    marginLeft: 2,
-                  }}
-                >
-                  -
-                </TextComp>
-              )}
+      <Fragment>
+        <StatusBar barStyle="light-content" />
+        <SafeAreaView style={{ backgroundColor: Colors.primaryColor }} />
+        <SafeAreaView style={styles.screen}>
+          <View style={styles.header}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("Settings");
+              }}
+              style={styles.backContainer}
+            >
+              <Ionicons name="md-arrow-back" size={30} color="white" />
+            </TouchableOpacity>
+            <View style={styles.container}>
+              <TextComp bold style={styles.title}>
+                Profile
+              </TextComp>
             </View>
           </View>
-        </View>
-      </SafeAreaView>
+          <ScrollView style={styles.body}>
+            <View>
+              <View style={styles.labelContainer}>
+                <TextComp style={styles.label}>First Name</TextComp>
+                {this.props.user.firstName ? (
+                  <TextComp style={styles.text}>
+                    {this.props.user.firstName}
+                  </TextComp>
+                ) : (
+                  <TextComp
+                    style={{
+                      ...styles.text,
+                      color: Colors.secondary,
+                      marginLeft: 2,
+                    }}
+                  >
+                    -
+                  </TextComp>
+                )}
+              </View>
+              <View style={styles.labelContainer}>
+                <TextComp style={styles.label}>Last Name</TextComp>
+                {this.props.user.lastName ? (
+                  <TextComp style={styles.text}>
+                    {this.props.user.lastName}
+                  </TextComp>
+                ) : (
+                  <TextComp
+                    style={{
+                      ...styles.text,
+                      color: Colors.secondary,
+                      marginLeft: 2,
+                    }}
+                  >
+                    -
+                  </TextComp>
+                )}
+              </View>
+              <View style={styles.labelContainer}>
+                <TextComp style={styles.label}>Email</TextComp>
+                <TextComp style={styles.text}>{this.props.user.email}</TextComp>
+              </View>
+              <View style={styles.labelContainer}>
+                <TextComp style={styles.label}>Mobile</TextComp>
+                {this.props.user.mobile ? (
+                  <TextComp style={styles.text}>
+                    {this.props.user.mobile}
+                  </TextComp>
+                ) : (
+                  <TextComp
+                    style={{
+                      ...styles.text,
+                      color: Colors.secondary,
+                      marginLeft: 2,
+                    }}
+                  >
+                    -
+                  </TextComp>
+                )}
+              </View>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </Fragment>
     );
   }
 }
@@ -100,20 +106,24 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
+  backContainer: {
+    marginHorizontal: 20,
+    marginTop: 5,
+    justifyContent: "center",
+    width: "5%",
+  },
   header: {
-    flex: 0.3,
+    flex: 0.25,
     backgroundColor: Colors.primaryColor,
-    marginTop: -50,
   },
   container: {
     marginHorizontal: 20,
-    flex: 0.3,
-    alignItems: "center",
+    flex: 0.8,
+    alignItems: "flex-end",
     flexDirection: "row",
   },
   text: {
     fontSize: 20,
-    fontFamily: "regular",
   },
   title: {
     color: "white",
@@ -121,7 +131,7 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 0.7,
-    marginHorizontal: 30,
+    marginHorizontal: 20,
   },
   label: {
     fontSize: 16,

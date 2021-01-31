@@ -6,6 +6,7 @@ import {
   EDIT_CONTACT,
   ACCEPT_CONTACT,
   REJECT_CONTACT,
+  REMOVE_FROM_BLACKLIST,
 } from "../actions/contacts.js";
 
 const initialState = {
@@ -174,6 +175,16 @@ const contactsReducer = (state = initialState, action) => {
           acceptedContacts: state.acceptedContacts,
         };
       }
+    case REMOVE_FROM_BLACKLIST:
+      const updatedRejectedContacts = state.rejectedContacts.filter(
+        (contact) => contact._id !== action.contact._id
+      );
+
+      return {
+        ...state,
+        pendingContacts: [action.contact, ...state.pendingContacts],
+        rejectedContacts: updatedRejectedContacts,
+      };
     default:
       return state;
   }

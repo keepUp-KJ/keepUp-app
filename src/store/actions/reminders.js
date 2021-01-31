@@ -42,9 +42,14 @@ export const getReminders = (userId, token) => async (dispatch) => {
   // }
 };
 
-export const addReminder = (userId, date, contacts, occasion, token) => async (
-  dispatch
-) => {
+export const addReminder = (
+  userId,
+  date,
+  contacts,
+  occasion,
+  notify,
+  token
+) => async (dispatch) => {
   fetch("https://rocky-mesa-61495.herokuapp.com/reminders", {
     method: "POST",
     headers: {
@@ -56,6 +61,7 @@ export const addReminder = (userId, date, contacts, occasion, token) => async (
       date,
       contacts,
       occasion,
+      notify,
     }),
   })
     .then((res) => res.json())

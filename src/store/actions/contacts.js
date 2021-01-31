@@ -5,6 +5,7 @@ export const SET_CONTACTS = "SET_CONTACTS";
 export const ADD_CONTACT = "ADD_CONTACT";
 export const REMOVE_CONTACT = "REMOVE_CONTACT";
 export const EDIT_CONTACT = "EDIT_CONTACT";
+export const REMOVE_FROM_BLACKLIST = "REMOVE_FROM_BLACKLIST";
 
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Contacts from "expo-contacts";
@@ -141,6 +142,27 @@ export const editContact = (contactId, frequency, token) => async (
           type: EDIT_CONTACT,
           contactId,
           frequency,
+        });
+      }
+    });
+};
+
+export const removeFromBlackList = (contact, token) => async (dispatch) => {
+  fetch(
+    `https://rocky-mesa-61495.herokuapp.com/contacts/${contact._id}/remove`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  )
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.response) {
+        dispatch({
+          type: REMOVE_FROM_BLACKLIST,
+          contact,
         });
       }
     });
