@@ -23,7 +23,23 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import TextComp from "../components/TextComp";
 import ContactsPopup from "../components/Contacts/ContactsPopup";
 import ReminderContactsList from "../components/ReminderContactsList";
+import * as Notifications from "expo-notifications";
+import moment from "moment";
 
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 class AddReminderScreen extends React.Component {
   state = {
     date: new Date(),
@@ -33,6 +49,37 @@ class AddReminderScreen extends React.Component {
     title: "",
     visible: false,
     input: "",
+  };
+
+  scheduleNotif = () => {
+    let date;
+
+    this.state.notify === "One week before"
+      ? (date = new Date(moment(this.state.date).subtract(1, "w")))
+      : this.state.notify === "One day before"
+      ? (date = new Date(moment(this.state.date).subtract(1, "d")))
+      : (date = this.state.date);
+
+    Notifications.scheduleNotificationAsync({
+      identifier: `${this.state.title}`,
+      content: {
+        body: `${this.state.date.getDate()} ${
+          months[this.state.date.getMonth()]
+        } ${this.state.date.getFullYear()}`,
+        title: `${this.state.title} with ${
+          this.props.reminderContacts[0].info.firstName
+        } ${this.props.reminderContacts[0].info.lastName} & ${
+          this.props.reminderContacts.length - 1
+        } ${this.props.reminderContacts.length === 2 ? "other" : "others"}`,
+      },
+      trigger: {
+        day: date.getDate(),
+        month: date.getMonth() + 1,
+        year: date.getFullYear(),
+        hour: 17,
+        minute: 0,
+      },
+    });
   };
 
   render() {
@@ -81,17 +128,13 @@ class AddReminderScreen extends React.Component {
                     this.props.cancel();
                   }}
                 >
-                  <Ionicons
-                    name="ios-arrow-back"
-                    size={24}
-                    color="grey"
-                    style={{ marginLeft: 15 }}
-                  />
+                  <Ionicons name="ios-arrow-back" size={24} color="grey" />
                 </TouchableOpacity>
               }
               centerComponent={
                 <TextComp style={styles.headerText}>New Reminder</TextComp>
               }
+              rightComponent={<></>}
             />
           </View>
           <View style={styles.body}>
@@ -184,14 +227,16 @@ class AddReminderScreen extends React.Component {
               btnColor={Colors.primaryColor}
               style={{ width: "80%", alignSelf: "center" }}
               onPress={() => {
-                this.props.create(
-                  this.props.user._id,
-                  this.state.date,
-                  this.props.reminderContacts,
-                  this.state.title,
-                  this.state.notify,
-                  this.props.user.token
-                );
+                this.props
+                  .create(
+                    this.props.user._id,
+                    this.state.date,
+                    this.props.reminderContacts,
+                    this.state.title,
+                    this.state.notify,
+                    this.props.user.token
+                  )
+                  .then(this.scheduleNotif);
               }}
             />
           </View>
@@ -218,7 +263,7 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
   },
   body: {
-    flex: 0.8,
+    flex: 0.75,
     marginHorizontal: 30,
   },
   container: {

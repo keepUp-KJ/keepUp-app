@@ -58,7 +58,7 @@ export const signup = (
   dispatch({
     type: LOADING,
   });
-  fetch("http://localhost:3000/users", {
+  fetch("https://rocky-mesa-61495.herokuapp.com/users", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

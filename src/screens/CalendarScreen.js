@@ -78,8 +78,8 @@ class CalendarScreen extends React.Component {
               .filter(
                 (reminder) => reminder.date === this.state.date.toString()
               )
-              .map((item) => (
-                <Task reminder={item} />
+              .map((item, key) => (
+                <Task key={key} reminder={item} />
               ))}
           </View>
         </ScrollView>

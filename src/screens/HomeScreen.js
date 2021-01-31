@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 import { getReminders, setCompleted } from "../store/actions/reminders";
 import { Calendar } from "react-native-event-week";
 import TextComp from "../components/TextComp";
-// import * as Notifications from "expo-notifications";
+import * as Notifications from "expo-notifications";
 class HomeScreen extends React.Component {
   state = {
     date: new Date(),
@@ -25,9 +25,9 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     this.props.get(this.props.user._id, this.props.user.token);
-    // Notifications.getAllScheduledNotificationsAsync().then((notif) => {
-    //   console.log(notif);
-    // });
+    Notifications.getAllScheduledNotificationsAsync().then((notif) => {
+      console.log(notif);
+    });
   }
 
   render() {
