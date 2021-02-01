@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, SafeAreaView } from "react-native";
+import { View, StyleSheet, SafeAreaView, FlatList } from "react-native";
 import Colors from "../constants/Colors";
 import Header from "../components/Header";
 import moment from "moment";
@@ -48,41 +48,43 @@ class CalendarScreen extends React.Component {
             }
           />
         </View>
-        <ScrollView style={styles.body}>
-          <View style={styles.calendar}>
-            {/* CALENDAR */}
-            <MainCalendar
-              dates={this.state.markedDates}
-              onDayPress={(day) => {
-                const date = new Date(day.dateString);
-                date.getMonth();
-                this.getSelectedDayEvents(day.dateString);
-                this.setState({
-                  date:
-                    new Intl.DateTimeFormat("en-US", {
-                      month: "short",
-                    }).format(date) +
-                    " " +
-                    ("0" + day.day).slice(-2) +
-                    ", " +
-                    day.year,
-                });
-              }}
-            />
-          </View>
-          <View style={styles.list}>
-            <TextComp style={styles.date}>
-              {this.state.date.toString()}
-            </TextComp>
-            {this.props.reminders
-              .filter(
-                (reminder) => reminder.date === this.state.date.toString()
-              )
-              .map((item, key) => (
-                <Task key={key} reminder={item} />
-              ))}
-          </View>
-        </ScrollView>
+        <View style={styles.body}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.calendar}>
+              {/* CALENDAR */}
+              <MainCalendar
+                dates={this.state.markedDates}
+                onDayPress={(day) => {
+                  const date = new Date(day.dateString);
+                  date.getMonth();
+                  this.getSelectedDayEvents(day.dateString);
+                  this.setState({
+                    date:
+                      new Intl.DateTimeFormat("en-US", {
+                        month: "short",
+                      }).format(date) +
+                      " " +
+                      ("0" + day.day).slice(-2) +
+                      ", " +
+                      day.year,
+                  });
+                }}
+              />
+            </View>
+            <View style={styles.list}>
+              <TextComp style={styles.date}>
+                {this.state.date.toString()}
+              </TextComp>
+              {this.props.reminders
+                .filter(
+                  (reminder) => reminder.date === this.state.date.toString()
+                )
+                .map((item, key) => (
+                  <Task key={key} reminder={item} />
+                ))}
+            </View>
+          </ScrollView>
+        </View>
         <TabNav active="calendar" />
       </SafeAreaView>
     );
@@ -92,6 +94,7 @@ class CalendarScreen extends React.Component {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    marginTop: 30,
   },
   header: {
     flex: 0.07,
@@ -103,7 +106,6 @@ const styles = StyleSheet.create({
   calendar: {
     marginBottom: 20,
   },
-  list: { flex: 1 },
   title: {
     fontSize: 30,
   },

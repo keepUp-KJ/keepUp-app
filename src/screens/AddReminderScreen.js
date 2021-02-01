@@ -25,6 +25,7 @@ import ContactsPopup from "../components/Contacts/ContactsPopup";
 import ReminderContactsList from "../components/ReminderContactsList";
 import * as Notifications from "expo-notifications";
 import moment from "moment";
+import { KeyboardAvoidingView } from "react-native";
 
 const months = [
   "Jan",
@@ -148,6 +149,7 @@ class AddReminderScreen extends React.Component {
               }}
               error={this.props.error}
             />
+
             <View style={styles.container}>
               <TextComp style={styles.text}>Date</TextComp>
             </View>
@@ -249,6 +251,7 @@ class AddReminderScreen extends React.Component {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    marginTop: 30,
   },
   header: {
     flex: 0.1,

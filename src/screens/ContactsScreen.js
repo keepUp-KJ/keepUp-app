@@ -249,6 +249,7 @@ class ContactsScreen extends React.Component {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    marginTop: 30,
   },
   headerContainer: {
     width: "100%",

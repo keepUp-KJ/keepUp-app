@@ -3,6 +3,7 @@ import { TouchableOpacity, StyleSheet, View, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import TextComp from "../TextComp";
+import { Platform } from "react-native";
 
 const Tab = (props) => {
   return (
@@ -18,7 +19,7 @@ const Tab = (props) => {
             size={25}
             color={props.active ? Colors.primaryColor : Colors.secondary}
           />
-          {Dimensions.get("window").height > 670 ? (
+          {Dimensions.get("window").height > 670 && Platform.OS === "ios" && (
             <TextComp
               style={{
                 ...styles.text,
@@ -27,7 +28,7 @@ const Tab = (props) => {
             >
               {props.text}
             </TextComp>
-          ) : null}
+          )}
         </View>
       ) : (
         <View style={styles.circle}>

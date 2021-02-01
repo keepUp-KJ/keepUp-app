@@ -92,6 +92,7 @@ class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    marginTop: 30,
   },
   main: {
     flex: 0.92,
