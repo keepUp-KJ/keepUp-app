@@ -10,10 +10,8 @@ import remindersReducer from "./src/store/reducers/reminders";
 import contactsReducer from "./src/store/reducers/contacts";
 import settingsReducer from "./src/store/reducers/settings";
 import { setNavigator } from "./src/navigation/navigationRef";
-import { StatusBar, Text } from "react-native";
+import { StatusBar } from "react-native";
 import * as Fonts from "expo-font";
-import { ActivityIndicator, View } from "react-native";
-import Colors from "./src/constants/Colors";
 
 const rootReducer = combineReducers({
   contacts: contactsReducer,
