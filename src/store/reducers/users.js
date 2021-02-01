@@ -12,7 +12,7 @@ import {
 } from "../actions/users";
 
 const initialState = {
-  user: {},
+  user: null,
   errors: {},
   loginError: null,
   confirm: false,

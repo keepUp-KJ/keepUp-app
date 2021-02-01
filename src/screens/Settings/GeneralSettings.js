@@ -13,19 +13,14 @@ import { Ionicons } from "@expo/vector-icons";
 import TextComp from "../../components/TextComp";
 import { Fragment } from "react";
 import { getSettings, updateSettings } from "../../store/actions/settings";
-import DateTimePicker from "@react-native-community/datetimepicker";
-
+import TimePicker from "react-native-super-timepicker";
+import WeekdayPicker from "../../components/WeekdayPicker";
 class GeneralSettings extends React.Component {
   state = {
-    settings: {
-      monthlyCallNotification: null,
-      weeklyCallNotification: null,
-      dailyCallNotification: null,
-      incompleteTaskNotification: null,
-      birthdayReminder: null,
-      callReminder: null,
-      incompleteTaskReminder: null,
-    },
+    time: "17:00",
+    weeklyReminder: "Sunday",
+    monthlyReminder: "15",
+    days: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 0: 1 },
   };
 
   // componentDidMount() {
@@ -54,21 +49,42 @@ class GeneralSettings extends React.Component {
   //   );
   // }
 
+  onCancel = () => {
+    this.TimePicker.close();
+  };
+
+  onConfirm = (hour, minute) => {
+    this.setState({ time: `${hour}:${minute}` });
+    this.TimePicker.close();
+  };
+
+  handleChange = (days) => {
+    this.setState(days);
+  };
+
   render() {
     return (
       <Fragment>
         <StatusBar barStyle="light-content" />
         <SafeAreaView style={{ flex: 0, backgroundColor: Colors.babyBlue }} />
         <SafeAreaView style={styles.screen}>
+          <TimePicker
+            ref={(ref) => {
+              this.TimePicker = ref;
+            }}
+            onConfirm={this.onConfirm}
+            onCancel={this.onCancel}
+          />
           <View style={styles.header}>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("Settings");
-              }}
-              style={styles.backContainer}
-            >
-              <Ionicons name="md-arrow-back" size={30} color="white" />
-            </TouchableOpacity>
+            <View style={styles.backContainer}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("Settings");
+                }}
+              >
+                <Ionicons name="md-arrow-back" size={30} color="white" />
+              </TouchableOpacity>
+            </View>
             <View style={styles.container}>
               <TextComp bold style={styles.text}>
                 General
@@ -76,32 +92,39 @@ class GeneralSettings extends React.Component {
             </View>
           </View>
           <ScrollView style={styles.body}>
-            <View style={styles.settingContainer}>
-              <TextComp style={{ color: Colors.babyBlue, fontSize: 22 }}>
+            {/* Reminder at */}
+            <TouchableOpacity
+              style={styles.settingContainer}
+              activeOpacity={0.5}
+              onPress={() => {
+                this.TimePicker.open();
+              }}
+            >
+              <TextComp style={{ color: Colors.secondary, fontSize: 20 }}>
                 Reminder at:
               </TextComp>
               <TextComp style={{ color: Colors.secondary, fontSize: 18 }}>
-                5:00 PM
+                {this.state.time}
               </TextComp>
+            </TouchableOpacity>
+            {/* Weekly Reminder */}
+            <View style={{ margin: 20 }}>
+              <TextComp style={{ color: Colors.secondary, fontSize: 20 }}>
+                Weekly Reminder
+              </TextComp>
+              <WeekdayPicker
+                days={this.state.days}
+                onChange={this.handleChange}
+                style={styles.picker}
+                dayStyle={styles.day}
+              />
               {/* <DateTimePicker value={new Date()} mode="time" /> */}
             </View>
-            <View style={styles.settingContainer}>
-              <TextComp style={{ color: Colors.babyBlue, fontSize: 22 }}>
-                Weekly Reminder on:
+            {/* Monthly Reminder */}
+            <View style={{ margin: 20 }}>
+              <TextComp style={{ color: Colors.secondary, fontSize: 20 }}>
+                Monthly Reminder
               </TextComp>
-              <TextComp style={{ color: Colors.secondary, fontSize: 18 }}>
-                Sunday
-              </TextComp>
-              {/* <DateTimePicker value={new Date()} mode="time" /> */}
-            </View>
-            <View style={styles.settingContainer}>
-              <TextComp style={{ color: Colors.babyBlue, fontSize: 22 }}>
-                Monthly Reminder on day:
-              </TextComp>
-              <TextComp style={{ color: Colors.secondary, fontSize: 18 }}>
-                15
-              </TextComp>
-              {/* <DateTimePicker value={new Date()} mode="time" /> */}
             </View>
           </ScrollView>
         </SafeAreaView>
@@ -114,15 +137,16 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
+  backContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginHorizontal: 15,
+    marginTop: 10,
+  },
   header: {
     flex: 0.25,
     backgroundColor: Colors.babyBlue,
-  },
-  backContainer: {
-    marginHorizontal: 20,
-    marginTop: 5,
-    justifyContent: "center",
-    width: "5%",
   },
   settingContainer: {
     marginHorizontal: 20,
@@ -130,6 +154,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginVertical: 20,
+  },
+  picker: {
+    paddingTop: 30,
+  },
+  day: {
+    margin: 8,
   },
   container: {
     marginHorizontal: 20,

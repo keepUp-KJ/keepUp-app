@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, SafeAreaView, FlatList } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
 import Colors from "../constants/Colors";
 import Header from "../components/Header";
 import moment from "moment";

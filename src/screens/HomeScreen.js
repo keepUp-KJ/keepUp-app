@@ -25,9 +25,9 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     this.props.get(this.props.user._id, this.props.user.token);
-    Notifications.getAllScheduledNotificationsAsync().then((notif) => {
-      console.log(notif);
-    });
+    // Notifications.getAllScheduledNotificationsAsync().then((notif) => {
+    //   console.log(notif);
+    // });
   }
 
   render() {

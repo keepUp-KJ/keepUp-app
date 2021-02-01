@@ -5,6 +5,7 @@ import Colors from "../constants/Colors";
 const MainCalendar = (props) => {
   return (
     <Calendar
+      {...props}
       enableSwipeMonths={true}
       onDayPress={(day) => {
         props.onDayPress(day);

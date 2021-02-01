@@ -66,22 +66,7 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      {loading ? (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: Colors.primaryColor,
-          }}
-        >
-          <Text style={{ fontSize: 50, marginBottom: 20, color: "white" }}>
-            Keep Up
-          </Text>
-
-          <ActivityIndicator size="large" color="white" />
-        </View>
-      ) : (
+      {!loading && (
         <Navigator
           ref={(navigator) => {
             setNavigator(navigator);

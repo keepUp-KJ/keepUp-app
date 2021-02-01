@@ -17,12 +17,12 @@ import { ScrollView } from "react-native-gesture-handler";
 
 class SignupScreen extends React.Component {
   state = {
-    email: "jana1703299@miuegypt.edu.eg",
-    firstName: "Jana",
-    lastName: "Hamdy",
-    mobile: "01092631008",
-    password: "mypass",
-    confPassword: "mypass",
+    email: "",
+    firstName: "",
+    lastName: "",
+    mobile: "",
+    password: "",
+    confPassword: "",
   };
 
   componentDidMount() {
