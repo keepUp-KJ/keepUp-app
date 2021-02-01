@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   user: state.users.user,
-  error: state.users.loginError,
+  error: state.users.verifyEmailError,
   loading: state.users.loading,
 });
 

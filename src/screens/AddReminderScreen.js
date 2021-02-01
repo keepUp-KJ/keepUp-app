@@ -25,7 +25,7 @@ import ContactsPopup from "../components/Contacts/ContactsPopup";
 import ReminderContactsList from "../components/ReminderContactsList";
 import * as Notifications from "expo-notifications";
 import moment from "moment";
-import { KeyboardAvoidingView } from "react-native";
+import CalendarPicker from "react-native-calendar-picker";
 
 const months = [
   "Jan",
@@ -41,9 +41,11 @@ const months = [
   "Nov",
   "Dec",
 ];
+
+const today = new Date();
 class AddReminderScreen extends React.Component {
   state = {
-    date: new Date(),
+    date: today,
     show: false,
     notify: "On the same day",
     open: false,
@@ -149,43 +151,27 @@ class AddReminderScreen extends React.Component {
               }}
               error={this.props.error}
             />
-
             <View style={styles.container}>
               <TextComp style={styles.text}>Date</TextComp>
-            </View>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={{
-                ...styles.dateContainer,
-                borderColor: this.state.show
-                  ? Colors.primaryColor
-                  : Colors.secondary,
-                borderWidth: this.state.show ? 2 : 0.5,
-              }}
-              onPress={() => {
-                this.setState({ show: !this.state.show });
-                Keyboard.dismiss();
-              }}
-            >
-              <TextComp style={styles.text}>
+              <TextComp bold style={{ color: Colors.primaryColor }}>
                 {this.state.date.toDateString()}
               </TextComp>
-              <Ionicons
-                name={this.state.show ? "ios-arrow-up" : "ios-arrow-down"}
-                size={16}
-                style={{ flex: 0.13 }}
+            </View>
+            <View style={styles.calendar}>
+              <CalendarPicker
+                onDateChange={(date) => {
+                  this.setState({ date: date.toDate() });
+                }}
+                todayBackgroundColor="white"
+                todayTextStyle={{
+                  color: this.state.date === today ? "white" : "black",
+                }}
+                selectedDayColor={Colors.primaryColor}
+                selectedDayTextColor="white"
+                showDayStragglers={true}
+                selectedStartDate={this.state.date}
               />
-            </TouchableOpacity>
-            {this.state.show ? (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={this.state.date}
-                mode="date"
-                display="default"
-                onChange={(event, date) => this.setState({ date })}
-              />
-            ) : null}
-
+            </View>
             <DropDownPicker
               style={{ borderWidth: 0 }}
               defaultValue={this.state.notify}
@@ -213,7 +199,6 @@ class AddReminderScreen extends React.Component {
                 this.setState({ notify: item.value });
               }}
             />
-
             <ReminderContactsList
               data={this.props.reminderContacts.filter(
                 (contact) => contact !== null
@@ -250,13 +235,12 @@ class AddReminderScreen extends React.Component {
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
-    marginTop: 30,
+    marginTop: 60,
   },
   header: {
-    flex: 0.1,
     justifyContent: "center",
     alignItems: "center",
+    marginVertical: 10,
   },
   headerText: {
     fontSize: 18,
@@ -266,14 +250,17 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
   },
   body: {
-    flex: 0.75,
     marginHorizontal: 30,
+    marginBottom: 50,
+  },
+  calendar: {
+    marginVertical: 10,
   },
   container: {
-    flex: 0.2,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    marginVertical: 10,
   },
   input: {
     borderRadius: 25,
@@ -282,21 +269,7 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     padding: 2,
     height: 45,
-    marginVertical: 15,
-  },
-
-  dateContainer: {
-    marginVertical: 5,
-    borderWidth: 0.5,
-    borderRadius: 25,
-    padding: 10,
-    paddingHorizontal: 20,
-    marginVertical: 2,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  footer: {
-    flex: 0.1,
+    marginVertical: 20,
   },
 });
 

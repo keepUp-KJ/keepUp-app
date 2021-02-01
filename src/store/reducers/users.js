@@ -9,12 +9,14 @@ import {
   FORGOT_PASSWORD,
   RESET,
   LOADING,
+  VERIFY_EMAIL_ERROR,
 } from "../actions/users";
 
 const initialState = {
   user: null,
   errors: {},
   loginError: null,
+  verifyEmailError: null,
   confirm: false,
   loading: null,
 };
@@ -42,6 +44,12 @@ const usersReducer = (state = initialState, action) => {
       return {
         ...state,
         loginError: action.error,
+        loading: false,
+      };
+    case VERIFY_EMAIL_ERROR:
+      return {
+        ...state,
+        verifyEmailError: action.error,
         loading: false,
       };
     case HIDE_ERROR:

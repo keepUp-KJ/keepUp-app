@@ -9,6 +9,7 @@ export const HIDE_LOGIN_ERROR = "HIDE_LOGIN_ERROR";
 export const SIGNOUT = "SIGNOUT";
 export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
 export const LOADING = "LOADING";
+export const VERIFY_EMAIL_ERROR = "VERIFY_EMAIL_ERROR";
 
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
@@ -121,7 +122,7 @@ export const verifyEmail = (email, code) => async (dispatch) => {
     .then((json) => {
       if (json.error) {
         dispatch({
-          type: LOGIN_ERROR,
+          type: VERIFY_EMAIL_ERROR,
           error: json.error,
         });
       } else {
