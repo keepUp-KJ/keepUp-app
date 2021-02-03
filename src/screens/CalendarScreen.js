@@ -11,20 +11,30 @@ import TextComp from "../components/TextComp";
 import { getReminders } from "../store/actions/reminders";
 import { ScrollView } from "react-native-gesture-handler";
 
+const today = moment().format("YYYY-MM-DD");
+
 class CalendarScreen extends React.Component {
   state = {
     date: moment().format("MMM DD, YYYY"),
     markedDates: {},
+    reminderDates: {},
   };
 
   getSelectedDayEvents = (date) => {
-    let markedDates = {};
+    let markedDates = {
+      ...this.state.reminderDates,
+    };
+
+    markedDates[today] = {
+      selected: false,
+    };
+
     markedDates[date] = {
       selected: true,
       color: Colors.primaryColor,
       textColor: "black",
     };
-    let serviceDate = moment(date);
+    let serviceDate = moment(date).format("MMM DD, YYYY");
     this.setState({
       date: serviceDate,
       markedDates,
@@ -32,7 +42,22 @@ class CalendarScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.props.get(this.props.user._id, this.props.user.token);
+    this.props.get(this.props.user._id, this.props.user.token).then(() => {
+      let markedDates = {};
+
+      markedDates[today] = { selected: true };
+
+      this.props.reminders.forEach((reminder) => {
+        let date = moment(reminder.date).format("YYYY-MM-DD");
+        if (moment().isBefore(date)) {
+          markedDates[date] = {
+            marked: true,
+          };
+        }
+      });
+
+      this.setState({ reminderDates: markedDates, markedDates });
+    });
   }
 
   render() {

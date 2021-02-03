@@ -19,13 +19,12 @@ import {
   addReminder,
   cancelReminder,
 } from "../store/actions/reminders";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import TextComp from "../components/TextComp";
 import ContactsPopup from "../components/Contacts/ContactsPopup";
 import ReminderContactsList from "../components/ReminderContactsList";
 import * as Notifications from "expo-notifications";
 import moment from "moment";
-import CalendarPicker from "react-native-calendar-picker";
+import MainCalendar from "../components/MainCalendar";
 
 const months = [
   "Jan",
@@ -52,7 +51,16 @@ class AddReminderScreen extends React.Component {
     title: "",
     visible: false,
     input: "",
+    calendarVisible: false,
+    markedDates: {},
   };
+
+  componentDidMount() {
+    let markedDates = {};
+    markedDates[moment().format("YYYY-MM-DD")] = { selected: true };
+
+    this.setState({ markedDates });
+  }
 
   scheduleNotif = () => {
     let date;
@@ -82,6 +90,21 @@ class AddReminderScreen extends React.Component {
         hour: 17,
         minute: 0,
       },
+    });
+  };
+
+  getSelectedDayEvents = (date) => {
+    let markedDates = {};
+
+    markedDates[date] = {
+      selected: true,
+      color: Colors.primaryColor,
+      textColor: "black",
+    };
+    let serviceDate = moment(date);
+    this.setState({
+      date: serviceDate,
+      markedDates,
     });
   };
 
@@ -153,25 +176,31 @@ class AddReminderScreen extends React.Component {
             />
             <View style={styles.container}>
               <TextComp style={styles.text}>Date</TextComp>
-              <TextComp bold style={{ color: Colors.primaryColor }}>
-                {this.state.date.toDateString()}
-              </TextComp>
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({
+                    calendarVisible: !this.state.calendarVisible,
+                  });
+                }}
+              >
+                <TextComp
+                  bold
+                  style={{ color: Colors.primaryColor, fontSize: 14 }}
+                >
+                  {this.state.date.toDateString()}
+                </TextComp>
+              </TouchableOpacity>
             </View>
-            <View style={styles.calendar}>
-              <CalendarPicker
-                onDateChange={(date) => {
-                  this.setState({ date: date.toDate() });
+            {this.state.calendarVisible && (
+              <MainCalendar
+                dates={this.state.markedDates}
+                onDayPress={(day) => {
+                  const date = new Date(day.dateString);
+                  this.getSelectedDayEvents(day.dateString);
+                  this.setState({ date });
                 }}
-                todayBackgroundColor="white"
-                todayTextStyle={{
-                  color: this.state.date === today ? "white" : "black",
-                }}
-                selectedDayColor={Colors.primaryColor}
-                selectedDayTextColor="white"
-                showDayStragglers={true}
-                selectedStartDate={this.state.date}
               />
-            </View>
+            )}
             <DropDownPicker
               style={{ borderWidth: 0 }}
               defaultValue={this.state.notify}
@@ -235,12 +264,14 @@ class AddReminderScreen extends React.Component {
 
 const styles = StyleSheet.create({
   screen: {
+    flex: 1,
     marginTop: 60,
   },
   header: {
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 10,
+    marginTop: 10,
+    marginBottom: 20,
   },
   headerText: {
     fontSize: 18,

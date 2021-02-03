@@ -70,6 +70,10 @@ const ContactCard = (props) => {
     },
   ];
 
+  const accepted = props.activeTab === "Accepted";
+  const rejected = props.activeTab === "Rejected";
+  const pending = props.activeTab === "Pending";
+
   return (
     <Overlay
       isVisible={props.visible}
@@ -80,7 +84,7 @@ const ContactCard = (props) => {
     >
       <View>
         {/* <View style={styles.header}>
-          {props.accepted ? (
+          {accepted ? (
             <TouchableOpacity
               style={{ padding: 5 }}
               onPress={() => {
@@ -95,7 +99,7 @@ const ContactCard = (props) => {
           ) : null}
         </View> */}
         <View style={styles.body}>
-          {(props.pending || props.accepted) && (
+          {(pending || accepted) && (
             <View style={styles.photo}>
               {/* {props.contact.info.imageAvailable ? (
                 <Image
@@ -122,7 +126,7 @@ const ContactCard = (props) => {
           >
             {props.contact.info.phoneNumbers[0].number}
           </TextComp>
-          {props.pending ? (
+          {pending ? (
             <View style={styles.container}>
               {/* Daily */}
               <View style={styles.btnContainer}>
@@ -181,7 +185,7 @@ const ContactCard = (props) => {
                 <TextComp>Reject</TextComp>
               </View>
             </View>
-          ) : props.accepted ? (
+          ) : accepted ? (
             <View style={styles.acceptedContainer}>
               <View style={styles.textContainer}>
                 <TextComp style={styles.text}>Frequency</TextComp>
