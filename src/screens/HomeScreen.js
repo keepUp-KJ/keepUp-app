@@ -19,7 +19,9 @@ class HomeScreen extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1, marginTop: 30 }}>
+      <SafeAreaView
+        style={{ flex: 1, marginTop: 30, backgroundColor: "white" }}
+      >
         <View style={{ flex: 0.92 }}>
           <DateHeader />
           {this.props.loading ? (

@@ -199,6 +199,7 @@ class SettingsScreen extends React.Component {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    backgroundColor: "white",
   },
   top: {
     flex: 0.07,

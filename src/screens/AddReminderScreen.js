@@ -79,16 +79,23 @@ class AddReminderScreen extends React.Component {
         } ${this.state.date.getFullYear()}`,
         title: `${this.state.title} with ${
           this.props.reminderContacts[0].info.firstName
-        } ${this.props.reminderContacts[0].info.lastName} & ${
-          this.props.reminderContacts.length - 1
-        } ${this.props.reminderContacts.length === 2 ? "other" : "others"}`,
+        } ${
+          this.props.reminderContacts[0].info.lastName &&
+          this.props.reminderContacts[0].info.lastName
+        } ${
+          this.props.reminderContacts.length > 1
+            ? `& ${this.props.reminderContacts.length - 1} ${
+                this.props.reminderContacts.length !== 2 ? "others" : "other"
+              }`
+            : ""
+        }`,
       },
       trigger: {
         day: date.getDate(),
         month: date.getMonth() + 1,
         year: date.getFullYear(),
-        hour: 17,
-        minute: 0,
+        hour: 18,
+        minute: 51,
       },
     });
   };

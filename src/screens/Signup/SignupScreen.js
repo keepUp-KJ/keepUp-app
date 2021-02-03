@@ -168,6 +168,9 @@ class SignupScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    backgroundColor: "white",
+  },
   container: {
     justifyContent: "center",
     alignItems: "center",

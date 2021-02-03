@@ -24,7 +24,9 @@ class ContactsScreen extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1, marginTop: 30 }}>
+      <SafeAreaView
+        style={{ flex: 1, marginTop: 30, backgroundColor: "white" }}
+      >
         <View style={{ flex: 0.92 }}>
           <Menu
             onChange={(activeTab) => this.setState({ activeTab })}

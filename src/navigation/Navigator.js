@@ -1,4 +1,5 @@
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
 
 import LoginScreen from "../screens/Signup/LoginScreen";
 import SignupScreen from "../screens/Signup/SignupScreen";
@@ -15,7 +16,6 @@ import SetupScreen from "../screens/AccountSetup/SetupScreen";
 import ForgotPasswordScreen from "../screens/PasswordRenewal/ForgotPasswordScreen";
 import RenewPasswordScreen from "../screens/PasswordRenewal/RenewPasswordScreen";
 
-import SettingsScreen from "../screens/Settings/SettingsScreen";
 import Settings from "../screens/Settings/Settings";
 import NotificationsScreen from "../screens/Settings/NotificationsScreen";
 import GeneralSettings from "../screens/Settings/GeneralSettings";
@@ -26,29 +26,49 @@ import ContactsScreen from "../screens/ContactsScreen";
 import AddReminderScreen from "../screens/AddReminderScreen";
 import CalendarScreen from "../screens/CalendarScreen";
 
-const Navigator = createSwitchNavigator(
+const SettingsNavigator = createStackNavigator(
   {
-    Loading: LoadingScreen,
-    Login: LoginScreen,
-    SignUp: SignupScreen,
-    PickContacts: PickContactsScreen,
-    PickWeekly: PickWeeklyContacts,
-    PickMonthly: PickMonthlyContacts,
-    PickRejected,
-    ForgotPassword: ForgotPasswordScreen,
-    RenewPassword: RenewPasswordScreen,
-    VerifyEmail: VerifyEmailScreen,
-    Home: HomeScreen,
-    // Settings: SettingsScreen,
-    Contacts: ContactsScreen,
-    ConfirmSelection: ConfirmSelectionScreen,
-    Calendar: CalendarScreen,
-    Setup: SetupScreen,
-    AddReminder: AddReminderScreen,
     Settings: Settings,
     Notifications: NotificationsScreen,
     General: GeneralSettings,
     Profile: ProfileScreen,
+  },
+  { headerMode: "none" }
+);
+
+const SignupNavigator = createStackNavigator(
+  {
+    Login: LoginScreen,
+    SignUp: SignupScreen,
+    ForgotPassword: ForgotPasswordScreen,
+    RenewPassword: RenewPasswordScreen,
+  },
+  { headerMode: "none" }
+);
+
+const AccountSetupNavigator = createStackNavigator(
+  {
+    PickRejected,
+    PickContacts: PickContactsScreen,
+    PickWeekly: PickWeeklyContacts,
+    PickMonthly: PickMonthlyContacts,
+    ConfirmSelection: ConfirmSelectionScreen,
+  },
+  { headerMode: "none" }
+);
+
+const Navigator = createSwitchNavigator(
+  {
+    Loading: LoadingScreen,
+    Login: SignupNavigator,
+    VerifyEmail: VerifyEmailScreen,
+    PickRejected: AccountSetupNavigator,
+    Home: HomeScreen,
+    Contacts: ContactsScreen,
+    Calendar: CalendarScreen,
+    Setup: SetupScreen,
+    AddReminder: AddReminderScreen,
+    Settings: SettingsNavigator,
   },
   {
     // initialRouteName: "PickRejected",

@@ -16,13 +16,9 @@ import {
 import Dropdown from "../Dropdown";
 import Btn from "../Btn";
 import TextComp from "../TextComp";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { Alert } from "react-native";
 
 const ContactCard = (props) => {
   const [editing, setEditing] = useState(false);
-  const [weeklyValue, setWeeklyValue] = useState("sunday");
-  const [dailyValue, setDailyValue] = useState(Date.now());
   const [frequencyValue, setFrequencyValue] = useState(props.contact.frequency);
 
   const frequencyItems = [
@@ -39,39 +35,8 @@ const ContactCard = (props) => {
       value: "monthly",
     },
   ];
-  const weeklyItems = [
-    {
-      label: "Sunday",
-      value: "sunday",
-    },
-    {
-      label: "Monday",
-      value: "monday",
-    },
-    {
-      label: "Tuesday",
-      value: "tuesday",
-    },
-    {
-      label: "Wednesday",
-      value: "wednesday",
-    },
-    {
-      label: "Thursday",
-      value: "thursday",
-    },
-    {
-      label: "Friday",
-      value: "friday",
-    },
-    {
-      label: "Saturday",
-      value: "saturday",
-    },
-  ];
 
   const accepted = props.activeTab === "Accepted";
-  const rejected = props.activeTab === "Rejected";
   const pending = props.activeTab === "Pending";
 
   return (
@@ -82,7 +47,7 @@ const ContactCard = (props) => {
         props.close();
       }}
     >
-      <View>
+      <>
         {/* <View style={styles.header}>
           {accepted ? (
             <TouchableOpacity
@@ -101,14 +66,14 @@ const ContactCard = (props) => {
         <View style={styles.body}>
           {(pending || accepted) && (
             <View style={styles.photo}>
-              {/* {props.contact.info.imageAvailable ? (
+              {props.contact.info.imageAvailable ? (
                 <Image
                   source={{ uri: props.contact.info.image.uri }}
                   style={{ width: "100%", height: "100%" }}
                 />
-              ) : ( */}
-              <Ionicons name="md-person" size={60} color="white" />
-              {/* )} */}
+              ) : (
+                <Ionicons name="md-person" size={60} color="white" />
+              )}
             </View>
           )}
           <TextComp
@@ -205,36 +170,6 @@ const ContactCard = (props) => {
                   </TextComp>
                 )}
               </View>
-              {/* <View style={styles.textContainer}>
-                <TextComp style={styles.text}>Remind on</TextComp>
-                {editing ? (
-                  props.contact.frequency === "weekly" ? (
-                    <Dropdown
-                      zIndex={2}
-                      items={weeklyItems}
-                      value={weeklyValue}
-                      setValue={(item) => setWeeklyValue(item.value)}
-                    />
-                  ) : props.contact.frequency === "daily" ? (
-                    <DateTimePicker
-                      style={{ height: 50 }}
-                      value={dailyValue}
-                      display="spinner"
-                      mode="time"
-                      onChange={onChange}
-                    />
-                  ) : null
-                ) : (
-                  <TextComp
-                    bold
-                    style={{ ...styles.text, ...styles.selectedValue }}
-                  >
-                    {props.contact.frequency === "weekly"
-                      ? weeklyValue.toUpperCase()
-                      : dailyValue}
-                  </TextComp>
-                )}
-              </View> */}
             </View>
           ) : (
             <View style={styles.rejectedContainer}>
@@ -246,7 +181,7 @@ const ContactCard = (props) => {
             </View>
           )}
         </View>
-      </View>
+      </>
     </Overlay>
   );
 };

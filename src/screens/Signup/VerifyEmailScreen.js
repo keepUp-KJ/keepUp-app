@@ -98,6 +98,7 @@ class VerifyEmailScreen extends React.Component {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    backgroundColor: "white",
   },
   container: {
     justifyContent: "center",

@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: "center",
+    backgroundColor: "white",
   },
   title: {
     fontSize: 50,
