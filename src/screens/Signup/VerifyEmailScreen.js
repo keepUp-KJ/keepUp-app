@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   Keyboard,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import Colors from "../../constants/Colors";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
@@ -13,7 +14,7 @@ import Btn from "../../components/Btn";
 import { connect } from "react-redux";
 import { hideLoginError, verifyEmail } from "../../store/actions/users";
 import TextComp from "../../components/TextComp";
-
+import OTP from "otp-input-component";
 class VerifyEmailScreen extends React.Component {
   state = {
     code: "",
@@ -61,22 +62,45 @@ class VerifyEmailScreen extends React.Component {
             </TextComp>
           </View>
 
-          <View style={{ ...styles.container, flex: 0.1 }}>
+          <View
+            style={{
+              ...styles.container,
+              flex: Platform.OS === "android" ? 0.3 : 0.05,
+            }}
+          >
             <View style={{ width: "60%" }}>
-              <OTPInputView
-                code={this.state.code}
-                pinCount={4}
-                autoFocusOnLoad
-                codeInputFieldStyle={styles.underlineStyleBase}
-                codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                onCodeFilled={(code) => {
-                  this.setState({ code });
-                }}
-                onCodeChanged={(code) => {
-                  if (this.props.error) this.props.hide();
-                  this.setState({ code });
-                }}
-              />
+              {Platform.OS === "ios" ? (
+                <OTPInputView
+                  code={this.state.code}
+                  pinCount={4}
+                  autoFocusOnLoad
+                  codeInputFieldStyle={styles.underlineStyleBase}
+                  codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                  onCodeFilled={this.handleOTPChange}
+                  onCodeChanged={(code) => {
+                    if (this.props.error) this.props.hide();
+                    this.setState({ code });
+                  }}
+                />
+              ) : (
+                <OTP
+                  onChange={this.handleOTPChange}
+                  length={4}
+                  otpFieldStyle={{
+                    borderRadius: 0,
+                    backgroundColor: "white",
+                    borderBottomColor: Colors.secondary,
+                    marginHorizontal: 12,
+                  }}
+                  otpFieldTextStyle={{ fontFamily: "bold" }}
+                  otpConStyle={{
+                    width: "100%",
+                    marginTop: 30,
+                    alignSelf: "center",
+                    marginLeft: 0,
+                  }}
+                />
+              )}
               <TextComp bold style={styles.errorStyle}>
                 {this.props.error}
               </TextComp>

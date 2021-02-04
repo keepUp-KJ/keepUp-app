@@ -111,14 +111,7 @@ class CalendarScreen extends React.Component {
                     date.getMonth();
                     this.getSelectedDayEvents(day.dateString);
                     this.setState({
-                      date:
-                        new Intl.DateTimeFormat("en-US", {
-                          month: "short",
-                        }).format(date) +
-                        " " +
-                        ("0" + day.day).slice(-2) +
-                        ", " +
-                        day.year,
+                      date: moment(date).format("MMM DD, YYYY"),
                     });
                   }}
                 />

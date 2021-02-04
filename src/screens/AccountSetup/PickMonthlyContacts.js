@@ -179,6 +179,7 @@ class PickMonthlyContacts extends React.Component {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    marginTop: 30,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",

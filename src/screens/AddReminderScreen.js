@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Keyboard,
   BackHandler,
+  Platform,
 } from "react-native";
 import Btn from "../components/Btn";
 import Input from "../components/Input";
@@ -112,8 +113,8 @@ class AddReminderScreen extends React.Component {
         day: date.getDate(),
         month: date.getMonth() + 1,
         year: date.getFullYear(),
-        hour: 18,
-        minute: 51,
+        hour: 17,
+        minute: 0,
       },
     });
   };
@@ -277,7 +278,7 @@ class AddReminderScreen extends React.Component {
                     this.state.notify,
                     this.props.user.token
                   )
-                  .then(this.scheduleNotif);
+                  .then(Platform.OS === "ios" && this.scheduleNotif);
               }}
             />
           </View>
@@ -290,13 +291,12 @@ class AddReminderScreen extends React.Component {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    marginTop: 60,
+    marginTop: 40,
   },
   header: {
+    flex: 0.1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
-    marginBottom: 20,
   },
   headerText: {
     fontSize: 18,
@@ -306,6 +306,7 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
   },
   body: {
+    flex: 0.85,
     marginHorizontal: 30,
     marginBottom: 50,
   },

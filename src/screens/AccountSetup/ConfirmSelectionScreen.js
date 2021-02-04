@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: "white",
+    marginTop: 30,
   },
   title: {
     fontSize: 18,

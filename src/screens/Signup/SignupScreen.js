@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
   Keyboard,
+  ScrollView,
 } from "react-native";
 import Colors from "../../constants/Colors";
 import Btn from "../../components/Btn";
@@ -13,7 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { signup, hideError } from "../../store/actions/users";
 import TextComp from "../../components/TextComp";
-import { ScrollView } from "react-native-gesture-handler";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 class SignupScreen extends React.Component {
   state = {
@@ -62,7 +63,7 @@ class SignupScreen extends React.Component {
 
           {/* Inputs */}
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.container}>
+            <KeyboardAwareScrollView contentContainerStyle={styles.container}>
               <View style={{ width: "80%" }}>
                 <Input
                   auto
@@ -131,7 +132,7 @@ class SignupScreen extends React.Component {
                   error={this.props.errors.confPassword}
                 />
               </View>
-            </View>
+            </KeyboardAwareScrollView>
 
             {/* Footer */}
             <View style={styles.footerContainer}>

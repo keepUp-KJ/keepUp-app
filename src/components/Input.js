@@ -10,15 +10,17 @@ const Input = (props) => {
 
   return (
     <View>
-      <TextComp
-        style={{
-          paddingLeft: 10,
-          fontSize: 14,
-          color: "grey",
-        }}
-      >
-        {props.title}
-      </TextComp>
+      {props.title && (
+        <TextComp
+          style={{
+            paddingLeft: 10,
+            fontSize: 14,
+            color: "grey",
+          }}
+        >
+          {props.title}
+        </TextComp>
+      )}
       <TextInput
         {...props}
         autoCorrect={false}
@@ -36,6 +38,7 @@ const Input = (props) => {
           setBorderWidth(0.5);
         }}
         style={{
+          ...props.style,
           ...styles.input,
           borderWidth,
           borderColor: props.error ? "#990000" : borderColor,
@@ -51,7 +54,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     padding: 10,
     paddingHorizontal: 20,
-    marginVertical: 2,
+    marginTop: 2,
     fontFamily: "regular",
   },
   errorText: {

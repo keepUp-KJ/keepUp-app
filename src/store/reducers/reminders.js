@@ -65,6 +65,7 @@ const remindersReducer = (state = initialState, action) => {
       }
 
       return {
+        ...state,
         reminders: updatedReminders,
       };
     }

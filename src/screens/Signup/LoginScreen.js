@@ -8,7 +8,7 @@ import {
   Keyboard,
 } from "react-native";
 import Btn from "../../components/Btn";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+// import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Input from "../../components/Input";
 import Colors from "../../constants/Colors";
 import {
@@ -19,6 +19,7 @@ import {
 } from "../../store/actions/users";
 import { connect } from "react-redux";
 import TextComp from "../../components/TextComp";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 class LoginScreen extends React.Component {
   state = {
@@ -54,7 +55,7 @@ class LoginScreen extends React.Component {
       >
         <SafeAreaView style={styles.screen}>
           {/* Title */}
-          <View style={{ flex: 0.25, justifyContent: "center" }}>
+          <View style={{ flex: 0.3, justifyContent: "center" }}>
             <TextComp bold style={styles.title}>
               Keep
               <TextComp bold style={{ color: Colors.primaryColor }}>
@@ -64,61 +65,62 @@ class LoginScreen extends React.Component {
           </View>
 
           {/* Inputs */}
-          <View style={{ flex: 0.25, justifyContent: "center", width: "80%" }}>
-            <Input
-              value={this.state.email}
-              onChangeText={(email) => {
-                this.props.hide();
-                this.setState({ email });
-              }}
-              placeholder="Email"
-              autoCapitalize="none"
-              autoCorrect={false}
-              keyboardType="email-address"
-            />
-            <Input
-              value={this.state.password}
-              onChangeText={(password) => {
-                this.props.hide();
-                this.setState({ password });
-              }}
-              secureTextEntry
-              placeholder="Password"
-              autoCorrect={false}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("ForgotPassword");
-              }}
-            >
-              <TextComp
-                style={{
-                  textAlign: "center",
-                  marginTop: 10,
-                  fontFamily: "Futura",
+          <View style={{ flex: 0.55, width: "80%" }}>
+            <KeyboardAwareScrollView contentContainerStyle={{ paddingTop: 60 }}>
+              <Input
+                value={this.state.email}
+                onChangeText={(email) => {
+                  this.props.hide();
+                  this.setState({ email });
+                }}
+                placeholder="Email"
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
+              />
+              <Input
+                value={this.state.password}
+                onChangeText={(password) => {
+                  this.props.hide();
+                  this.setState({ password });
+                }}
+                secureTextEntry
+                placeholder="Password"
+                autoCorrect={false}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("ForgotPassword");
                 }}
               >
-                Forgot password
-                <TextComp style={{ fontFamily: "Arial" }}>?</TextComp>
-              </TextComp>
-            </TouchableOpacity>
-            <TextComp style={styles.errorText}>{this.props.error}</TextComp>
+                <TextComp
+                  style={{
+                    textAlign: "center",
+                    marginTop: 10,
+                    fontFamily: "Futura",
+                  }}
+                >
+                  Forgot password
+                  <TextComp style={{ fontFamily: "Arial" }}>?</TextComp>
+                </TextComp>
+              </TouchableOpacity>
+              <TextComp style={styles.errorText}>{this.props.error}</TextComp>
+              <Btn
+                title="LOGIN"
+                btnColor={Colors.primaryColor}
+                fontSize={12}
+                bold
+                loading={this.props.loading}
+                onPress={() => {
+                  this.props.login(this.state.email, this.state.password);
+                }}
+              />
+            </KeyboardAwareScrollView>
           </View>
 
           {/* Buttons */}
-          <View style={{ flex: 0.25, justifyContent: "center", width: "80%" }}>
-            <Btn
-              title="LOGIN"
-              btnColor={Colors.primaryColor}
-              fontSize={12}
-              bold
-              loading={this.props.loading}
-              onPress={() => {
-                this.props.login(this.state.email, this.state.password);
-              }}
-            />
-
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+          {/* <View style={{ flex: 0.25, justifyContent: "center", width: "80%" }}>
+           <View style={{ flexDirection: "row", alignItems: "center" }}>
               <View style={{ width: "50%" }}>
                 <Btn
                   icon={<Ionicons name="logo-google" color="white" size={16} />}
@@ -144,9 +146,9 @@ class LoginScreen extends React.Component {
                   bold
                   onPress={this.loginWithFacebook}
                 />
-              </View>
+              </View> 
             </View>
-          </View>
+           </View> */}
 
           {/* Footer */}
           <View style={styles.footerContainer}>
@@ -174,11 +176,11 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   title: {
-    fontSize: 50,
+    fontSize: 70,
     color: Colors.secondary,
   },
   footerContainer: {
-    flex: 0.25,
+    flex: 0.15,
     justifyContent: "center",
     flexDirection: "row",
     alignItems: "center",
