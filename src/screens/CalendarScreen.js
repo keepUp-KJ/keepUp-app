@@ -4,6 +4,7 @@ import {
   StyleSheet,
   SafeAreaView,
   ActivityIndicator,
+  BackHandler,
 } from "react-native";
 import Colors from "../constants/Colors";
 import Header from "../components/Header";
@@ -47,6 +48,11 @@ class CalendarScreen extends React.Component {
   };
 
   componentDidMount() {
+    BackHandler.addEventListener(
+      "hardwareBackPress",
+      this.handleBackButtonClick
+    );
+
     this.props.get(this.props.user._id, this.props.user.token).then(() => {
       let markedDates = {};
 
@@ -64,6 +70,18 @@ class CalendarScreen extends React.Component {
       this.setState({ reminderDates: markedDates, markedDates });
     });
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener(
+      "hardwareBackPress",
+      this.handleBackButtonClick
+    );
+  }
+
+  handleBackButtonClick = () => {
+    this.props.navigation.navigate("Home");
+    return true;
+  };
 
   render() {
     return (

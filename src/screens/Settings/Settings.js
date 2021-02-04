@@ -1,5 +1,11 @@
 import React from "react";
-import { SafeAreaView, View, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  BackHandler,
+} from "react-native";
 import Colors from "../../constants/Colors";
 import { Octicons, Ionicons } from "@expo/vector-icons";
 import TabNav from "../../components/Tab/TabNav";
@@ -8,6 +14,25 @@ import { signout } from "../../store/actions/users";
 import TextComp from "../../components/TextComp";
 
 class Settings extends React.Component {
+  componentDidMount() {
+    BackHandler.addEventListener(
+      "hardwareBackPress",
+      this.handleBackButtonClick
+    );
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener(
+      "hardwareBackPress",
+      this.handleBackButtonClick
+    );
+  }
+
+  handleBackButtonClick = () => {
+    this.props.navigation.navigate("Home");
+    return true;
+  };
+
   render() {
     return (
       <SafeAreaView style={styles.screen}>

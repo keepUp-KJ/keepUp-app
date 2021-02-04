@@ -20,6 +20,10 @@ class VerifyEmailScreen extends React.Component {
     error: "",
   };
 
+  handleOTPChange = (code) => {
+    this.setState({ code });
+  };
+
   render() {
     return (
       <TouchableWithoutFeedback
@@ -60,7 +64,6 @@ class VerifyEmailScreen extends React.Component {
           <View style={{ ...styles.container, flex: 0.1 }}>
             <View style={{ width: "60%" }}>
               <OTPInputView
-                style={{ marginTop: 10 }}
                 code={this.state.code}
                 pinCount={4}
                 autoFocusOnLoad
@@ -130,7 +133,7 @@ const styles = StyleSheet.create({
   errorStyle: {
     textAlign: "center",
     color: "#990000",
-    marginTop: -15,
+    marginVertical: 5,
   },
 });
 

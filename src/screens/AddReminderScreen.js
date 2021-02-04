@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   Keyboard,
+  BackHandler,
 } from "react-native";
 import Btn from "../components/Btn";
 import Input from "../components/Input";
@@ -56,11 +57,28 @@ class AddReminderScreen extends React.Component {
   };
 
   componentDidMount() {
+    BackHandler.addEventListener(
+      "hardwareBackPress",
+      this.handleBackButtonClick
+    );
+
     let markedDates = {};
     markedDates[moment().format("YYYY-MM-DD")] = { selected: true };
 
     this.setState({ markedDates });
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener(
+      "hardwareBackPress",
+      this.handleBackButtonClick
+    );
+  }
+
+  handleBackButtonClick = () => {
+    this.props.navigation.navigate("Home");
+    return true;
+  };
 
   scheduleNotif = () => {
     let date;

@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, View } from "react-native";
+import { SafeAreaView, View, BackHandler } from "react-native";
 
 //Redux
 import { connect } from "react-redux";
@@ -19,8 +19,24 @@ class ContactsScreen extends React.Component {
   };
 
   componentDidMount() {
+    BackHandler.addEventListener(
+      "hardwareBackPress",
+      this.handleBackButtonClick
+    );
     this.props.get(this.props.user._id, this.props.user.token);
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener(
+      "hardwareBackPress",
+      this.handleBackButtonClick
+    );
+  }
+
+  handleBackButtonClick = () => {
+    this.props.navigation.navigate("Home");
+    return true;
+  };
 
   render() {
     return (
