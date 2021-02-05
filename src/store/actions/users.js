@@ -14,7 +14,7 @@ export const VERIFY_EMAIL_ERROR = "VERIFY_EMAIL_ERROR";
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 import { navigate } from "../../navigation/navigationRef";
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const login = (email, password) => async (dispatch) => {
   dispatch({
@@ -100,9 +100,6 @@ export const tryLocalSignin = () => async (dispatch) => {
       type: SIGNUP,
       payload: user,
     });
-    navigate("Home");
-  } else {
-    navigate("Login");
   }
 };
 
@@ -149,7 +146,7 @@ export const hideLoginError = () => async (dispatch) => {
 
 export const signout = () => async (dispatch) => {
   await AsyncStorage.removeItem("user");
-  navigate("Loading");
+  navigate("Login");
   dispatch({
     type: SIGNOUT,
   });

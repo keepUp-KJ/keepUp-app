@@ -8,12 +8,14 @@ import {
   LOADING,
   CANCEL,
 } from "../actions/reminders";
+import { UPDATE_REMINDERS } from "../actions/contacts";
 import * as Notifications from "expo-notifications";
 import moment from "moment";
 
 const initialState = {
   reminders: [],
-  loading: null,
+  loading: true,
+  todayReminders: [],
   contacts: [],
   error: "",
 };
@@ -27,8 +29,13 @@ const remindersReducer = (state = initialState, action) => {
       };
     }
     case SET_REMINDERS: {
+      const today = moment().format("MMM DD, YYYY");
+
       return {
         ...state,
+        todayReminders: action.reminders.filter(
+          (reminder) => reminder.date === today
+        ),
         reminders: action.reminders,
         loading: false,
       };
@@ -40,10 +47,8 @@ const remindersReducer = (state = initialState, action) => {
       };
     }
     case SET_COMPLETED: {
-      const today = moment().format("MMM DD, YYYY");
-
       const updatedReminders = state.reminders.filter(
-        (reminder) => reminder._id !== action.id && reminder.date === today
+        (reminder) => reminder._id !== action.reminder._id
       );
 
       if (updatedReminders.length === 0) {
@@ -64,9 +69,15 @@ const remindersReducer = (state = initialState, action) => {
         });
       }
 
+      const reminder = state.reminders.find(
+        (reminder) => reminder._id === action.reminder._id
+      );
+      reminder.date = action.reminder.date;
+
       return {
         ...state,
-        reminders: updatedReminders,
+        reminders: state.reminders,
+        todayReminders: updatedReminders,
       };
     }
     case ERROR: {
@@ -90,6 +101,12 @@ const remindersReducer = (state = initialState, action) => {
     case CREATE_REMINDER: {
       return {
         contacts: [],
+        reminders: [...state.reminders, action.reminder],
+      };
+    }
+    case UPDATE_REMINDERS: {
+      return {
+        ...state,
         reminders: [...state.reminders, action.reminder],
       };
     }

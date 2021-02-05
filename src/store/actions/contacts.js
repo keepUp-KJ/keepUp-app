@@ -6,6 +6,7 @@ export const ADD_CONTACT = "ADD_CONTACT";
 export const REMOVE_CONTACT = "REMOVE_CONTACT";
 export const EDIT_CONTACT = "EDIT_CONTACT";
 export const REMOVE_FROM_BLACKLIST = "REMOVE_FROM_BLACKLIST";
+export const UPDATE_REMINDERS = "UPDATE_REMINDERS";
 
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Contacts from "expo-contacts";
@@ -86,11 +87,15 @@ export const acceptContact = (userId, contact, frequency, token) => async (
   })
     .then((res) => res.json())
     .then((json) => {
-      if (json.response) {
+      if (json.reminder) {
         dispatch({
           type: ACCEPT_CONTACT,
           contact,
           frequency,
+        });
+        dispatch({
+          type: UPDATE_REMINDERS,
+          reminder: json.reminder,
         });
       }
     });

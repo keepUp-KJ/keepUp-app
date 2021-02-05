@@ -20,6 +20,11 @@ import {
 import { connect } from "react-redux";
 import TextComp from "../../components/TextComp";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import {
+  syncContacts,
+  getContactDecisions,
+} from "../../store/actions/contacts";
+import { getReminders } from "../../store/actions/reminders";
 
 class LoginScreen extends React.Component {
   state = {
@@ -42,6 +47,31 @@ class LoginScreen extends React.Component {
     this.props.facebookSignIn().then((res) => {
       if (this.props.token) {
         this.props.navigation.navigate("PickContacts");
+      }
+    });
+  };
+
+  loginHandler = () => {
+    this.setState({ loading: true });
+    this.props.login(this.state.email, this.state.password).then(() => {
+      if (!this.props.loading) {
+        this.props.sync().then(() => {
+          this.props
+            .getReminders(this.props.user._id, this.props.user.token)
+            .then(() => {
+              setTimeout(() => {
+                if (this.props.reminders.length !== 0) {
+                  this.props
+                    .getContacts(this.props.user._id, this.props.user.token)
+                    .then(() => {
+                      if (!this.props.contactsLoaded) {
+                        this.props.navigation.navigate("Home");
+                      }
+                    });
+                }
+              }, 1000);
+            });
+        });
       }
     });
   };
@@ -110,10 +140,10 @@ class LoginScreen extends React.Component {
                 btnColor={Colors.primaryColor}
                 fontSize={12}
                 bold
-                loading={this.props.loading}
-                onPress={() => {
-                  this.props.login(this.state.email, this.state.password);
-                }}
+                loading={
+                  this.props.user ? this.state.loading : this.props.loading
+                }
+                onPress={this.loginHandler}
               />
             </KeyboardAwareScrollView>
           </View>
@@ -197,6 +227,7 @@ const mapStateToProps = (state) => ({
   token: state.users.token,
   error: state.users.loginError,
   loading: state.users.loading,
+  contactsLoaded: state.contacts.loading,
 });
 
 const mapDispatchToProps = {
@@ -204,6 +235,9 @@ const mapDispatchToProps = {
   facebookSignIn: loginWithFacebook,
   login,
   hide: hideLoginError,
+  sync: syncContacts,
+  getReminders,
+  getContacts: getContactDecisions,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

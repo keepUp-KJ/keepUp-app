@@ -131,10 +131,10 @@ export const setCompleted = (reminderId, token) => async (dispatch) => {
   )
     .then((res) => res.json())
     .then((json) => {
-      if (json.response) {
+      if (json.reminder) {
         dispatch({
           type: SET_COMPLETED,
-          id: reminderId,
+          reminder: json.reminder,
         });
       }
     });

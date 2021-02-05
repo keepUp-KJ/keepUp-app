@@ -23,7 +23,6 @@ class ContactsScreen extends React.Component {
       "hardwareBackPress",
       this.handleBackButtonClick
     );
-    this.props.get(this.props.user._id, this.props.user.token);
   }
 
   componentWillUnmount() {

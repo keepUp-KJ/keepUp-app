@@ -108,27 +108,23 @@ class ContactsList extends React.Component {
             alignItems: this.props.loading ? "center" : "flex-start",
           }}
         >
-          {this.props.loading ? (
-            <ActivityIndicator color={Colors.primaryColor} />
-          ) : (
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={
-                this.props.searchInput
-                  ? this.props.filteredContacts
-                  : this.props.activeTab === "Accepted"
-                  ? this.props.accepted
-                  : this.props.activeTab === "Pending"
-                  ? this.props.pending
-                  : this.props.activeTab === "Rejected"
-                  ? this.props.rejected
-                  : null
-              }
-              renderItem={this.renderContact}
-              numColumns={3}
-              keyExtractor={(item) => item.info.id}
-            />
-          )}
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={
+              this.props.searchInput
+                ? this.props.filteredContacts
+                : this.props.activeTab === "Accepted"
+                ? this.props.accepted
+                : this.props.activeTab === "Pending"
+                ? this.props.pending
+                : this.props.activeTab === "Rejected"
+                ? this.props.rejected
+                : null
+            }
+            renderItem={this.renderContact}
+            numColumns={3}
+            keyExtractor={(item) => item.info.id}
+          />
         </View>
       </>
     );
@@ -163,7 +159,6 @@ const mapStateToProps = (state) => ({
   accepted: state.contacts.acceptedContacts,
   pending: state.contacts.pendingContacts,
   rejected: state.contacts.rejectedContacts,
-  loading: state.contacts.loading,
 });
 
 const mapDispatchToProps = {

@@ -34,8 +34,8 @@ const Task = (props) => {
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 {props.reminder.contacts
                   .sort((contact) => !contact.info.imageAvailable)
-                  .map((contact) => (
-                    <View style={styles.contactImages}>
+                  .map((contact, index) => (
+                    <View key={index} style={styles.contactImages}>
                       {contact.info.imageAvailable ? (
                         <Image
                           source={{ uri: contact.info.image.uri }}
