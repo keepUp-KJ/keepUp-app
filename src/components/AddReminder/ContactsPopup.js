@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import Input from "../Input";
 import TextComp from "../TextComp";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 
 const ContactsPopup = (props) => {
@@ -17,24 +16,36 @@ const ContactsPopup = (props) => {
   const [contacts, setContacts] = useState([]);
 
   const renderContact = (itemData) => (
-    <View style={styles.container}>
-      <TextComp>
-        {itemData.item.info.name.replace(RegExp(input, "g"), input)}
-      </TextComp>
-      <TouchableOpacity
-        onPress={() => {
-          props.addContact(itemData.item, itemData.index);
+    <TouchableOpacity
+      onPress={() => {
+        props.addContact(itemData.item, itemData.index);
+      }}
+      style={{
+        ...styles.container,
+        backgroundColor: props.pickedContacts.find(
+          (contact) => contact.info.id === itemData.item.info.id
+        )
+          ? Colors.primaryColor
+          : "rgb(248, 249, 253)",
+        borderBottomColor: props.pickedContacts.find(
+          (contact) => contact.info.id === itemData.item.info.id
+        )
+          ? "white"
+          : "#e6e6e6",
+      }}
+    >
+      <TextComp
+        style={{
+          color: props.pickedContacts.find(
+            (contact) => contact.info.id === itemData.item.info.id
+          )
+            ? "white"
+            : "black",
         }}
       >
-        {props.pickedContacts.find(
-          (contact) => contact.info.id === itemData.item.info.id
-        ) ? (
-          <AntDesign name="minus" size={20} color={Colors.primaryColor} />
-        ) : (
-          <Ionicons name="ios-add" size={25} color={Colors.primaryColor} />
-        )}
-      </TouchableOpacity>
-    </View>
+        {itemData.item.info.name.replace(RegExp(input, "g"), input)}
+      </TextComp>
+    </TouchableOpacity>
   );
   return (
     <Overlay
@@ -87,16 +98,16 @@ const ContactsPopup = (props) => {
 const styles = StyleSheet.create({
   overlay: {
     width: Dimensions.get("window").width / 1.3,
-    height: Dimensions.get("window").height / 2.5,
+    height: Dimensions.get("window").height / 2.2,
     borderRadius: 15,
     backgroundColor: "rgb(248, 249, 253)",
   },
   container: {
-    padding: 10,
-    marginVertical: 5,
+    padding: 15,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    borderBottomWidth: 1,
   },
 });
 

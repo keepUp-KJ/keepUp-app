@@ -22,7 +22,7 @@ import {
   cancelReminder,
 } from "../store/actions/reminders";
 import TextComp from "../components/TextComp";
-import ContactsPopup from "../components/Contacts/ContactsPopup";
+import ContactsPopup from "../components/AddReminder/ContactsPopup";
 import ReminderContactsList from "../components/AddReminder/ReminderContactsList";
 import * as Notifications from "expo-notifications";
 import moment from "moment";
@@ -173,7 +173,7 @@ class AddReminderScreen extends React.Component {
         <SafeAreaView style={styles.screen}>
           <ContactsPopup
             visible={this.state.visible}
-            contacts={this.props.contacts}
+            contacts={this.props.pending.concat(this.props.accepted)}
             pickedContacts={this.props.reminderContacts}
             addContact={(contact) => {
               this.props.add(contact);
@@ -345,6 +345,8 @@ const mapStateToProps = (state) => ({
   reminderContacts: state.reminders.contacts,
   contacts: state.contacts.contacts,
   error: state.reminders.error,
+  accepted: state.contacts.acceptedContacts,
+  pending: state.contacts.pendingContacts,
 });
 
 const mapDispatchToProps = {
