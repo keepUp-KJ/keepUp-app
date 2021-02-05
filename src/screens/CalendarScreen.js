@@ -14,7 +14,6 @@ import TabNav from "../components/Tab/TabNav";
 import { connect } from "react-redux";
 import { getReminders } from "../store/actions/reminders";
 
-const today = moment().format("YYYY-MM-DD");
 console.disableYellowBox = true;
 class CalendarScreen extends React.Component {
   state = {
@@ -24,6 +23,8 @@ class CalendarScreen extends React.Component {
   };
 
   getSelectedDayEvents = (date) => {
+    const today = moment().format("YYYY-MM-DD");
+
     let markedDates = {
       ...this.state.reminderDates,
     };
@@ -52,6 +53,8 @@ class CalendarScreen extends React.Component {
   };
 
   componentDidMount() {
+    const today = moment().format("YYYY-MM-DD");
+
     BackHandler.addEventListener(
       "hardwareBackPress",
       this.handleBackButtonClick

@@ -19,7 +19,7 @@ const TabNav = (props) => {
       />
       <Tab
         text="Contacts"
-        iconName="md-contacts"
+        iconName="md-people"
         active={active === "contacts"}
         onPress={() => {
           setActive("contacts");
