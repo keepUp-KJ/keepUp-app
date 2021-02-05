@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import { getReminders } from "../store/actions/reminders";
 
 const today = moment().format("YYYY-MM-DD");
-
+console.disableYellowBox = true;
 class CalendarScreen extends React.Component {
   state = {
     date: moment().format("MMM DD, YYYY"),

@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, View } from "react-native";
+import { SafeAreaView, View, TouchableOpacity } from "react-native";
 
 // Components
 import DateHeader from "../components/Home/DateHeader";
@@ -18,7 +18,6 @@ class HomeScreen extends React.Component {
       >
         <View style={{ flex: 0.92 }}>
           <DateHeader />
-
           <RemindersList
             data={this.props.reminders}
             onComplete={(itemData) => {

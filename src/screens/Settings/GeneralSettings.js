@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   day: {
-    margin: 8,
+    margin: 7,
   },
   container: {
     marginHorizontal: 20,

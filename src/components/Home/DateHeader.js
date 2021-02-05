@@ -4,6 +4,7 @@ import TextComp from "../TextComp";
 import { Calendar } from "react-native-event-week";
 import Colors from "../../constants/Colors";
 import moment from "moment";
+import ReloadBtn from "../ReloadBtn";
 
 const DateHeader = (props) => {
   const today = moment().format("MMM DD, YYYY");
@@ -11,11 +12,15 @@ const DateHeader = (props) => {
   return (
     <>
       <View style={{ ...styles.head, flex: 0.15 }}>
-        <TextComp style={styles.date}>{today}</TextComp>
-        <TextComp bold style={styles.today}>
-          Today
-        </TextComp>
+        <View>
+          <TextComp style={styles.date}>{today}</TextComp>
+          <TextComp bold style={styles.today}>
+            Today
+          </TextComp>
+        </View>
+        <ReloadBtn />
       </View>
+
       <View style={{ flex: 0.12 }}>
         <Calendar
           events={[]}
@@ -35,9 +40,11 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
   },
   head: {
-    justifyContent: "center",
+    justifyContent: "space-between",
     width: "80%",
     alignSelf: "center",
+    flexDirection: "row",
+    alignItems: "center",
   },
   today: {
     fontSize: 35,
