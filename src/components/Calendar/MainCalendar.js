@@ -11,7 +11,6 @@ const MainCalendar = (props) => {
         props.onDayPress(day);
       }}
       style={{ marginBottom: 20 }}
-      hideArrows={true}
       theme={{
         selectedDayBackgroundColor: Colors.primaryColor,
         todayTextColor: Colors.primaryColor,

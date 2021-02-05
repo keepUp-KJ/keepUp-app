@@ -25,6 +25,9 @@ const TaskList = (props) => {
 };
 
 const styles = StyleSheet.create({
+  list: {
+    marginBottom: 30,
+  },
   text: {
     fontSize: 18,
     color: "white",

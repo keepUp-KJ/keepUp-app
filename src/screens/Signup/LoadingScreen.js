@@ -28,10 +28,10 @@ class LoadingScreen extends React.Component {
                           if (this.props.contacts !== null) {
                             this.props.navigation.navigate("Home");
                           }
-                        }, 600);
+                        }, 1000);
                       });
                   }
-                }, 600);
+                }, 1000);
               });
           }
         });

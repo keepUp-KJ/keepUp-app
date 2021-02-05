@@ -2,28 +2,45 @@ import React from "react";
 import { ActivityIndicator } from "react-native";
 import { SafeAreaView, View, StyleSheet, Text } from "react-native";
 import { connect } from "react-redux";
-import { setupAccount } from "../../store/actions/reminders";
+import { setupAccount, getReminders } from "../../store/actions/reminders";
+import { getContactDecisions } from "../../store/actions/contacts";
 import Colors from "../../constants/Colors";
 
 class SetupScreen extends React.Component {
   componentDidMount() {
-    this.props.setup(
-      this.props.contacts.filter(
-        (contact) => contact.isAccepted || contact.isRejected
-      ),
-      this.props.user._id
-    );
+    this.props
+      .setup(
+        this.props.contacts.filter(
+          (contact) => contact.isAccepted || contact.isRejected
+        ),
+        this.props.user._id
+      )
+      .then(() => {
+        this.props
+          .getReminders(this.props.user._id, this.props.user.token)
+          .then(() => {
+            setTimeout(() => {
+              if (this.props.reminders !== null) {
+                this.props
+                  .getContacts(this.props.user._id, this.props.user.token)
+                  .then(() => {
+                    setTimeout(() => {
+                      if (this.props.accepted !== null) {
+                        this.props.navigation.navigate("Home");
+                      }
+                    }, 1000);
+                  });
+              }
+            });
+          });
+      });
   }
 
   render() {
     return (
       <SafeAreaView style={styles.screen}>
-        {this.props.loading ? (
-          <View>
-            <ActivityIndicator size="large" color={Colors.primaryColor} />
-            <Text style={styles.text}>Setting Up {"\n"} Your Account</Text>
-          </View>
-        ) : null}
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
+        <Text style={styles.text}>Setting Up {"\n"} Your Account</Text>
       </SafeAreaView>
     );
   }
@@ -47,11 +64,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   user: state.users.user,
   contacts: state.contacts.contacts,
-  loading: state.reminders.loading,
+  accepted: state.contacts.acceptedContacts,
+  reminders: state.reminders.reminders,
 });
 
 const mapDispatchToProps = {
   setup: setupAccount,
+  getReminders,
+  getContacts: getContactDecisions,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SetupScreen);

@@ -55,7 +55,7 @@ class LoginScreen extends React.Component {
     this.setState({ loading: true });
     this.props.login(this.state.email, this.state.password).then(() => {
       setTimeout(() => {
-        if (this.props.user) {
+        if (this.props.user !== null) {
           this.props.sync().then((contacts) => {
             if (contacts) {
               this.props
@@ -78,7 +78,7 @@ class LoginScreen extends React.Component {
             }
           });
         } else {
-          this.setState({ loading: this.props.loading });
+          this.setState({ loading: false });
         }
       }, 1000);
     });
