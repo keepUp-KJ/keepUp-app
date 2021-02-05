@@ -19,7 +19,7 @@ const Tab = (props) => {
             size={25}
             color={props.active ? Colors.primaryColor : Colors.secondary}
           />
-          {Dimensions.get("window").height > 670 && Platform.OS === "ios" && (
+          {/* {Dimensions.get("window").height > 670 && Platform.OS === "ios" && (
             <TextComp
               style={{
                 ...styles.text,
@@ -28,7 +28,7 @@ const Tab = (props) => {
             >
               {props.text}
             </TextComp>
-          )}
+          )} */}
         </View>
       ) : (
         <View style={styles.circle}>

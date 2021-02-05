@@ -1,12 +1,10 @@
 import React from "react";
-import { SafeAreaView, ActivityIndicator, View } from "react-native";
-import * as Notifications from "expo-notifications";
+import { SafeAreaView, View } from "react-native";
 
 // Components
-import DateHeader from "../components/DateHeader";
-import RemindersList from "../components/RemindersList";
+import DateHeader from "../components/Home/DateHeader";
+import RemindersList from "../components/Home/RemindersList";
 import TabNav from "../components/Tab/TabNav";
-import Colors from "../constants/Colors";
 
 //Redux
 import { connect } from "react-redux";

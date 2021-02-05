@@ -1,14 +1,14 @@
 import React from "react";
 import { SafeAreaView, View, BackHandler } from "react-native";
 
+// Components
+import Menu from "../components/Contacts/Menu";
+import ContactsList from "../components/Contacts/ContactsList";
+import TabNav from "../components/Tab/TabNav";
+
 //Redux
 import { connect } from "react-redux";
 import { getContactDecisions } from "../store/actions/contacts";
-
-// Components
-import Menu from "../components/Contacts/Menu";
-import ContactsList from "../components/ContactsList";
-import TabNav from "../components/Tab/TabNav";
 
 class ContactsScreen extends React.Component {
   state = {

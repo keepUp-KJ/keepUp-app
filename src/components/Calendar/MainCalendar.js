@@ -1,6 +1,6 @@
 import React from "react";
 import { Calendar } from "react-native-calendars";
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 
 const MainCalendar = (props) => {
   return (
@@ -10,6 +10,7 @@ const MainCalendar = (props) => {
       onDayPress={(day) => {
         props.onDayPress(day);
       }}
+      style={{ marginBottom: 20 }}
       hideArrows={true}
       theme={{
         selectedDayBackgroundColor: Colors.primaryColor,

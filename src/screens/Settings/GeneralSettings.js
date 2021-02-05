@@ -14,7 +14,7 @@ import TextComp from "../../components/TextComp";
 import { Fragment } from "react";
 import { getSettings, updateSettings } from "../../store/actions/settings";
 import TimePicker from "react-native-super-timepicker";
-import WeekdayPicker from "../../components/WeekdayPicker";
+import WeekdayPicker from "../../components/Settings/WeekdayPicker";
 class GeneralSettings extends React.Component {
   state = {
     time: "17:00",

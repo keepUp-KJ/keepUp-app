@@ -14,22 +14,26 @@ class LoadingScreen extends React.Component {
   componentDidMount = () => {
     this.props.localSignin().then(() => {
       if (this.props.user) {
-        this.props.sync().then(() => {
-          this.props
-            .getReminders(this.props.user._id, this.props.user.token)
-            .then(() => {
-              setTimeout(() => {
-                if (this.props.reminders.length !== 0) {
-                  this.props
-                    .getContacts(this.props.user._id, this.props.user.token)
-                    .then(() => {
-                      if (this.props.loading) {
-                        this.props.navigation.navigate("Home");
-                      }
-                    });
-                }
-              }, 1000);
-            });
+        this.props.sync().then((contacts) => {
+          if (contacts) {
+            this.props
+              .getReminders(this.props.user._id, this.props.user.token)
+              .then(() => {
+                setTimeout(() => {
+                  if (this.props.reminders !== null) {
+                    this.props
+                      .getContacts(this.props.user._id, this.props.user.token)
+                      .then(() => {
+                        setTimeout(() => {
+                          if (this.props.contacts !== null) {
+                            this.props.navigation.navigate("Home");
+                          }
+                        }, 1000);
+                      });
+                  }
+                }, 1000);
+              });
+          }
         });
       } else {
         this.props.navigation.navigate("Login");
@@ -65,8 +69,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   user: state.users.user,
-  loading: state.contacts.loading,
   reminders: state.reminders.reminders,
+  contacts: state.contacts.contacts,
 });
 
 const mapDispatchToProps = {

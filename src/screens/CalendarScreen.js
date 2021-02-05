@@ -1,21 +1,18 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  ActivityIndicator,
-  BackHandler,
-} from "react-native";
-import Colors from "../constants/Colors";
-import Header from "../components/Header";
+import { View, SafeAreaView, BackHandler, ScrollView } from "react-native";
+
 import moment from "moment";
-import MainCalendar from "../components/MainCalendar";
+import Colors from "../constants/Colors";
+
+// Components
+import CalendarHeader from "../components/Calendar/CalendarHeader";
+import MainCalendar from "../components/Calendar/MainCalendar";
+import TaskList from "../components/Calendar/TaskList";
 import TabNav from "../components/Tab/TabNav";
+
+//Redux
 import { connect } from "react-redux";
-import Task from "../components/Task";
-import TextComp from "../components/TextComp";
 import { getReminders } from "../store/actions/reminders";
-import { ScrollView } from "react-native-gesture-handler";
 
 const today = moment().format("YYYY-MM-DD");
 
@@ -35,6 +32,13 @@ class CalendarScreen extends React.Component {
       selected: false,
     };
 
+    const reminderDate = this.props.navigation.getParam("date");
+    if (reminderDate) {
+      markedDates[reminderDate] = {
+        selected: false,
+      };
+    }
+
     markedDates[date] = {
       selected: true,
       color: Colors.primaryColor,
@@ -53,12 +57,15 @@ class CalendarScreen extends React.Component {
       this.handleBackButtonClick
     );
 
-    // this.props.get(this.props.user._id, this.props.user.token).then(() => {
     let markedDates = {};
 
-    markedDates[today] = { selected: true };
-
-    console.log(this.props.reminders);
+    const date = this.props.navigation.getParam("date");
+    if (date) {
+      this.setState({ date: moment(date).format("MMM DD, YYYY") });
+      markedDates[date] = { selected: true };
+    } else {
+      markedDates[today] = { selected: true };
+    }
 
     this.props.reminders.forEach((reminder) => {
       let date = moment(reminder.date).format("YYYY-MM-DD");
@@ -70,7 +77,6 @@ class CalendarScreen extends React.Component {
     });
 
     this.setState({ reminderDates: markedDates, markedDates });
-    // });
   }
 
   componentWillUnmount() {
@@ -85,48 +91,34 @@ class CalendarScreen extends React.Component {
     return true;
   };
 
+  handleDayChange = (day) => {
+    this.getSelectedDayEvents(day.dateString);
+    this.setState({
+      date: moment(day.dateString).format("MMM DD, YYYY"),
+    });
+  };
+
+  addReminderHandler = () => {
+    this.props.navigation.navigate("AddReminder", {
+      date: moment(this.state.date).format("YYYY-MM-DD"),
+    });
+  };
+
   render() {
     return (
-      <SafeAreaView style={styles.screen}>
-        {/* Header */}
-        <View style={styles.header}>
-          <Header
-            leftComponent={
-              <TextComp bold style={styles.title}>
-                Calendar
-              </TextComp>
-            }
-          />
-        </View>
-
-        <View style={styles.body}>
+      <SafeAreaView style={{ flex: 1, marginTop: 30 }}>
+        <CalendarHeader />
+        <View style={{ flex: 0.85 }}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.calendar}>
-              {/* CALENDAR */}
-              <MainCalendar
-                dates={this.state.markedDates}
-                onDayPress={(day) => {
-                  const date = new Date(day.dateString);
-                  date.getMonth();
-                  this.getSelectedDayEvents(day.dateString);
-                  this.setState({
-                    date: moment(date).format("MMM DD, YYYY"),
-                  });
-                }}
-              />
-            </View>
-            <View style={styles.list}>
-              <TextComp style={styles.date}>
-                {this.state.date.toString()}
-              </TextComp>
-              {this.props.reminders
-                .filter(
-                  (reminder) => reminder.date === this.state.date.toString()
-                )
-                .map((item, key) => (
-                  <Task key={key} reminder={item} />
-                ))}
-            </View>
+            <MainCalendar
+              dates={this.state.markedDates}
+              onDayPress={this.handleDayChange}
+            />
+            <TaskList
+              list={this.props.reminders}
+              date={this.state.date}
+              addReminder={this.addReminderHandler}
+            />
           </ScrollView>
         </View>
         <TabNav active="calendar" />
@@ -134,31 +126,6 @@ class CalendarScreen extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    marginTop: 30,
-  },
-  header: {
-    flex: 0.07,
-    justifyContent: "center",
-  },
-  body: {
-    flex: 0.85,
-  },
-  calendar: {
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 30,
-  },
-  date: {
-    fontSize: 20,
-    marginHorizontal: 30,
-    marginBottom: 10,
-  },
-});
 
 const mapStateToProps = (state) => ({
   user: state.users.user,

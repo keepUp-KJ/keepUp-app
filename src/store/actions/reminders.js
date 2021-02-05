@@ -142,7 +142,6 @@ export const setCompleted = (reminderId, token) => async (dispatch) => {
 
 export const cancelReminder = () => async (dispatch) => {
   dispatch({ type: CANCEL });
-  navigate("Home");
 };
 
 const scheduleNotifications = () => {

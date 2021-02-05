@@ -27,6 +27,7 @@ export const syncContacts = () => async (dispatch) => {
       type: SYNC_CONTACTS,
       payload: data,
     });
+    return data;
   }
 };
 

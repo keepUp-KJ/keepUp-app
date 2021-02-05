@@ -1,7 +1,6 @@
 import React from "react";
 import {
   View,
-  ActivityIndicator,
   FlatList,
   StyleSheet,
   Dimensions,
@@ -13,11 +12,11 @@ import {
   acceptContact,
   rejectContact,
   removeFromBlackList,
-} from "../store/actions/contacts";
+} from "../../store/actions/contacts";
 import { connect } from "react-redux";
-import Colors from "../constants/Colors";
-import ContactCard from "./Contacts/ContactCard";
-import TextComp from "./TextComp";
+import Colors from "../../constants/Colors";
+import ContactCard from "./ContactCard";
+import TextComp from "../TextComp";
 
 class ContactsList extends React.Component {
   state = {

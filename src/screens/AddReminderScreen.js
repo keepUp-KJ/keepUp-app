@@ -23,10 +23,10 @@ import {
 } from "../store/actions/reminders";
 import TextComp from "../components/TextComp";
 import ContactsPopup from "../components/Contacts/ContactsPopup";
-import ReminderContactsList from "../components/ReminderContactsList";
+import ReminderContactsList from "../components/AddReminder/ReminderContactsList";
 import * as Notifications from "expo-notifications";
 import moment from "moment";
-import MainCalendar from "../components/MainCalendar";
+import MainCalendar from "../components/Calendar/MainCalendar";
 
 const months = [
   "Jan",
@@ -55,9 +55,15 @@ class AddReminderScreen extends React.Component {
     input: "",
     calendarVisible: false,
     markedDates: {},
+    calendar: false,
   };
 
   componentDidMount() {
+    const date = this.props.navigation.getParam("date");
+    if (date) {
+      this.setState({ date: new Date(date), calendar: true });
+    }
+
     BackHandler.addEventListener(
       "hardwareBackPress",
       this.handleBackButtonClick
@@ -77,7 +83,11 @@ class AddReminderScreen extends React.Component {
   }
 
   handleBackButtonClick = () => {
-    this.props.navigation.navigate("Home");
+    const date = this.props.navigation.getParam("date");
+
+    this.state.calendar
+      ? this.props.navigation.navigate("Calendar", { date })
+      : this.props.navigation.navigate("Home");
     return true;
   };
 
@@ -177,7 +187,7 @@ class AddReminderScreen extends React.Component {
               leftComponent={
                 <TouchableOpacity
                   onPress={() => {
-                    this.props.cancel();
+                    this.props.cancel().then(this.handleBackButtonClick);
                   }}
                 >
                   <Ionicons name="ios-arrow-back" size={24} color="grey" />

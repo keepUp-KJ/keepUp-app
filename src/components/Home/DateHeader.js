@@ -1,8 +1,8 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import TextComp from "./TextComp";
+import TextComp from "../TextComp";
 import { Calendar } from "react-native-event-week";
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 import moment from "moment";
 
 const DateHeader = (props) => {

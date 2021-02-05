@@ -1,7 +1,7 @@
 import React from "react";
 import { FlatList, StyleSheet, TouchableOpacity, Image } from "react-native";
-import Colors from "../constants/Colors";
-import TextComp from "./TextComp";
+import Colors from "../../constants/Colors";
+import TextComp from "../TextComp";
 import { Ionicons } from "@expo/vector-icons";
 
 const ReminderContactsList = (props) => {

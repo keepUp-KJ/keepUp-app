@@ -21,6 +21,8 @@ const initialState = {
 };
 
 const remindersReducer = (state = initialState, action) => {
+  const today = moment().format("MMM DD, YYYY");
+
   switch (action.type) {
     case LOADING: {
       return {
@@ -29,8 +31,6 @@ const remindersReducer = (state = initialState, action) => {
       };
     }
     case SET_REMINDERS: {
-      const today = moment().format("MMM DD, YYYY");
-
       return {
         ...state,
         todayReminders: action.reminders.filter(
@@ -99,7 +99,16 @@ const remindersReducer = (state = initialState, action) => {
       }
     }
     case CREATE_REMINDER: {
+      if (action.reminder.date === today) {
+        return {
+          contacts: [],
+          reminders: [...state.reminders, action.reminder],
+          todayReminders: [...state.todayReminders, action.reminder],
+        };
+      }
+
       return {
+        ...state,
         contacts: [],
         reminders: [...state.reminders, action.reminder],
       };
@@ -107,6 +116,10 @@ const remindersReducer = (state = initialState, action) => {
     case UPDATE_REMINDERS: {
       return {
         ...state,
+        todayReminders:
+          action.reminder.date === today
+            ? [...state.todayReminders, action.reminder]
+            : state.todayReminders,
         reminders: [...state.reminders, action.reminder],
       };
     }

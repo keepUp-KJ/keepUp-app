@@ -1,7 +1,7 @@
 import React from "react";
 import { View, FlatList, StyleSheet } from "react-native";
-import Task from "./Task";
-import TextComp from "./TextComp";
+import Task from "../Task";
+import TextComp from "../TextComp";
 import moment from "moment";
 
 renderEmpty = () => <TextComp style={styles.text}>No reminders</TextComp>;

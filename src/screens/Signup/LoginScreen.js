@@ -54,25 +54,33 @@ class LoginScreen extends React.Component {
   loginHandler = () => {
     this.setState({ loading: true });
     this.props.login(this.state.email, this.state.password).then(() => {
-      if (!this.props.loading) {
-        this.props.sync().then(() => {
-          this.props
-            .getReminders(this.props.user._id, this.props.user.token)
-            .then(() => {
-              setTimeout(() => {
-                if (this.props.reminders.length !== 0) {
-                  this.props
-                    .getContacts(this.props.user._id, this.props.user.token)
-                    .then(() => {
-                      if (!this.props.contactsLoaded) {
-                        this.props.navigation.navigate("Home");
-                      }
-                    });
-                }
-              }, 1000);
-            });
-        });
-      }
+      setTimeout(() => {
+        if (this.props.user) {
+          this.props.sync().then((contacts) => {
+            if (contacts) {
+              this.props
+                .getReminders(this.props.user._id, this.props.user.token)
+                .then(() => {
+                  setTimeout(() => {
+                    if (this.props.reminders !== null) {
+                      this.props
+                        .getContacts(this.props.user._id, this.props.user.token)
+                        .then(() => {
+                          setTimeout(() => {
+                            if (this.props.contacts !== null) {
+                              this.props.navigation.navigate("Home");
+                            }
+                          }, 1000);
+                        });
+                    }
+                  }, 1000);
+                });
+            }
+          });
+        } else {
+          this.setState({ loading: this.props.loading });
+        }
+      }, 1000);
     });
   };
 
@@ -140,9 +148,7 @@ class LoginScreen extends React.Component {
                 btnColor={Colors.primaryColor}
                 fontSize={12}
                 bold
-                loading={
-                  this.props.user ? this.state.loading : this.props.loading
-                }
+                loading={this.state.loading}
                 onPress={this.loginHandler}
               />
             </KeyboardAwareScrollView>
@@ -224,10 +230,12 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
+  user: state.users.user,
   token: state.users.token,
   error: state.users.loginError,
   loading: state.users.loading,
-  contactsLoaded: state.contacts.loading,
+  reminders: state.reminders.reminders,
+  contacts: state.contacts.acceptedContacts,
 });
 
 const mapDispatchToProps = {
