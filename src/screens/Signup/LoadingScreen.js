@@ -19,19 +19,15 @@ class LoadingScreen extends React.Component {
             this.props
               .getReminders(this.props.user._id, this.props.user.token)
               .then(() => {
-                setTimeout(() => {
-                  if (this.props.reminders !== null) {
-                    this.props
-                      .getContacts(this.props.user._id, this.props.user.token)
-                      .then(() => {
-                        setTimeout(() => {
-                          if (this.props.contacts !== null) {
-                            this.props.navigation.navigate("Home");
-                          }
-                        }, 1000);
-                      });
-                  }
-                }, 1000);
+                if (this.props.reminders) {
+                  this.props
+                    .getContacts(this.props.user._id, this.props.user.token)
+                    .then(() => {
+                      if (this.props.contacts) {
+                        this.props.navigation.navigate("Home");
+                      }
+                    });
+                }
               });
           }
         });
@@ -61,7 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primaryColor,
   },
   title: {
-    fontSize: 70,
+    fontSize: 45,
     color: "white",
     marginBottom: 30,
   },

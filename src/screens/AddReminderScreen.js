@@ -275,6 +275,7 @@ class AddReminderScreen extends React.Component {
           </View>
           <View style={styles.footer}>
             <Btn
+              loading={this.props.loading}
               title="Create reminder"
               btnColor={Colors.primaryColor}
               style={{ width: "80%", alignSelf: "center" }}
@@ -288,7 +289,12 @@ class AddReminderScreen extends React.Component {
                     this.state.notify,
                     this.props.user.token
                   )
-                  .then(Platform.OS === "ios" && this.scheduleNotif);
+                  .then(() => {
+                    if (!this.props.error) {
+                      // this.scheduleNotif();
+                      this.handleBackButtonClick();
+                    }
+                  });
               }}
             />
           </View>
@@ -347,6 +353,7 @@ const mapStateToProps = (state) => ({
   error: state.reminders.error,
   accepted: state.contacts.acceptedContacts,
   pending: state.contacts.pendingContacts,
+  loading: state.reminders.loading,
 });
 
 const mapDispatchToProps = {

@@ -54,33 +54,27 @@ class LoginScreen extends React.Component {
   loginHandler = () => {
     this.setState({ loading: true });
     this.props.login(this.state.email, this.state.password).then(() => {
-      setTimeout(() => {
-        if (this.props.user !== null) {
-          this.props.sync().then((contacts) => {
-            if (contacts) {
-              this.props
-                .getReminders(this.props.user._id, this.props.user.token)
-                .then(() => {
-                  setTimeout(() => {
-                    if (this.props.reminders !== null) {
-                      this.props
-                        .getContacts(this.props.user._id, this.props.user.token)
-                        .then(() => {
-                          setTimeout(() => {
-                            if (this.props.contacts !== null) {
-                              this.props.navigation.navigate("Home");
-                            }
-                          }, 1000);
-                        });
-                    }
-                  }, 1000);
-                });
-            }
-          });
-        } else {
-          this.setState({ loading: false });
-        }
-      }, 1000);
+      if (this.props.user) {
+        this.props.sync().then((contacts) => {
+          if (contacts) {
+            this.props
+              .getReminders(this.props.user._id, this.props.user.token)
+              .then(() => {
+                if (this.props.reminders) {
+                  this.props
+                    .getContacts(this.props.user._id, this.props.user.token)
+                    .then(() => {
+                      if (this.props.contacts) {
+                        this.props.navigation.navigate("Home");
+                      }
+                    });
+                }
+              });
+          }
+        });
+      } else {
+        this.setState({ loading: false });
+      }
     });
   };
 

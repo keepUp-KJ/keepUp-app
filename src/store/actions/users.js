@@ -20,7 +20,7 @@ export const login = (email, password) => async (dispatch) => {
   dispatch({
     type: LOADING,
   });
-  fetch("https://rocky-mesa-61495.herokuapp.com/users/login", {
+  return fetch("https://rocky-mesa-61495.herokuapp.com/users/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

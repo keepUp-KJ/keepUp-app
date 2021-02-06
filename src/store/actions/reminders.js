@@ -21,8 +21,8 @@ export const getReminders = (userId, token) => async (dispatch) => {
   //     reminders: JSON.parse(reminders),
   //   });
   // } else {
-  dispatch({ type: LOADING });
-  fetch(`https://rocky-mesa-61495.herokuapp.com/reminders/${userId}`, {
+  // dispatch({ type: LOADING });
+  return fetch(`https://rocky-mesa-61495.herokuapp.com/reminders/${userId}`, {
     method: "GET",
     headers: {
       Authorization: "Bearer " + token,
@@ -34,10 +34,11 @@ export const getReminders = (userId, token) => async (dispatch) => {
         type: SET_REMINDERS,
         reminders: json.reminders,
       });
-      await AsyncStorage.setItem(
-        `@KeepUp:${userId}/reminders`,
-        JSON.stringify(json.reminders)
-      );
+
+      // await AsyncStorage.setItem(
+      //   `@KeepUp:${userId}/reminders`,
+      //   JSON.stringify(json.reminders)
+      // );
     });
   // }
 };
@@ -50,7 +51,8 @@ export const addReminder = (
   notify,
   token
 ) => async (dispatch) => {
-  fetch("https://rocky-mesa-61495.herokuapp.com/reminders", {
+  dispatch({ type: LOADING });
+  return fetch("https://rocky-mesa-61495.herokuapp.com/reminders", {
     method: "POST",
     headers: {
       Authorization: "Bearer " + token,
@@ -83,13 +85,12 @@ export const addReminder = (
           type: CREATE_REMINDER,
           reminder: json.reminder,
         });
-        navigate("Home");
       }
     });
 };
 
 export const setupAccount = (contacts, userId) => async (dispatch) => {
-  fetch("https://rocky-mesa-61495.herokuapp.com/contacts", {
+  return fetch("https://rocky-mesa-61495.herokuapp.com/contacts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -119,7 +120,7 @@ export const addContactsToReminder = (contact) => async (dispatch) => {
 };
 
 export const setCompleted = (reminderId, token) => async (dispatch) => {
-  fetch(
+  return fetch(
     `https://rocky-mesa-61495.herokuapp.com/reminders/${reminderId}/completed`,
     {
       method: "PATCH",
@@ -178,8 +179,8 @@ const scheduleNotifications = () => {
   Notifications.scheduleNotificationAsync({
     identifier: "forgotten",
     content: {
-      title: "YOU FORGOT YALAAA",
-      body: "el so7ab f agaza",
+      title: "Incomplete Task",
+      body: "You forgot to call your friends! Tap to view",
     },
     trigger: {
       hour: 0,

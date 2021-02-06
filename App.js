@@ -12,7 +12,6 @@ import settingsReducer from "./src/store/reducers/settings";
 import { setNavigator } from "./src/navigation/navigationRef";
 import { StatusBar } from "react-native";
 import * as Fonts from "expo-font";
-import { Fragment } from "react";
 
 const rootReducer = combineReducers({
   contacts: contactsReducer,

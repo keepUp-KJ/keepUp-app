@@ -14,7 +14,7 @@ import moment from "moment";
 
 const initialState = {
   reminders: [],
-  loading: true,
+  loading: null,
   todayReminders: [],
   contacts: [],
   error: "",
@@ -84,6 +84,7 @@ const remindersReducer = (state = initialState, action) => {
       return {
         ...state,
         error: action.error,
+        loading: false,
       };
     }
     case ADD_CONTACT_TO_REMINDER: {
@@ -99,18 +100,17 @@ const remindersReducer = (state = initialState, action) => {
       }
     }
     case CREATE_REMINDER: {
+      let todayReminders = state.todayReminders;
+
       if (action.reminder.date === today) {
-        return {
-          contacts: [],
-          reminders: [...state.reminders, action.reminder],
-          todayReminders: [...state.todayReminders, action.reminder],
-        };
+        todayReminders = [...state.todayReminders, action.reminder];
       }
 
       return {
-        ...state,
         contacts: [],
+        todayReminders,
         reminders: [...state.reminders, action.reminder],
+        loading: false,
       };
     }
     case UPDATE_REMINDERS: {
@@ -127,6 +127,8 @@ const remindersReducer = (state = initialState, action) => {
       return {
         ...state,
         contacts: [],
+        error: "",
+        loading: false,
       };
     }
     default:

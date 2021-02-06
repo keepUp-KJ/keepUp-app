@@ -39,7 +39,7 @@ export const getContactDecisions = (id, token) => async (dispatch) => {
   //     payload: JSON.parse(contacts),
   //   });
   // } else {
-  fetch(`https://rocky-mesa-61495.herokuapp.com/users/${id}/contacts`, {
+  return fetch(`https://rocky-mesa-61495.herokuapp.com/users/${id}/contacts`, {
     method: "GET",
     headers: {
       Authorization: "Bearer " + token,
@@ -74,7 +74,7 @@ export const removeContact = (contact, frequency) => async (dispatch) => {
 export const acceptContact = (userId, contact, frequency, token) => async (
   dispatch
 ) => {
-  fetch(`https://rocky-mesa-61495.herokuapp.com/contacts/accept`, {
+  return fetch(`https://rocky-mesa-61495.herokuapp.com/contacts/accept`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -103,7 +103,7 @@ export const acceptContact = (userId, contact, frequency, token) => async (
 };
 
 export const rejectContact = (userId, contact, token) => async (dispatch) => {
-  fetch(`https://rocky-mesa-61495.herokuapp.com/contacts/reject`, {
+  return fetch(`https://rocky-mesa-61495.herokuapp.com/contacts/reject`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -130,7 +130,7 @@ export const rejectContact = (userId, contact, token) => async (dispatch) => {
 export const editContact = (contactId, frequency, token) => async (
   dispatch
 ) => {
-  fetch("https://rocky-mesa-61495.herokuapp.com/users/contacts", {
+  return fetch("https://rocky-mesa-61495.herokuapp.com/users/contacts", {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -154,7 +154,7 @@ export const editContact = (contactId, frequency, token) => async (
 };
 
 export const removeFromBlackList = (contact, token) => async (dispatch) => {
-  fetch(
+  return fetch(
     `https://rocky-mesa-61495.herokuapp.com/contacts/${contact._id}/remove`,
     {
       method: "DELETE",

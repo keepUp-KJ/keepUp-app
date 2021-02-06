@@ -18,7 +18,7 @@ const DateHeader = (props) => {
             Today
           </TextComp>
         </View>
-        <ReloadBtn />
+        {/* <ReloadBtn /> */}
       </View>
 
       <View style={{ flex: 0.12 }}>

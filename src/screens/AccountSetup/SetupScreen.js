@@ -19,19 +19,15 @@ class SetupScreen extends React.Component {
         this.props
           .getReminders(this.props.user._id, this.props.user.token)
           .then(() => {
-            setTimeout(() => {
-              if (this.props.reminders !== null) {
-                this.props
-                  .getContacts(this.props.user._id, this.props.user.token)
-                  .then(() => {
-                    setTimeout(() => {
-                      if (this.props.accepted !== null) {
-                        this.props.navigation.navigate("Home");
-                      }
-                    }, 1000);
-                  });
-              }
-            });
+            if (this.props.reminders) {
+              this.props
+                .getContacts(this.props.user._id, this.props.user.token)
+                .then(() => {
+                  if (this.props.accepted) {
+                    this.props.navigation.navigate("Home");
+                  }
+                });
+            }
           });
       });
   }
