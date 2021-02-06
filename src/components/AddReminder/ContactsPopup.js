@@ -18,7 +18,11 @@ const ContactsPopup = (props) => {
   const renderContact = (itemData) => (
     <TouchableOpacity
       onPress={() => {
-        props.addContact(itemData.item, itemData.index);
+        !props.pickedContacts.find(
+          (contact) => contact.info.id === itemData.item.info.id
+        )
+          ? props.addContact(itemData.item)
+          : props.removeContact(itemData.item);
       }}
       style={{
         ...styles.container,

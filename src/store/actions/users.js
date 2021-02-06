@@ -10,6 +10,7 @@ export const SIGNOUT = "SIGNOUT";
 export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
 export const LOADING = "LOADING";
 export const VERIFY_EMAIL_ERROR = "VERIFY_EMAIL_ERROR";
+export const UPDATE_SETTINGS = "UPDATE_SETTINGS";
 
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
@@ -188,6 +189,35 @@ export const renewPassword = (email, password, confPassword) => async (
     .then((res) => res.json())
     .then((json) => {
       if (json.response) navigate("Login");
+    });
+};
+
+export const updateSettings = (user, settings) => async (dispatch) => {
+  return fetch(
+    `https://rocky-mesa-61495.herokuapp.com/users/${user._id}/settings`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({
+        settings,
+      }),
+      headers: {
+        Authorization: "Bearer " + user.token,
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((res) => res.json())
+    .then(async (json) => {
+      if (json.response) {
+        dispatch({
+          type: UPDATE_SETTINGS,
+          settings,
+        });
+        let updatedUser = user;
+        updatedUser.settings = settings;
+
+        await AsyncStorage.setItem("user", JSON.stringify(updatedUser));
+      }
     });
 };
 

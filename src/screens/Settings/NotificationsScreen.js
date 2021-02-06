@@ -12,32 +12,18 @@ import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import SettingsItem from "../../components/Settings/SettingsItem";
 import TextComp from "../../components/TextComp";
-import { getSettings, updateSettings } from "../../store/actions/settings";
+import { updateSettings } from "../../store/actions/users";
 
 class NotificationsScreen extends React.Component {
   state = {
     settings: {
-      notifications: {},
+      ...this.props.user.settings,
+      notifications: this.props.user.settings.notifications,
     },
   };
 
-  componentDidMount() {
-    this.props.get(this.props.user._id, this.props.user.token).then(() => {
-      this.setState({
-        settings: {
-          ...this.props.settings,
-          notifications: this.props.settings.notifications,
-        },
-      });
-    });
-  }
-
   componentWillUnmount() {
-    this.props.update(
-      this.props.user._id,
-      this.state.settings,
-      this.props.user.token
-    );
+    this.props.update(this.props.user, this.state.settings);
   }
 
   render() {
@@ -177,11 +163,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   user: state.users.user,
-  settings: state.settings.settings,
 });
 
 const mapDispatchToProps = {
-  get: getSettings,
   update: updateSettings,
 };
 

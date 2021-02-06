@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   LOGIN_WITH_GOOGLE,
   ERROR,
@@ -10,6 +11,7 @@ import {
   RESET,
   LOADING,
   VERIFY_EMAIL_ERROR,
+  UPDATE_SETTINGS,
 } from "../actions/users";
 
 const initialState = {
@@ -96,7 +98,14 @@ const usersReducer = (state = initialState, action) => {
         ...state,
         loading: true,
       };
-
+    case UPDATE_SETTINGS: {
+      return {
+        user: {
+          ...state.user,
+          settings: action.settings,
+        },
+      };
+    }
     default:
       return state;
   }

@@ -8,7 +8,6 @@ import * as Permissions from "expo-permissions";
 import usersReducer from "./src/store/reducers/users";
 import remindersReducer from "./src/store/reducers/reminders";
 import contactsReducer from "./src/store/reducers/contacts";
-import settingsReducer from "./src/store/reducers/settings";
 import { setNavigator } from "./src/navigation/navigationRef";
 import { StatusBar } from "react-native";
 import * as Fonts from "expo-font";
@@ -17,7 +16,6 @@ const rootReducer = combineReducers({
   contacts: contactsReducer,
   reminders: remindersReducer,
   users: usersReducer,
-  settings: settingsReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

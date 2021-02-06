@@ -12,34 +12,19 @@ import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import TextComp from "../../components/TextComp";
 import { Fragment } from "react";
-import { getSettings, updateSettings } from "../../store/actions/settings";
+import { updateSettings } from "../../store/actions/users";
 import TimePicker from "react-native-super-timepicker";
 import WeekdayPicker from "../../components/Settings/WeekdayPicker";
 class GeneralSettings extends React.Component {
   state = {
     settings: {
-      general: {},
+      ...this.props.user.settings,
+      general: this.props.user.settings.general,
     },
-    monthlyReminder: "15",
   };
 
-  componentDidMount() {
-    this.props.get(this.props.user._id, this.props.user.token).then(() => {
-      this.setState({
-        settings: {
-          ...this.props.settings,
-          general: this.props.settings.general,
-        },
-      });
-    });
-  }
-
   componentWillUnmount() {
-    this.props.update(
-      this.props.user._id,
-      this.state.settings,
-      this.props.user.token
-    );
+    this.props.update(this.props.user, this.state.settings);
   }
 
   onCancel = () => {
@@ -189,11 +174,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   user: state.users.user,
-  settings: state.settings.settings,
 });
 
 const mapDispatchToProps = {
-  get: getSettings,
   update: updateSettings,
 };
 

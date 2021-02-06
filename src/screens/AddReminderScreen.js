@@ -20,6 +20,7 @@ import {
   addContactsToReminder,
   addReminder,
   cancelReminder,
+  removeContactFromReminder,
 } from "../store/actions/reminders";
 import TextComp from "../components/TextComp";
 import ContactsPopup from "../components/AddReminder/ContactsPopup";
@@ -177,6 +178,9 @@ class AddReminderScreen extends React.Component {
             pickedContacts={this.props.reminderContacts}
             addContact={(contact) => {
               this.props.add(contact);
+            }}
+            removeContact={(contact) => {
+              this.props.remove(contact);
             }}
             close={() => {
               this.setState({ visible: false });
@@ -358,6 +362,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   add: addContactsToReminder,
+  remove: removeContactFromReminder,
   create: addReminder,
   cancel: cancelReminder,
 };

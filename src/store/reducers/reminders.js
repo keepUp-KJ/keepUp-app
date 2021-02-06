@@ -7,6 +7,7 @@ import {
   CREATE_REMINDER,
   LOADING,
   CANCEL,
+  REMOVE_CONTACT_FROM_REMINDER,
 } from "../actions/reminders";
 import { UPDATE_REMINDERS } from "../actions/contacts";
 import * as Notifications from "expo-notifications";
@@ -98,6 +99,15 @@ const remindersReducer = (state = initialState, action) => {
           ...state,
         };
       }
+    }
+    case REMOVE_CONTACT_FROM_REMINDER: {
+      const updatedContacts = state.contacts.filter(
+        (contact) => contact !== action.contact
+      );
+      return {
+        ...state,
+        contacts: updatedContacts,
+      };
     }
     case CREATE_REMINDER: {
       let todayReminders = state.todayReminders;

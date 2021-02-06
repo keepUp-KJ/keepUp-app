@@ -7,6 +7,7 @@ export const ADD_CONTACT_TO_REMINDER = "ADD_CONTACT_TO_REMINDER";
 export const LOADING = "LOADING";
 export const CANCEL = "CANCEL";
 export const UPDATE_REMINDER = "UPDATE_REMINDER";
+export const REMOVE_CONTACT_FROM_REMINDER = "REMOVE_CONTACT_FROM_REMINDER";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { navigate } from "../../navigation/navigationRef";
@@ -115,6 +116,13 @@ export const setupAccount = (contacts, userId) => async (dispatch) => {
 export const addContactsToReminder = (contact) => async (dispatch) => {
   dispatch({
     type: ADD_CONTACT_TO_REMINDER,
+    contact,
+  });
+};
+
+export const removeContactFromReminder = (contact) => async (dispatch) => {
+  dispatch({
+    type: REMOVE_CONTACT_FROM_REMINDER,
     contact,
   });
 };
