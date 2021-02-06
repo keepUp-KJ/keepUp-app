@@ -7,10 +7,11 @@ WeekdayPicker.defaultProps = {
   style: null,
   dayStyle: null,
   days: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 0: 1 },
+  pickedDay: 0,
 };
 
 export default function WeekdayPicker(props) {
-  let { onChange, style, dayStyle, days } = props;
+  let { onChange, style, dayStyle, days, pickedDay } = props;
   /**
    * Function for toggling the day
    *
@@ -22,14 +23,16 @@ export default function WeekdayPicker(props) {
     });
     // If the day is 0 set it 1, if 1 set 0
     days[day] ? (days[day] = 0) : (days[day] = 1);
-    // Call the parent function to set the new reminder in the state
-    onChange(days);
+
+    onChange(day);
   };
 
   // Populate days of the week
   let daysContainer = [];
 
   Object.keys(days).forEach((day, i) => {
+    days[pickedDay] = 1;
+
     daysContainer.push(
       <Day
         key={i}
@@ -37,7 +40,7 @@ export default function WeekdayPicker(props) {
         day={day}
         style={[styles.day, dayStyle]}
         activeTextColor="38dfe1"
-        isActive={1 === days[day]} // Pass boolean
+        isActive={1 === days[day] && pickedDay == day} // Pass boolean
       />
     );
   });

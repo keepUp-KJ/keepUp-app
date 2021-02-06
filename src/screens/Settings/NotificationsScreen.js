@@ -17,33 +17,20 @@ import { getSettings, updateSettings } from "../../store/actions/settings";
 class NotificationsScreen extends React.Component {
   state = {
     settings: {
-      monthlyCallNotification: true,
-      weeklyCallNotification: true,
-      dailyCallNotification: false,
-      incompleteTaskNotification: true,
-      birthdayReminder: null,
-      callReminder: null,
-      incompleteTaskReminder: null,
+      notifications: {},
     },
   };
 
-  // componentDidMount() {
-  //   this.props.get(this.props.user._id, this.props.user.token).then(() => {
-  //     setTimeout(() => {
-  //       this.setState({
-  //         settings: {
-  //           birthdayNotification: this.props.settings.birthdayNotification,
-  //           dailyCallNotification: this.props.settings.dailyCallNotification,
-  //           incompleteTaskNotification: this.props.settings
-  //             .incompleteTaskNotification,
-  //           birthdayReminder: this.props.settings.birthdayReminder,
-  //           callReminder: this.props.settings.callReminder,
-  //           incompleteTaskReminder: this.props.settings.incompleteTaskReminder,
-  //         },
-  //       });
-  //     }, 500);
-  //   });
-  // }
+  componentDidMount() {
+    this.props.get(this.props.user._id, this.props.user.token).then(() => {
+      this.setState({
+        settings: {
+          ...this.props.settings,
+          notifications: this.props.settings.notifications,
+        },
+      });
+    });
+  }
 
   componentWillUnmount() {
     this.props.update(
@@ -74,17 +61,22 @@ class NotificationsScreen extends React.Component {
               </TextComp>
             </View>
           </View>
-
           <ScrollView style={styles.body}>
             <SettingsItem
               titleColor={Colors.blue}
               title="Daily calls"
               switch
               text="A notification will be sent for contacts you wish to contact daily"
-              value={this.state.settings.dailyCallNotification}
-              onValueChange={(dailyCallNotification) => {
+              value={this.state.settings.notifications.dailyCalls}
+              onValueChange={() => {
                 this.setState({
-                  settings: { ...this.state.settings, dailyCallNotification },
+                  settings: {
+                    ...this.state.settings,
+                    notifications: {
+                      ...this.state.settings.notifications,
+                      dailyCalls: !this.state.settings.notifications.dailyCalls,
+                    },
+                  },
                 });
               }}
             />
@@ -93,10 +85,17 @@ class NotificationsScreen extends React.Component {
               title="Weekly calls"
               switch
               text="A notification will be sent for contacts you wish to contact weekly"
-              value={this.state.settings.weeklyCallNotification}
-              onValueChange={(weeklyCallNotification) => {
+              value={this.state.settings.notifications.weeklyCalls}
+              onValueChange={() => {
                 this.setState({
-                  settings: { ...this.state.settings, weeklyCallNotification },
+                  settings: {
+                    ...this.state.settings,
+                    notifications: {
+                      ...this.state.settings.notifications,
+                      weeklyCalls: !this.state.settings.notifications
+                        .weeklyCalls,
+                    },
+                  },
                 });
               }}
             />
@@ -105,10 +104,17 @@ class NotificationsScreen extends React.Component {
               title="Monthly calls"
               switch
               text="A notification will be sent for contacts you wish to contact monthly"
-              value={this.state.settings.monthlyCallNotification}
-              onValueChange={(monthlyCallNotification) => {
+              value={this.state.settings.notifications.monthlyCalls}
+              onValueChange={() => {
                 this.setState({
-                  settings: { ...this.state.settings, monthlyCallNotification },
+                  settings: {
+                    ...this.state.settings,
+                    notifications: {
+                      ...this.state.settings.notifications,
+                      monthlyCalls: !this.state.settings.notifications
+                        .monthlyCalls,
+                    },
+                  },
                 });
               }}
             />
@@ -117,12 +123,16 @@ class NotificationsScreen extends React.Component {
               title="Incomplete task"
               switch
               text="A notification will be sent if you do not complete a task before its required time"
-              value={this.state.settings.incompleteTaskNotification}
-              onValueChange={(incompleteTaskNotification) => {
+              value={this.state.settings.notifications.incompleteTask}
+              onValueChange={() => {
                 this.setState({
                   settings: {
                     ...this.state.settings,
-                    incompleteTaskNotification,
+                    notifications: {
+                      ...this.state.settings.notifications,
+                      incompleteTask: !this.state.settings.notifications
+                        .incompleteTask,
+                    },
                   },
                 });
               }}

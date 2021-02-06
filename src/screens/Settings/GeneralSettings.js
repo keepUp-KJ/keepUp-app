@@ -17,49 +17,58 @@ import TimePicker from "react-native-super-timepicker";
 import WeekdayPicker from "../../components/Settings/WeekdayPicker";
 class GeneralSettings extends React.Component {
   state = {
-    time: "17:00",
-    weeklyReminder: "Sunday",
+    settings: {
+      general: {},
+    },
     monthlyReminder: "15",
-    days: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 0: 1 },
   };
 
-  // componentDidMount() {
-  //   this.props.get(this.props.user._id, this.props.user.token).then(() => {
-  //     setTimeout(() => {
-  //       this.setState({
-  //         settings: {
-  //           birthdayNotification: this.props.settings.birthdayNotification,
-  //           dailyCallNotification: this.props.settings.dailyCallNotification,
-  //           incompleteTaskNotification: this.props.settings
-  //             .incompleteTaskNotification,
-  //           birthdayReminder: this.props.settings.birthdayReminder,
-  //           callReminder: this.props.settings.callReminder,
-  //           incompleteTaskReminder: this.props.settings.incompleteTaskReminder,
-  //         },
-  //       });
-  //     }, 500);
-  //   });
-  // }
+  componentDidMount() {
+    this.props.get(this.props.user._id, this.props.user.token).then(() => {
+      this.setState({
+        settings: {
+          ...this.props.settings,
+          general: this.props.settings.general,
+        },
+      });
+    });
+  }
 
-  // componentWillUnmount() {
-  //   this.props.update(
-  //     this.props.user._id,
-  //     this.state.settings,
-  //     this.props.user.token
-  //   );
-  // }
+  componentWillUnmount() {
+    this.props.update(
+      this.props.user._id,
+      this.state.settings,
+      this.props.user.token
+    );
+  }
 
   onCancel = () => {
     this.TimePicker.close();
   };
 
   onConfirm = (hour, minute) => {
-    this.setState({ time: `${hour}:${minute}` });
+    this.setState({
+      settings: {
+        ...this.state.settings,
+        general: {
+          ...this.state.settings.general,
+          reminderAt: `${hour}:${minute}`,
+        },
+      },
+    });
     this.TimePicker.close();
   };
 
-  handleChange = (days) => {
-    this.setState(days);
+  handleChange = (day) => {
+    this.setState({
+      settings: {
+        ...this.state.settings,
+        general: {
+          ...this.state.settings.general,
+          weeklyReminder: day,
+        },
+      },
+    });
   };
 
   render() {
@@ -104,7 +113,7 @@ class GeneralSettings extends React.Component {
                 Reminder at:
               </TextComp>
               <TextComp style={{ color: Colors.secondary, fontSize: 18 }}>
-                {this.state.time}
+                {this.state.settings.general.reminderAt}
               </TextComp>
             </TouchableOpacity>
             {/* Weekly Reminder */}
@@ -113,7 +122,7 @@ class GeneralSettings extends React.Component {
                 Weekly Reminder
               </TextComp>
               <WeekdayPicker
-                days={this.state.days}
+                pickedDay={this.state.settings.general.weeklyReminder}
                 onChange={this.handleChange}
                 style={styles.picker}
                 dayStyle={styles.day}

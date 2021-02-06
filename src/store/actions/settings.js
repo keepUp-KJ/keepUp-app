@@ -2,7 +2,7 @@ export const GET_SETTINGS = "GET_SETTINGS";
 export const UPDATE_SETTINGS = "UPDATE_SETTINGS";
 
 export const getSettings = (id, token) => async (dispatch) => {
-  fetch(`https://rocky-mesa-61495.herokuapp.com/users/${id}/settings`, {
+  return fetch(`https://rocky-mesa-61495.herokuapp.com/users/${id}/settings`, {
     method: "GET",
     headers: {
       Authorization: "Bearer " + token,
@@ -10,15 +10,17 @@ export const getSettings = (id, token) => async (dispatch) => {
   })
     .then((res) => res.json())
     .then((json) => {
-      dispatch({
-        type: GET_SETTINGS,
-        settings: json.settings,
-      });
+      if (json.settings) {
+        dispatch({
+          type: GET_SETTINGS,
+          settings: json.settings.settings,
+        });
+      }
     });
 };
 
 export const updateSettings = (id, settings, token) => async (dispatch) => {
-  fetch(`https://rocky-mesa-61495.herokuapp.com/users/${id}/settings`, {
+  return fetch(`https://rocky-mesa-61495.herokuapp.com/users/${id}/settings`, {
     method: "PATCH",
     body: JSON.stringify({
       settings,
