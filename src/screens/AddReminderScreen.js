@@ -281,7 +281,7 @@ class AddReminderScreen extends React.Component {
                   )
                   .then(() => {
                     if (!this.props.error) {
-                      // this.scheduleNotif();
+                      Platform.OS === "ios" && this.scheduleNotif();
                       this.handleBackButtonClick();
                     }
                   });

@@ -16,6 +16,9 @@ import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 import { navigate } from "../../navigation/navigationRef";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Notifications from "expo-notifications";
+import { scheduleNotifications } from "../actions/reminders";
+import { Platform } from "react-native";
 
 export const login = (email, password) => async (dispatch) => {
   dispatch({
@@ -43,6 +46,7 @@ export const login = (email, password) => async (dispatch) => {
           type: SIGNUP,
           payload: json.user,
         });
+        Platform.OS === "ios" && scheduleNotifications(json.user.settings);
         AsyncStorage.setItem("user", JSON.stringify(json.user));
       }
     });
@@ -59,7 +63,7 @@ export const signup = (
   dispatch({
     type: LOADING,
   });
-  fetch("https://rocky-mesa-61495.herokuapp.com/users", {
+  return fetch("https://rocky-mesa-61495.herokuapp.com/users", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -146,6 +150,7 @@ export const hideLoginError = () => async (dispatch) => {
 
 export const signout = () => async (dispatch) => {
   await AsyncStorage.removeItem("user");
+  Notifications.cancelAllScheduledNotificationsAsync();
   navigate("Login");
   dispatch({
     type: SIGNOUT,

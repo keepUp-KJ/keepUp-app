@@ -10,9 +10,9 @@ export const UPDATE_REMINDER = "UPDATE_REMINDER";
 export const REMOVE_CONTACT_FROM_REMINDER = "REMOVE_CONTACT_FROM_REMINDER";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { navigate } from "../../navigation/navigationRef";
 import moment from "moment";
 import * as Notifications from "expo-notifications";
+import { Platform } from "react-native";
 
 export const getReminders = (userId, token) => async (dispatch) => {
   // const reminders = await AsyncStorage.getItem(`@KeepUp:${userId}/reminders`);
@@ -90,7 +90,7 @@ export const addReminder = (
     });
 };
 
-export const setupAccount = (contacts, userId) => async (dispatch) => {
+export const setupAccount = (contacts, user) => async (dispatch) => {
   return fetch("https://rocky-mesa-61495.herokuapp.com/contacts", {
     method: "POST",
     headers: {
@@ -98,13 +98,13 @@ export const setupAccount = (contacts, userId) => async (dispatch) => {
     },
     body: JSON.stringify({
       contacts,
-      userId,
+      userId: user._id,
     }),
   })
     .then((res) => res.json())
     .then(async (json) => {
       if (!json.error) {
-        scheduleNotifications();
+        Platform.OS === "ios" && scheduleNotifications(user.settings);
         // saveLocally(userId, contacts);
         dispatch({
           type: DONE,
@@ -152,50 +152,69 @@ export const cancelReminder = () => async (dispatch) => {
   dispatch({ type: CANCEL });
 };
 
-const scheduleNotifications = () => {
+export const scheduleNotifications = (userSettings) => {
+  //Daily Notification
+  userSettings.notifications.dailyCalls &&
+    Notifications.scheduleNotificationAsync({
+      identifier: "daily",
+      content: {
+        title: "TODAY",
+        body: "Don't forget to call your friends! Tap to view today's list",
+      },
+      trigger: {
+        hour: 17,
+        minute: 0,
+        repeats: true,
+      },
+    });
+
   //Weekly Notification (Sunday by default)
-  Notifications.scheduleNotificationAsync({
-    identifier: "weekly",
-    content: {
-      title: "TODAY",
-      body: "Don't forget to call your friends! Tap to view today's list",
-    },
-    trigger: {
-      weekday: 1,
-      hour: 17,
-      minute: 0,
-      repeats: true,
-    },
-  });
+  userSettings.notifications.weeklyCalls &&
+    Notifications.scheduleNotificationAsync({
+      identifier: "weekly",
+      content: {
+        title: "TODAY",
+        body: "Don't forget to call your friends! Tap to view today's list",
+      },
+      trigger: {
+        weekday: userSettings.general.weeklyReminder,
+        hour: 17,
+        minute: 0,
+        repeats: true,
+      },
+    });
 
   //Monthly Notification (Day 1 in the month by default)
-  Notifications.scheduleNotificationAsync({
-    identifier: "monthly",
-    content: {
-      title: "TODAY",
-      body: "Don't forget to call your friends! Tap to view today's list",
-    },
-    trigger: {
-      day: 1,
-      hour: 17,
-      minute: 0,
-      repeats: true,
-    },
-  });
+  userSettings.notifications.monthlyCalls &&
+    Notifications.scheduleNotificationAsync({
+      identifier: "monthly",
+      content: {
+        title: "TODAY",
+        body: "Don't forget to call your friends! Tap to view today's list",
+      },
+      trigger: {
+        day: 1,
+        hour: 17,
+        minute: 0,
+        repeats: true,
+      },
+    });
 
   //Daily Forgotten Notifications
-  Notifications.scheduleNotificationAsync({
-    identifier: "forgotten",
-    content: {
-      title: "Incomplete Task",
-      body: "You forgot to call your friends! Tap to view",
-    },
-    trigger: {
-      hour: 0,
-      minute: 0,
-      repeats: true,
-    },
-  });
+  userSettings.notifications.incompleteTask &&
+    Notifications.scheduleNotificationAsync({
+      identifier: "forgotten",
+      content: {
+        title: "Incomplete Task",
+        body:
+          "You forgot to call your friends! Tap to view your forgotten tasks",
+      },
+      trigger: {
+        hour: 0,
+        minute: 0,
+        repeats: true,
+      },
+    });
 };
 
 const saveLocally = async (userId, contacts) => {

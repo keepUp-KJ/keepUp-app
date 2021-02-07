@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, View, TouchableOpacity } from "react-native";
+import { SafeAreaView, View } from "react-native";
 
 // Components
 import DateHeader from "../components/Home/DateHeader";
@@ -9,7 +9,6 @@ import TabNav from "../components/Tab/TabNav";
 //Redux
 import { connect } from "react-redux";
 import { getReminders, setCompleted } from "../store/actions/reminders";
-
 class HomeScreen extends React.Component {
   render() {
     return (

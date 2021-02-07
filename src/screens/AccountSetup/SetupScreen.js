@@ -13,7 +13,7 @@ class SetupScreen extends React.Component {
         this.props.contacts.filter(
           (contact) => contact.isAccepted || contact.isRejected
         ),
-        this.props.user._id
+        this.props.user
       )
       .then(() => {
         this.props
