@@ -52,6 +52,7 @@ class Menu extends React.Component {
               />
               <View style={{ flex: 0.8 }}>
                 <Input
+                  search
                   placeholder="Search..."
                   value={this.state.searchInput}
                   onChangeText={(text) => {

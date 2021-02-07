@@ -44,14 +44,16 @@ const Input = (props) => {
           borderColor: props.error ? "#990000" : borderColor,
         }}
       />
-      <TextComp style={styles.errorText}>{props.error}</TextComp>
+      {!props.search && (
+        <TextComp style={styles.errorText}>{props.error}</TextComp>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   input: {
-    borderRadius: 25,
+    borderRadius: 10,
     padding: 10,
     paddingHorizontal: 20,
     marginTop: 2,

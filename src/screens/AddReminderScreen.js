@@ -172,20 +172,6 @@ class AddReminderScreen extends React.Component {
         }}
       >
         <SafeAreaView style={styles.screen}>
-          <ContactsPopup
-            visible={this.state.visible}
-            contacts={this.props.pending.concat(this.props.accepted)}
-            pickedContacts={this.props.reminderContacts}
-            addContact={(contact) => {
-              this.props.add(contact);
-            }}
-            removeContact={(contact) => {
-              this.props.remove(contact);
-            }}
-            close={() => {
-              this.setState({ visible: false });
-            }}
-          />
           <View style={styles.header}>
             <Header
               leftComponent={
@@ -302,6 +288,20 @@ class AddReminderScreen extends React.Component {
               }}
             />
           </View>
+          <ContactsPopup
+            visible={this.state.visible}
+            contacts={this.props.pending.concat(this.props.accepted)}
+            pickedContacts={this.props.reminderContacts}
+            addContact={(contact) => {
+              this.props.add(contact);
+            }}
+            removeContact={(contact) => {
+              this.props.remove(contact);
+            }}
+            close={() => {
+              this.setState({ visible: false });
+            }}
+          />
         </SafeAreaView>
       </TouchableWithoutFeedback>
     );
@@ -340,9 +340,9 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   input: {
-    borderRadius: 25,
+    elevation: 0.05,
+    borderRadius: Platform.OS === "ios" ? 10 : 0,
     paddingHorizontal: 20,
-    width: "100%",
     marginVertical: 12,
     padding: 2,
     height: 45,

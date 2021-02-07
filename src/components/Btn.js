@@ -35,7 +35,7 @@ const Btn = (props) => {
 const styles = StyleSheet.create({
   container: {
     padding: 15,
-    borderRadius: 15,
+    borderRadius: 10,
     marginVertical: 10,
     marginHorizontal: 5,
     flexDirection: "row",

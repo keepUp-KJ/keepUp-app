@@ -34,7 +34,7 @@ const Dropdown = (props) => {
 const styles = StyleSheet.create({
   input: {
     borderWidth: 0.5,
-    borderRadius: 15,
+    borderRadius: 10,
     paddingHorizontal: 20,
     borderColor: Colors.secondary,
     height: 40,

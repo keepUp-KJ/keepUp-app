@@ -49,6 +49,7 @@ const ReminderContactsList = (props) => {
 
   return (
     <FlatList
+      style={{ zIndex: 1 }}
       ListHeaderComponent={
         <TextComp style={{ ...styles.text, marginVertical: 5 }}>
           Contacts
