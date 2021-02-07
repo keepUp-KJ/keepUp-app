@@ -66,6 +66,23 @@ const ContactsPopup = (props) => {
           Add Contacts
         </TextComp>
         <Input
+          search
+          searchInput={input}
+          onDeleteSearch={() => {
+            const updatedContacts = props.contacts.filter((contact) => {
+              const name = String.prototype.toUpperCase.call(
+                (contact.info.firstName || "") +
+                  " " +
+                  (contact.info.lastName || "")
+              );
+
+              const search = String.prototype.toUpperCase.call("");
+              return name.indexOf(search) > -1;
+            });
+
+            setInput("");
+            setContacts(updatedContacts);
+          }}
           onBlur={() => {
             Keyboard.dismiss();
           }}

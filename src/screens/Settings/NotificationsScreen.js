@@ -1,11 +1,11 @@
-import React, { Fragment } from "react";
+import React from "react";
 import {
   SafeAreaView,
   View,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  StatusBar,
+  Dimensions,
 } from "react-native";
 import { connect } from "react-redux";
 import Colors from "../../constants/Colors";
@@ -28,8 +28,7 @@ class NotificationsScreen extends React.Component {
 
   render() {
     return (
-      <Fragment>
-        <StatusBar barStyle="light-content" />
+      <>
         <SafeAreaView style={{ backgroundColor: Colors.blue }} />
         <SafeAreaView style={styles.screen}>
           <View style={styles.header}>
@@ -125,7 +124,7 @@ class NotificationsScreen extends React.Component {
             />
           </ScrollView>
         </SafeAreaView>
-      </Fragment>
+      </>
     );
   }
 }
@@ -137,12 +136,11 @@ const styles = StyleSheet.create({
   },
   backContainer: {
     marginHorizontal: 20,
-    marginTop: 5,
-    justifyContent: "center",
-    width: "5%",
+    marginTop: 25,
+    width: "6%",
   },
   header: {
-    flex: 0.25,
+    flex: Dimensions.get("window").height < 700 ? 0.3 : 0.25,
     backgroundColor: Colors.blue,
   },
   container: {

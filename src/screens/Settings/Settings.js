@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import {
   SafeAreaView,
   View,
@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: "white",
+    paddingTop: 30,
   },
   header: {
     flex: 0.2,

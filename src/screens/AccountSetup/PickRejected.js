@@ -99,6 +99,26 @@ class PickRejected extends React.Component {
           />
           <View style={{ width: "85%" }}>
             <Input
+              search
+              searchInput={this.state.input}
+              onDeleteSearch={() => {
+                const updatedContacts = this.props.contacts.filter(
+                  (contact) => {
+                    const name = String.prototype.toUpperCase.call(
+                      (contact.info.firstName || "") +
+                        " " +
+                        (contact.info.lastName || "")
+                    );
+
+                    const search = String.prototype.toUpperCase.call("");
+                    return name.indexOf(search) > -1;
+                  }
+                );
+                this.setState({
+                  filteredContacts: updatedContacts,
+                  input: "",
+                });
+              }}
               placeholder="Search..."
               value={this.state.input}
               onChangeText={(text) => {

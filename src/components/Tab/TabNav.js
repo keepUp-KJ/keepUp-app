@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import Tab from "./Tab";
 import { navigate } from "../../navigation/navigationRef";
 
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   menu: {
     borderTopWidth: 1,
     borderTopColor: "#e6e6e6",
-    flex: 0.08,
+    flex: Platform.OS === "ios" ? 0.08 : 0.1,
     flexDirection: "row",
     alignItems: "flex-end",
   },

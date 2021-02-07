@@ -5,13 +5,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  StatusBar,
+  Dimensions,
 } from "react-native";
 import { connect } from "react-redux";
 import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import TextComp from "../../components/TextComp";
-import { Fragment } from "react";
 import { updateSettings } from "../../store/actions/users";
 import TimePicker from "react-native-super-timepicker";
 import WeekdayPicker from "../../components/Settings/WeekdayPicker";
@@ -58,8 +57,7 @@ class GeneralSettings extends React.Component {
 
   render() {
     return (
-      <Fragment>
-        <StatusBar barStyle="light-content" />
+      <>
         <SafeAreaView style={{ flex: 0, backgroundColor: Colors.babyBlue }} />
         <SafeAreaView style={styles.screen}>
           <TimePicker
@@ -122,7 +120,7 @@ class GeneralSettings extends React.Component {
             </View>
           </ScrollView>
         </SafeAreaView>
-      </Fragment>
+      </>
     );
   }
 }
@@ -133,14 +131,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   backContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
     marginHorizontal: 15,
-    marginTop: 10,
+    marginTop: 25,
+    width: "6%",
   },
   header: {
-    flex: 0.25,
+    flex: Dimensions.get("window").height < 700 ? 0.3 : 0.25,
     backgroundColor: Colors.babyBlue,
   },
   settingContainer: {

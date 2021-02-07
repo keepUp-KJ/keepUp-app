@@ -53,8 +53,18 @@ class Menu extends React.Component {
               <View style={{ flex: 0.8 }}>
                 <Input
                   search
+                  searchInput={this.state.searchInput}
                   placeholder="Search..."
                   value={this.state.searchInput}
+                  onDeleteSearch={() => {
+                    const currentList =
+                      this.state.active === "Pending"
+                        ? this.props.pending
+                        : this.state.active === "Accepted"
+                        ? this.props.accepted
+                        : this.props.rejected;
+                    this.search(currentList, "");
+                  }}
                   onChangeText={(text) => {
                     const currentList =
                       this.state.active === "Pending"
