@@ -6,7 +6,7 @@ import Colors from "../../constants/Colors";
 import moment from "moment";
 import ReloadBtn from "../ReloadBtn";
 
-const DateHeader = (props) => {
+const Header = (props) => {
   const today = moment().format("MMM DD, YYYY");
 
   return (
@@ -51,4 +51,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DateHeader;
+export default Header;

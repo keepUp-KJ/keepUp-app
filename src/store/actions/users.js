@@ -15,16 +15,24 @@ export const UPDATE_SETTINGS = "UPDATE_SETTINGS";
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 import { navigate } from "../../navigation/navigationRef";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as Notifications from "expo-notifications";
-import { scheduleNotifications } from "../actions/reminders";
+
+import {
+  saveUserLocally,
+  removeUser,
+  getLocalUser,
+} from "../../methods/localStorage";
+import {
+  scheduleNotifications,
+  cancelNotifications,
+} from "../../methods/notifications";
 import { Platform } from "react-native";
+import api from "../../api";
 
 export const login = (email, password) => async (dispatch) => {
   dispatch({
     type: LOADING,
   });
-  return fetch("https://rocky-mesa-61495.herokuapp.com/users/login", {
+  return fetch(`${api.URL}/users/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -47,7 +55,7 @@ export const login = (email, password) => async (dispatch) => {
           payload: json.user,
         });
         Platform.OS === "ios" && scheduleNotifications(json.user.settings);
-        AsyncStorage.setItem("user", JSON.stringify(json.user));
+        saveUserLocally(json.user);
       }
     });
 };
@@ -63,7 +71,7 @@ export const signup = (
   dispatch({
     type: LOADING,
   });
-  return fetch("https://rocky-mesa-61495.herokuapp.com/users", {
+  return fetch(`${api.URL}/users`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -89,7 +97,7 @@ export const signup = (
           type: SIGNUP,
           payload: json.user,
         });
-        AsyncStorage.setItem("user", JSON.stringify(json.user));
+        saveUserLocally(json.user);
         navigate("VerifyEmail");
       } else {
         console.log("ERROR");
@@ -98,7 +106,7 @@ export const signup = (
 };
 
 export const tryLocalSignin = () => async (dispatch) => {
-  const user = JSON.parse(await AsyncStorage.getItem("user"));
+  const user = await getLocalUser();
   if (user) {
     dispatch({
       type: SIGNUP,
@@ -109,7 +117,7 @@ export const tryLocalSignin = () => async (dispatch) => {
 
 export const verifyEmail = (email, code) => async (dispatch) => {
   dispatch({ type: LOADING });
-  fetch("https://rocky-mesa-61495.herokuapp.com/users/verify-email", {
+  fetch(`${api.URL}/users/verify-email`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -149,8 +157,8 @@ export const hideLoginError = () => async (dispatch) => {
 };
 
 export const signout = () => async (dispatch) => {
-  await AsyncStorage.removeItem("user");
-  Notifications.cancelAllScheduledNotificationsAsync();
+  removeUser();
+  cancelNotifications();
   navigate("Login");
   dispatch({
     type: SIGNOUT,
@@ -158,7 +166,7 @@ export const signout = () => async (dispatch) => {
 };
 
 export const forgotPassword = (email) => async (dispatch) => {
-  fetch("https://rocky-mesa-61495.herokuapp.com/users/forgot-password", {
+  fetch(`${api.URL}/users/forgot-password`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -180,7 +188,7 @@ export const forgotPassword = (email) => async (dispatch) => {
 export const renewPassword = (email, password, confPassword) => async (
   dispatch
 ) => {
-  fetch(`https://rocky-mesa-61495.herokuapp.com/users/renew-password`, {
+  fetch(`${api.URL}/users/renew-password`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -198,19 +206,16 @@ export const renewPassword = (email, password, confPassword) => async (
 };
 
 export const updateSettings = (user, settings) => async (dispatch) => {
-  return fetch(
-    `https://rocky-mesa-61495.herokuapp.com/users/${user._id}/settings`,
-    {
-      method: "PATCH",
-      body: JSON.stringify({
-        settings,
-      }),
-      headers: {
-        Authorization: "Bearer " + user.token,
-        "Content-Type": "application/json",
-      },
-    }
-  )
+  return fetch(`${api.URL}/users/${user._id}/settings`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      settings,
+    }),
+    headers: {
+      Authorization: "Bearer " + user.token,
+      "Content-Type": "application/json",
+    },
+  })
     .then((res) => res.json())
     .then(async (json) => {
       if (json.response) {
@@ -221,7 +226,7 @@ export const updateSettings = (user, settings) => async (dispatch) => {
         let updatedUser = user;
         updatedUser.settings = settings;
 
-        await AsyncStorage.setItem("user", JSON.stringify(updatedUser));
+        saveUserLocally(updatedUser);
       }
     });
 };

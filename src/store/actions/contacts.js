@@ -6,10 +6,9 @@ export const ADD_CONTACT = "ADD_CONTACT";
 export const REMOVE_CONTACT = "REMOVE_CONTACT";
 export const EDIT_CONTACT = "EDIT_CONTACT";
 export const REMOVE_FROM_BLACKLIST = "REMOVE_FROM_BLACKLIST";
-export const UPDATE_REMINDERS = "UPDATE_REMINDERS";
 
-// import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Contacts from "expo-contacts";
+import api from "../../api";
 
 export const syncContacts = () => async (dispatch) => {
   const { status } = await Contacts.requestPermissionsAsync();
@@ -32,14 +31,7 @@ export const syncContacts = () => async (dispatch) => {
 };
 
 export const getContactDecisions = (id, token) => async (dispatch) => {
-  // const contacts = await AsyncStorage.getItem(`@KeepUp:${id}/contacts`);
-  // if (contacts) {
-  //   dispatch({
-  //     type: SET_CONTACTS,
-  //     payload: JSON.parse(contacts),
-  //   });
-  // } else {
-  return fetch(`https://rocky-mesa-61495.herokuapp.com/users/${id}/contacts`, {
+  return fetch(`${api.URL}/users/${id}/contacts`, {
     method: "GET",
     headers: {
       Authorization: "Bearer " + token,
@@ -52,7 +44,6 @@ export const getContactDecisions = (id, token) => async (dispatch) => {
         payload: json.contacts,
       });
     });
-  // }
 };
 
 export const addContact = (contact, frequency) => async (dispatch) => {
@@ -74,7 +65,7 @@ export const removeContact = (contact, frequency) => async (dispatch) => {
 export const acceptContact = (userId, contact, frequency, token) => async (
   dispatch
 ) => {
-  return fetch(`https://rocky-mesa-61495.herokuapp.com/contacts/accept`, {
+  return fetch(`${api.URL}/contacts/accept`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -103,7 +94,7 @@ export const acceptContact = (userId, contact, frequency, token) => async (
 };
 
 export const rejectContact = (userId, contact, token) => async (dispatch) => {
-  return fetch(`https://rocky-mesa-61495.herokuapp.com/contacts/reject`, {
+  return fetch(`${api.URL}/contacts/reject`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -130,7 +121,7 @@ export const rejectContact = (userId, contact, token) => async (dispatch) => {
 export const editContact = (contactId, frequency, token) => async (
   dispatch
 ) => {
-  return fetch("https://rocky-mesa-61495.herokuapp.com/users/contacts", {
+  return fetch(`${api.URL}/users/contacts`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -154,15 +145,12 @@ export const editContact = (contactId, frequency, token) => async (
 };
 
 export const removeFromBlackList = (contact, token) => async (dispatch) => {
-  return fetch(
-    `https://rocky-mesa-61495.herokuapp.com/contacts/${contact._id}/remove`,
-    {
-      method: "DELETE",
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  )
+  return fetch(`${api.URL}/contacts/${contact._id}/remove`, {
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  })
     .then((res) => res.json())
     .then((json) => {
       if (json.response) {

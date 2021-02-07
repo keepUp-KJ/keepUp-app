@@ -3,26 +3,31 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import Task from "../Task";
 import TextComp from "../TextComp";
 import Colors from "../../constants/Colors";
+import { connect } from "react-redux";
 
-const TaskList = (props) => {
-  return (
-    <View style={styles.list}>
-      <TextComp style={styles.date}>{props.date.toString()}</TextComp>
-      {props.list
-        .filter((reminder) => reminder.date === props.date.toString())
-        .map((item, key) => (
-          <Task key={key} reminder={item} completeTask={() => {}} />
-        ))}
-      {!props.list.find((reminder) => reminder.date === props.date) && (
-        <TouchableOpacity style={styles.btn} onPress={props.addReminder}>
-          <TextComp bold style={styles.text}>
-            Add reminder
-          </TextComp>
-        </TouchableOpacity>
-      )}
-    </View>
-  );
-};
+class TaskList extends React.Component {
+  render() {
+    return (
+      <View style={styles.list}>
+        <TextComp style={styles.date}>{this.props.date.toString()}</TextComp>
+        {this.props.reminders
+          .filter((reminder) => reminder.date === this.props.date.toString())
+          .map((item, key) => (
+            <Task key={key} reminder={item} completeTask={() => {}} />
+          ))}
+        {!this.props.reminders.find(
+          (reminder) => reminder.date === this.props.date
+        ) && (
+          <TouchableOpacity style={styles.btn} onPress={this.props.addReminder}>
+            <TextComp bold style={styles.text}>
+              Add reminder
+            </TextComp>
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   list: {
@@ -50,4 +55,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TaskList;
+const mapStateToProps = (state) => ({
+  reminders: state.reminders.reminders,
+});
+
+export default connect(mapStateToProps)(TaskList);

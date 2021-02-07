@@ -6,10 +6,6 @@ import Menu from "../components/Contacts/Menu";
 import ContactsList from "../components/Contacts/ContactsList";
 import TabNav from "../components/Tab/TabNav";
 
-//Redux
-import { connect } from "react-redux";
-import { getContactDecisions } from "../store/actions/contacts";
-
 class ContactsScreen extends React.Component {
   state = {
     activeTab: "Accepted",
@@ -61,15 +57,4 @@ class ContactsScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.users.user,
-  accepted: state.contacts.acceptedContacts,
-  pending: state.contacts.pendingContacts,
-  rejected: state.contacts.rejectedContacts,
-});
-
-const mapDispatchToProps = {
-  get: getContactDecisions,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactsScreen);
+export default ContactsScreen;
