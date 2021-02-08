@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import Colors from "../../constants/Colors";
 import SettingsItem from "../../components/Settings/SettingsItem";
 import { updateSettings } from "../../store/actions/users";
+import { scheduleNotifications } from "../../methods/notifications";
 
 class NotificationsScreen extends React.Component {
   state = {
@@ -15,7 +16,9 @@ class NotificationsScreen extends React.Component {
   };
 
   componentWillUnmount() {
-    this.props.update(this.props.user, this.state.settings);
+    this.props.update(this.props.user, this.state.settings).then(() => {
+      scheduleNotifications(this.state.settings);
+    });
   }
 
   render() {

@@ -13,6 +13,7 @@ import TextComp from "../../components/TextComp";
 import { updateSettings } from "../../store/actions/users";
 import TimePicker from "react-native-super-timepicker";
 import WeekdayPicker from "../../components/Settings/WeekdayPicker";
+import { scheduleNotifications } from "../../methods/notifications";
 class GeneralSettings extends React.Component {
   state = {
     settings: {
@@ -22,7 +23,9 @@ class GeneralSettings extends React.Component {
   };
 
   componentWillUnmount() {
-    this.props.update(this.props.user, this.state.settings);
+    this.props.update(this.props.user, this.state.settings).then(() => {
+      scheduleNotifications(this.state.settings);
+    });
   }
 
   onCancel = () => {
