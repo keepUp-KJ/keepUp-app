@@ -6,6 +6,7 @@ export const ADD_CONTACT_TO_REMINDER = "ADD_CONTACT_TO_REMINDER";
 export const LOADING = "LOADING";
 export const CANCEL = "CANCEL";
 export const REMOVE_CONTACT_FROM_REMINDER = "REMOVE_CONTACT_FROM_REMINDER";
+export const HIDE_REMINDER_ERROR = "HIDE_REMINDER_ERROR";
 
 import api from "../../api";
 import {
@@ -64,6 +65,12 @@ export const addReminder = (
         });
       }
     });
+};
+
+export const hideError = () => async (dispatch) => {
+  dispatch({
+    type: HIDE_REMINDER_ERROR,
+  });
 };
 
 export const setupAccount = (contacts, user) => async () => {

@@ -63,6 +63,14 @@ class GeneralSettings extends React.Component {
         <SafeAreaView style={{ flex: 0, backgroundColor: Colors.babyBlue }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
           <TimePicker
+            selectedHour={this.state.settings.general.reminderAt.substr(
+              0,
+              this.state.settings.general.reminderAt.indexOf(":")
+            )}
+            selectedMinute={this.state.settings.general.reminderAt.substr(
+              this.state.settings.general.reminderAt.indexOf(":") + 1,
+              this.state.settings.general.reminderAt.length - 1
+            )}
             ref={(ref) => {
               this.TimePicker = ref;
             }}

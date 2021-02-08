@@ -20,6 +20,7 @@ import {
   addContactsToReminder,
   addReminder,
   cancelReminder,
+  hideError,
   removeContactFromReminder,
 } from "../store/actions/reminders";
 
@@ -40,7 +41,6 @@ const today = new Date();
 class AddReminderScreen extends React.Component {
   state = {
     date: today,
-    show: false,
     notify: "On the same day",
     open: false,
     title: "",
@@ -138,10 +138,6 @@ class AddReminderScreen extends React.Component {
         label: "One week before",
         value: "One week before",
       },
-      {
-        label: "None",
-        value: "None",
-      },
     ];
 
     return (
@@ -175,6 +171,7 @@ class AddReminderScreen extends React.Component {
               auto={true}
               value={this.state.title}
               onChangeText={(title) => {
+                this.props.hide();
                 this.setState({ title });
               }}
               error={this.props.error}
@@ -199,6 +196,7 @@ class AddReminderScreen extends React.Component {
             {this.state.calendarVisible && (
               <ReminderCalendar
                 dates={this.state.markedDates}
+                date={this.state.date}
                 onDayPress={(day) => {
                   const date = new Date(day.dateString);
                   this.getSelectedDayEvents(day.dateString);
@@ -223,7 +221,7 @@ class AddReminderScreen extends React.Component {
               arrowSize={18}
               arrowStyle={{ alignSelf: "center" }}
               onOpen={() => {
-                this.setState({ show: false, open: true });
+                this.setState({ open: true });
                 Keyboard.dismiss();
               }}
               onClose={() => {
@@ -328,6 +326,7 @@ const mapDispatchToProps = {
   remove: removeContactFromReminder,
   create: addReminder,
   cancel: cancelReminder,
+  hide: hideError,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddReminderScreen);

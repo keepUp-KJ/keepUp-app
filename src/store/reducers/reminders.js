@@ -4,6 +4,7 @@ import {
   SET_COMPLETED,
   ADD_CONTACT_TO_REMINDER,
   ERROR,
+  HIDE_REMINDER_ERROR,
   CREATE_REMINDER,
   LOADING,
   CANCEL,
@@ -18,7 +19,7 @@ const initialState = {
   loading: null,
   todayReminders: [],
   contacts: [],
-  error: "",
+  error: null,
 };
 
 const remindersReducer = (state = initialState, action) => {
@@ -86,6 +87,12 @@ const remindersReducer = (state = initialState, action) => {
         ...state,
         error: action.error,
         loading: false,
+      };
+    }
+    case HIDE_REMINDER_ERROR: {
+      return {
+        ...state,
+        error: null,
       };
     }
     case ADD_CONTACT_TO_REMINDER: {

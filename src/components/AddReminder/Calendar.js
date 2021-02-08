@@ -10,6 +10,7 @@ const ReminderCalendar = (props) => {
       onDayPress={(day) => {
         props.onDayPress(day);
       }}
+      current={props.date}
       style={{ marginBottom: 20 }}
       theme={{
         selectedDayBackgroundColor: Colors.primaryColor,
