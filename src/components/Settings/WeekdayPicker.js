@@ -53,8 +53,9 @@ const styles = StyleSheet.create({
     display: "flex",
     height: 50,
     alignItems: "center",
+    marginTop: 20,
   },
   day: {
-    margin: 3,
+    margin: 7,
   },
 });

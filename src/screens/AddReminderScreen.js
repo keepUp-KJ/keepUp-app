@@ -9,40 +9,32 @@ import {
   BackHandler,
   Platform,
 } from "react-native";
-import Btn from "../components/Btn";
-import Input from "../components/Input";
-import Colors from "../constants/Colors";
-import Header from "../components/Header";
-import { connect } from "react-redux";
+
 import { Ionicons } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
+import moment from "moment";
+
+//Redux
+import { connect } from "react-redux";
 import {
   addContactsToReminder,
   addReminder,
   cancelReminder,
   removeContactFromReminder,
 } from "../store/actions/reminders";
+
+//Components & Constants
+import Btn from "../components/Btn";
+import Input from "../components/Input";
+import Colors from "../constants/Colors";
+import Header from "../components/Header";
 import TextComp from "../components/TextComp";
+import ReminderCalendar from "../components/AddReminder/Calendar";
 import ContactsPopup from "../components/AddReminder/ContactsPopup";
 import ReminderContactsList from "../components/AddReminder/ReminderContactsList";
-import * as Notifications from "expo-notifications";
-import moment from "moment";
-import MainCalendar from "../components/Calendar/MainCalendar";
 
-const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
+//Methods
+import { scheduleNewReminderNotification } from "../methods/notifications";
 
 const today = new Date();
 class AddReminderScreen extends React.Component {
@@ -92,44 +84,6 @@ class AddReminderScreen extends React.Component {
     return true;
   };
 
-  scheduleNotif = () => {
-    let date;
-
-    this.state.notify === "One week before"
-      ? (date = new Date(moment(this.state.date).subtract(1, "w")))
-      : this.state.notify === "One day before"
-      ? (date = new Date(moment(this.state.date).subtract(1, "d")))
-      : (date = this.state.date);
-
-    Notifications.scheduleNotificationAsync({
-      identifier: `${this.state.title}`,
-      content: {
-        body: `${this.state.date.getDate()} ${
-          months[this.state.date.getMonth()]
-        } ${this.state.date.getFullYear()}`,
-        title: `${this.state.title} with ${
-          this.props.reminderContacts[0].info.firstName
-        } ${
-          this.props.reminderContacts[0].info.lastName &&
-          this.props.reminderContacts[0].info.lastName
-        } ${
-          this.props.reminderContacts.length > 1
-            ? `& ${this.props.reminderContacts.length - 1} ${
-                this.props.reminderContacts.length !== 2 ? "others" : "other"
-              }`
-            : ""
-        }`,
-      },
-      trigger: {
-        day: date.getDate(),
-        month: date.getMonth() + 1,
-        year: date.getFullYear(),
-        hour: 17,
-        minute: 0,
-      },
-    });
-  };
-
   getSelectedDayEvents = (date) => {
     let markedDates = {};
 
@@ -143,6 +97,31 @@ class AddReminderScreen extends React.Component {
       date: serviceDate,
       markedDates,
     });
+  };
+
+  addReminderHandler = () => {
+    let contacts = this.props.reminderContacts;
+    this.props
+      .create(
+        this.props.user._id,
+        this.state.date,
+        this.props.reminderContacts,
+        this.state.title,
+        this.state.notify,
+        this.props.user.token
+      )
+      .then(() => {
+        if (!this.props.error) {
+          Platform.OS === "ios" &&
+            scheduleNewReminderNotification(
+              this.state.notify,
+              this.state.date,
+              this.state.title,
+              contacts
+            );
+          this.handleBackButtonClick();
+        }
+      });
   };
 
   render() {
@@ -218,7 +197,7 @@ class AddReminderScreen extends React.Component {
               </TouchableOpacity>
             </View>
             {this.state.calendarVisible && (
-              <MainCalendar
+              <ReminderCalendar
                 dates={this.state.markedDates}
                 onDayPress={(day) => {
                   const date = new Date(day.dateString);
@@ -269,23 +248,7 @@ class AddReminderScreen extends React.Component {
               title="Create reminder"
               btnColor={Colors.primaryColor}
               style={{ width: "80%", alignSelf: "center" }}
-              onPress={() => {
-                this.props
-                  .create(
-                    this.props.user._id,
-                    this.state.date,
-                    this.props.reminderContacts,
-                    this.state.title,
-                    this.state.notify,
-                    this.props.user.token
-                  )
-                  .then(() => {
-                    if (!this.props.error) {
-                      Platform.OS === "ios" && this.scheduleNotif();
-                      this.handleBackButtonClick();
-                    }
-                  });
-              }}
+              onPress={this.addReminderHandler}
             />
           </View>
           <ContactsPopup

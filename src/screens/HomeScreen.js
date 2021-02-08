@@ -6,7 +6,15 @@ import Header from "../components/Home/Header";
 import RemindersList from "../components/Home/RemindersList";
 import TabNav from "../components/Tab/TabNav";
 
+import * as Notifications from "expo-notifications";
+
 class HomeScreen extends React.Component {
+  componentDidMount() {
+    Notifications.getAllScheduledNotificationsAsync().then((notif) => {
+      console.log(notif);
+    });
+  }
+
   render() {
     return (
       <SafeAreaView

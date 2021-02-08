@@ -1,11 +1,13 @@
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 
+//Signup
 import LoginScreen from "../screens/Signup/LoginScreen";
 import SignupScreen from "../screens/Signup/SignupScreen";
 import VerifyEmailScreen from "../screens/Signup/VerifyEmailScreen";
 import LoadingScreen from "../screens/Signup/LoadingScreen";
 
+//Account Setup
 import PickRejected from "../screens/AccountSetup/PickRejected";
 import PickContactsScreen from "../screens/AccountSetup/PickContactsScreen";
 import PickWeeklyContacts from "../screens/AccountSetup/PickWeeklyContacts";
@@ -13,9 +15,11 @@ import PickMonthlyContacts from "../screens/AccountSetup/PickMonthlyContacts";
 import ConfirmSelectionScreen from "../screens/AccountSetup/ConfirmSelectionScreen";
 import SetupScreen from "../screens/AccountSetup/SetupScreen";
 
+//Password Renewal
 import ForgotPasswordScreen from "../screens/PasswordRenewal/ForgotPasswordScreen";
 import RenewPasswordScreen from "../screens/PasswordRenewal/RenewPasswordScreen";
 
+//Settings
 import Settings from "../screens/Settings/Settings";
 import NotificationsScreen from "../screens/Settings/NotificationsScreen";
 import GeneralSettings from "../screens/Settings/GeneralSettings";

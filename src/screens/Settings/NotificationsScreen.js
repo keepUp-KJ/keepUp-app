@@ -1,17 +1,9 @@
 import React from "react";
-import {
-  SafeAreaView,
-  View,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import Header from "../../components/Settings/Header";
 import { connect } from "react-redux";
 import Colors from "../../constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
 import SettingsItem from "../../components/Settings/SettingsItem";
-import TextComp from "../../components/TextComp";
 import { updateSettings } from "../../store/actions/users";
 
 class NotificationsScreen extends React.Component {
@@ -31,26 +23,11 @@ class NotificationsScreen extends React.Component {
       <>
         <SafeAreaView style={{ backgroundColor: Colors.blue }} />
         <SafeAreaView style={styles.screen}>
-          <View style={styles.header}>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("Settings");
-              }}
-              style={styles.backContainer}
-            >
-              <Ionicons name="md-arrow-back" size={30} color="white" />
-            </TouchableOpacity>
-            <View style={styles.container}>
-              <TextComp bold style={styles.text}>
-                Notifications
-              </TextComp>
-            </View>
-          </View>
+          <Header color={Colors.blue} title="Notifications" />
           <ScrollView style={styles.body}>
             <SettingsItem
               titleColor={Colors.blue}
               title="Daily calls"
-              switch
               text="A notification will be sent for contacts you wish to contact daily"
               value={this.state.settings.notifications.dailyCalls}
               onValueChange={() => {
@@ -68,7 +45,6 @@ class NotificationsScreen extends React.Component {
             <SettingsItem
               titleColor={Colors.blue}
               title="Weekly calls"
-              switch
               text="A notification will be sent for contacts you wish to contact weekly"
               value={this.state.settings.notifications.weeklyCalls}
               onValueChange={() => {
@@ -87,7 +63,6 @@ class NotificationsScreen extends React.Component {
             <SettingsItem
               titleColor={Colors.blue}
               title="Monthly calls"
-              switch
               text="A notification will be sent for contacts you wish to contact monthly"
               value={this.state.settings.notifications.monthlyCalls}
               onValueChange={() => {
@@ -106,7 +81,6 @@ class NotificationsScreen extends React.Component {
             <SettingsItem
               titleColor={Colors.blue}
               title="Incomplete task"
-              switch
               text="A notification will be sent if you do not complete a task before its required time"
               value={this.state.settings.notifications.incompleteTask}
               onValueChange={() => {
@@ -133,21 +107,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: "white",
-  },
-  backContainer: {
-    marginHorizontal: 20,
-    marginTop: 25,
-    width: "6%",
-  },
-  header: {
-    flex: Dimensions.get("window").height < 700 ? 0.3 : 0.25,
-    backgroundColor: Colors.blue,
-  },
-  container: {
-    marginHorizontal: 20,
-    flex: 0.8,
-    alignItems: "flex-end",
-    flexDirection: "row",
   },
   text: {
     color: "white",

@@ -26,23 +26,9 @@ import {
   getContactDecisions,
 } from "../../store/actions/contacts";
 import { getReminders } from "../../store/actions/reminders";
-import * as Notifications from "expo-notifications";
 import moment from "moment";
+import { scheduleNewReminderNotification } from "../../methods/notifications";
 
-const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
 class LoginScreen extends React.Component {
   state = {
     email: "",
@@ -71,41 +57,12 @@ class LoginScreen extends React.Component {
   scheduleReminderNotifications = (reminders) => {
     reminders.forEach((reminder) => {
       if (moment().isBefore(reminder.date)) {
-        let date;
-
-        reminder.notify === "One week before"
-          ? (date = new Date(moment(reminder.date).subtract(1, "w")))
-          : reminder === "One day before"
-          ? (date = new Date(moment(reminder.date).subtract(1, "d")))
-          : (date = new Date(reminder.date));
-
-        Notifications.scheduleNotificationAsync({
-          identifier: `${reminder.occasion}`,
-          content: {
-            body: `${date.getDate()} ${
-              months[date.getMonth()]
-            } ${date.getFullYear()}`,
-            title: `${reminder.occasion} with ${
-              reminder.contacts[0].info.firstName
-            } ${
-              reminder.contacts[0].info.lastName &&
-              `${reminder.contacts[0].info.lastName}`
-            } ${
-              reminder.contacts.length > 1
-                ? `& ${reminder.contacts.length - 1} ${
-                    reminder.contacts.length !== 2 ? "others" : "other"
-                  }`
-                : ""
-            }`,
-          },
-          trigger: {
-            day: date.getDate(),
-            month: date.getMonth() + 1,
-            year: date.getFullYear(),
-            hour: 17,
-            minute: 0,
-          },
-        });
+        scheduleNewReminderNotification(
+          reminder.notify,
+          new Date(reminder.date),
+          reminder.occasion,
+          reminder.contacts
+        );
       }
     });
   };

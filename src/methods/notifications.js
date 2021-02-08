@@ -1,5 +1,6 @@
 import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
+import moment from "moment";
 
 export const scheduleNotifications = (userSettings) => {
   if (Platform.OS === "ios") {
@@ -70,4 +71,57 @@ export const scheduleNotifications = (userSettings) => {
 
 export const cancelNotifications = () => {
   Notifications.cancelAllScheduledNotificationsAsync();
+};
+
+export const scheduleNewReminderNotification = (
+  notify,
+  date,
+  occasion,
+  contacts
+) => {
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  notify === "One week before"
+    ? (notifyOn = new Date(moment(date).subtract(1, "w")))
+    : notify === "One day before"
+    ? (notifyOn = new Date(moment(date).subtract(1, "d")))
+    : (notifyOn = date);
+
+  Notifications.scheduleNotificationAsync({
+    identifier: `${occasion}`,
+    content: {
+      body: `${date.getDate()} ${
+        months[date.getMonth()]
+      } ${date.getFullYear()}`,
+      title: `${occasion} with ${contacts[0].info.firstName} ${
+        contacts[0].info.lastName && contacts[0].info.lastName
+      } ${
+        contacts.length > 1
+          ? `& ${contacts.length - 1} ${
+              contacts.length !== 2 ? "others" : "other"
+            }`
+          : ""
+      }`,
+    },
+    trigger: {
+      day: notifyOn.getDate(),
+      month: notifyOn.getMonth() + 1,
+      year: notifyOn.getFullYear(),
+      hour: 17,
+      minute: 0,
+    },
+  });
 };

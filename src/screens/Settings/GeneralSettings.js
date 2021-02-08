@@ -5,11 +5,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Dimensions,
 } from "react-native";
 import { connect } from "react-redux";
 import Colors from "../../constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
+import Header from "../../components/Settings/Header";
 import TextComp from "../../components/TextComp";
 import { updateSettings } from "../../store/actions/users";
 import TimePicker from "react-native-super-timepicker";
@@ -59,7 +58,7 @@ class GeneralSettings extends React.Component {
     return (
       <>
         <SafeAreaView style={{ flex: 0, backgroundColor: Colors.babyBlue }} />
-        <SafeAreaView style={styles.screen}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
           <TimePicker
             ref={(ref) => {
               this.TimePicker = ref;
@@ -67,26 +66,11 @@ class GeneralSettings extends React.Component {
             onConfirm={this.onConfirm}
             onCancel={this.onCancel}
           />
-          <View style={styles.header}>
-            <View style={styles.backContainer}>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate("Settings");
-                }}
-              >
-                <Ionicons name="md-arrow-back" size={30} color="white" />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.container}>
-              <TextComp bold style={styles.text}>
-                General
-              </TextComp>
-            </View>
-          </View>
-          <ScrollView style={styles.body}>
+          <Header color={Colors.babyBlue} title="General" />
+          <ScrollView style={{ marginVertical: 10, flex: 0.7 }}>
             {/* Reminder at */}
             <TouchableOpacity
-              style={styles.settingContainer}
+              style={styles.container}
               activeOpacity={0.5}
               onPress={() => {
                 this.TimePicker.open();
@@ -107,10 +91,7 @@ class GeneralSettings extends React.Component {
               <WeekdayPicker
                 pickedDay={this.state.settings.general.weeklyReminder}
                 onChange={this.handleChange}
-                style={styles.picker}
-                dayStyle={styles.day}
               />
-              {/* <DateTimePicker value={new Date()} mode="time" /> */}
             </View>
             {/* Monthly Reminder */}
             <View style={{ margin: 20 }}>
@@ -126,45 +107,12 @@ class GeneralSettings extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: "white",
-  },
-  backContainer: {
-    marginHorizontal: 15,
-    marginTop: 25,
-    width: "6%",
-  },
-  header: {
-    flex: Dimensions.get("window").height < 700 ? 0.3 : 0.25,
-    backgroundColor: Colors.babyBlue,
-  },
-  settingContainer: {
+  container: {
     marginHorizontal: 20,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginVertical: 20,
-  },
-  picker: {
-    paddingTop: 30,
-  },
-  day: {
-    margin: 6,
-  },
-  container: {
-    marginHorizontal: 20,
-    flex: 0.8,
-    alignItems: "flex-end",
-    flexDirection: "row",
-  },
-  text: {
-    color: "white",
-    fontSize: 35,
-  },
-  body: {
-    marginVertical: 20,
-    flex: 0.7,
   },
 });
 

@@ -8,62 +8,29 @@ const SettingsItem = (props) => {
   return (
     <View style={{ marginVertical: 10 }}>
       <View style={styles.container}>
-        {/* text area */}
         <View style={{ marginHorizontal: 20 }}>
           <TextComp style={{ ...styles.title, color: props.titleColor }}>
-            {props.title}{" "}
+            {props.title}
           </TextComp>
         </View>
 
-        {/* dropdown or switch */}
         <View style={{ flex: 0.9, alignItems: "flex-end" }}>
-          {props.switch ? (
-            <Switch
-              style={{ marginVertical: 15 }}
-              trackColor={{
-                false: Colors.secondary,
-                true: Colors.primaryColor,
-              }}
-              thumbColor={"white"}
-              ios_backgroundColor="white"
-              onValueChange={props.onValueChange}
-              value={props.value}
-            />
-          ) : null}
+          <Switch
+            style={{ marginVertical: 15 }}
+            trackColor={{
+              false: Colors.secondary,
+              true: Colors.primaryColor,
+            }}
+            thumbColor={"white"}
+            ios_backgroundColor="white"
+            onValueChange={props.onValueChange}
+            value={props.value}
+          />
         </View>
       </View>
       <TextComp style={styles.text} numberOfLines={3}>
         {props.text}
       </TextComp>
-      {props.dropdown ? (
-        <View style={{ width: "80%", marginHorizontal: 20 }}>
-          <DropDownPicker
-            zIndex={props.zindex}
-            style={{ borderWidth: 0 }}
-            items={props.dropdownItems}
-            defaultValue={props.value}
-            containerStyle={{
-              ...styles.input,
-              height: 40,
-              marginVertical: 15,
-            }}
-            itemStyle={{
-              justifyContent: "flex-start",
-            }}
-            labelStyle={{
-              color: Colors.secondary,
-              fontFamily: "Futura",
-              fontSize: 12,
-            }}
-            dropDownStyle={{ marginTop: 1, marginLeft: 20 }}
-            arrowSize={18}
-            arrowStyle={{ alignSelf: "center" }}
-            showArrow={true}
-            selectedLabelStyle={{ fontWeight: "700" }}
-            onChangeItem={(item) => props.onChangeItem(item)}
-          />
-        </View>
-      ) : null}
     </View>
   );
 };

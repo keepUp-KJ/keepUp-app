@@ -1,11 +1,11 @@
 import React from "react";
-import { SafeAreaView, View, BackHandler } from "react-native";
+import { SafeAreaView, View, BackHandler, StyleSheet } from "react-native";
 
 //Components & Constants
 import Colors from "../../constants/Colors";
 import TabNav from "../../components/Tab/TabNav";
-import Header from "../../components/Settings/Header";
 import SettingsIcon from "../../components/Settings/SettingsIcon";
+import TextComp from "../../components/TextComp";
 
 //Redux
 import { connect } from "react-redux";
@@ -36,7 +36,11 @@ class Settings extends React.Component {
       <SafeAreaView
         style={{ flex: 1, backgroundColor: "white", paddingTop: 30 }}
       >
-        <Header />
+        <View style={styles.header}>
+          <TextComp bold style={styles.text}>
+            Settings
+          </TextComp>
+        </View>
         <View style={{ flex: 0.72, marginHorizontal: 30 }}>
           <SettingsIcon
             title="General"
@@ -77,6 +81,20 @@ class Settings extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  header: {
+    flex: 0.2,
+    marginHorizontal: 30,
+    justifyContent: "center",
+    alignItems: "flex-start",
+  },
+  text: {
+    fontSize: 35,
+    marginTop: 20,
+    textAlign: "center",
+  },
+});
 
 const mapDispatchToProps = {
   signout,
