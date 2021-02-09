@@ -4939,6 +4939,11 @@ react-native-swipe-gestures@^1.0.5:
   resolved "https://registry.yarnpkg.com/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.5.tgz#a172cb0f3e7478ccd681fd36b8bfbcdd098bde7c"
   integrity sha512-Ns7Bn9H/Tyw278+5SQx9oAblDZ7JixyzeOczcBK8dipQk2pD7Djkcfnf1nB/8RErAmMLL9iXgW0QHqiII8AhKw==
 
+react-native-swiper-flatlist@^3.0.14:
+  version "3.0.14"
+  resolved "https://registry.yarnpkg.com/react-native-swiper-flatlist/-/react-native-swiper-flatlist-3.0.14.tgz#6c1b5f150af910656a64c5bf15c6bc66c2b80a30"
+  integrity sha512-t41ZlktJnG0D6sva/xL06mDDIkglMwnWIKhRPC2Ll6iP4fUVqv4bXtxMP1HhHwQmlT6B9FQMU1/RF+VqpK3a1A==
+
 react-native-vector-icons@^7.0.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-7.1.0.tgz#145487d617b2a81d395d2cf64e6e065fcab3a454"

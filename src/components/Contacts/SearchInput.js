@@ -7,9 +7,8 @@ import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import Input from "../Input";
 
-class Menu extends React.Component {
+class SearchInput extends React.Component {
   state = {
-    active: "Accepted",
     searchInput: "",
     filteredContacts: [],
     search: false,
@@ -58,18 +57,18 @@ class Menu extends React.Component {
                   value={this.state.searchInput}
                   onDeleteSearch={() => {
                     const currentList =
-                      this.state.active === "Pending"
+                      this.props.activeTab === "Pending"
                         ? this.props.pending
-                        : this.state.active === "Accepted"
+                        : this.props.activeTab === "Accepted"
                         ? this.props.accepted
                         : this.props.rejected;
                     this.search(currentList, "");
                   }}
                   onChangeText={(text) => {
                     const currentList =
-                      this.state.active === "Pending"
+                      this.props.activeTab === "Pending"
                         ? this.props.pending
-                        : this.state.active === "Accepted"
+                        : this.props.activeTab === "Accepted"
                         ? this.props.accepted
                         : this.props.rejected;
                     this.search(currentList, text);
@@ -100,65 +99,12 @@ class Menu extends React.Component {
             />
           )}
         </View>
-        <View style={styles.container}>
-          {this.STATUS.map((item, index) => (
-            <View
-              key={index}
-              style={{
-                ...styles.menuItem,
-                borderBottomWidth: this.state.active === item ? 3 : 0,
-              }}
-            >
-              <TextComp
-                style={styles.text}
-                bold={this.state.active === item}
-                onPress={() => {
-                  this.props.onChange(item);
-                  this.setState({ active: item });
-                  if (this.state.searchInput) {
-                    const currentList =
-                      item === "Pending"
-                        ? this.props.pending
-                        : item === "Accepted"
-                        ? this.props.accepted
-                        : this.props.rejected;
-                    this.search(currentList, this.state.searchInput);
-                  }
-                }}
-              >
-                {item === "Accepted"
-                  ? "FRIENDS"
-                  : item === "Rejected"
-                  ? "BLACKLIST"
-                  : item.toUpperCase()}
-              </TextComp>
-            </View>
-          ))}
-        </View>
       </>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 20,
-    marginHorizontal: 20,
-  },
-  menuItem: {
-    flex: 0.34,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingBottom: 10,
-    borderColor: Colors.secondary,
-    borderBottomColor: Colors.primaryColor,
-  },
-  text: {
-    color: Colors.secondary,
-    fontSize: 13,
-  },
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -182,4 +128,4 @@ const mapStateToProps = (state) => ({
   rejected: state.contacts.rejectedContacts,
 });
 
-export default connect(mapStateToProps)(Menu);
+export default connect(mapStateToProps)(SearchInput);

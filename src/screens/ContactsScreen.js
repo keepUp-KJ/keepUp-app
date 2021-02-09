@@ -2,17 +2,20 @@ import React from "react";
 import { SafeAreaView, View, BackHandler } from "react-native";
 
 // Components
-import Menu from "../components/Contacts/Menu";
+import SearchInput from "../components/Contacts/SearchInput";
 import ContactsList from "../components/Contacts/ContactsList";
 import TabNav from "../components/Tab/TabNav";
 
 class ContactsScreen extends React.Component {
   state = {
-    activeTab: "Accepted",
+    activeTab: 0,
     loading: true,
     filteredContacts: [],
     searchInput: "",
+    changed: true,
   };
+
+  STATUS = ["Accepted", "Pending", "Rejected"];
 
   componentDidMount() {
     BackHandler.addEventListener(
@@ -39,14 +42,16 @@ class ContactsScreen extends React.Component {
         style={{ flex: 1, marginTop: 30, backgroundColor: "white" }}
       >
         <View style={{ flex: 0.92 }}>
-          <Menu
-            onChange={(activeTab) => this.setState({ activeTab })}
+          <SearchInput
+            activeTab={this.STATUS[this.state.activeTab]}
             onSearch={(filteredContacts, searchInput) => {
               this.setState({ filteredContacts, searchInput });
             }}
           />
           <ContactsList
-            activeTab={this.state.activeTab}
+            onChange={(index) =>
+              this.setState({ activeTab: this.STATUS[index] })
+            }
             searchInput={this.state.searchInput}
             filteredContacts={this.state.filteredContacts}
           />

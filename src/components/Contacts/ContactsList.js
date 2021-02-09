@@ -1,10 +1,10 @@
 import React from "react";
 import {
-  View,
   FlatList,
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  View,
 } from "react-native";
 import {
   editContact,
@@ -17,12 +17,19 @@ import { connect } from "react-redux";
 import Colors from "../../constants/Colors";
 import ContactCard from "./ContactCard";
 import TextComp from "../TextComp";
+import { SwiperFlatList } from "react-native-swiper-flatlist";
 
+const SCREEN_WIDTH = Dimensions.get("window").width;
 class ContactsList extends React.Component {
   state = {
     activeContact: null,
     visible: false,
+    active: 0,
+    changed: false,
   };
+
+  STATUS = ["Accepted", "Pending", "Rejected"];
+  contactsList = [this.props.accepted, this.props.pending, this.props.rejected];
 
   renderContact = (itemData) => (
     <TouchableOpacity
@@ -41,12 +48,34 @@ class ContactsList extends React.Component {
     </TouchableOpacity>
   );
 
+  search = (currentList, text) => {
+    const updatedContacts = currentList.filter((contact) => {
+      const name = String.prototype.toUpperCase.call(
+        (contact.info.firstName || "") + " " + (contact.info.lastName || "")
+      );
+
+      const search = String.prototype.toUpperCase.call(text);
+      return name.indexOf(search) > -1;
+    });
+
+    this.setState({
+      filteredContacts: updatedContacts,
+    });
+  };
+
   render() {
+    setTimeout(() => {
+      if (this.props.searchInput && !this.state.changed)
+        this.setState({
+          filteredContacts: this.props.filteredContacts,
+        });
+    });
+
     return (
       <>
         {this.state.activeContact !== null && (
           <ContactCard
-            activeTab={this.props.activeTab}
+            activeTab={this.STATUS[this.state.active]}
             visible={this.state.visible}
             contact={this.state.activeContact}
             close={() =>
@@ -101,28 +130,72 @@ class ContactsList extends React.Component {
             }}
           />
         )}
-        <View
-          style={{
-            ...styles.container,
-            alignItems: this.props.loading ? "center" : "flex-start",
-          }}
-        >
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={
-              this.props.searchInput
-                ? this.props.filteredContacts
-                : this.props.activeTab === "Accepted"
-                ? this.props.accepted
-                : this.props.activeTab === "Pending"
-                ? this.props.pending
-                : this.props.activeTab === "Rejected"
-                ? this.props.rejected
-                : null
-            }
-            renderItem={this.renderContact}
-            numColumns={3}
-            keyExtractor={(item) => item.info.id}
+
+        <View style={styles.menu}>
+          {this.STATUS.map((item, index) => (
+            <View
+              key={index}
+              style={{
+                ...styles.menuItem,
+                borderBottomWidth: this.state.active === index ? 3 : 0,
+              }}
+            >
+              <TextComp
+                style={styles.text}
+                bold={this.state.active === index}
+                onPress={() => {
+                  this.list.scrollToIndex({ index });
+                  this.props.onChange(index);
+                  this.setState({ active: index, changed: true });
+                  if (this.props.searchInput) {
+                    const currentList =
+                      item === "Pending"
+                        ? this.props.pending
+                        : item === "Accepted"
+                        ? this.props.accepted
+                        : this.props.rejected;
+                    this.search(currentList, this.props.searchInput);
+                  }
+                }}
+              >
+                {item === "Accepted"
+                  ? "FRIENDS"
+                  : item === "Rejected"
+                  ? "BLACKLIST"
+                  : item.toUpperCase()}
+              </TextComp>
+            </View>
+          ))}
+        </View>
+        <View style={styles.container}>
+          <SwiperFlatList
+            ref={(ref) => {
+              this.list = ref;
+            }}
+            index={this.state.active}
+            data={this.contactsList}
+            onChangeIndex={(item) => {
+              this.props.searchInput &&
+                this.search(
+                  this.contactsList[item.index],
+                  this.props.searchInput
+                );
+              this.setState({ active: item.index });
+            }}
+            renderItem={(itemData) => (
+              <FlatList
+                style={{ width: SCREEN_WIDTH - 40 }}
+                showsVerticalScrollIndicator={false}
+                data={
+                  this.props.searchInput
+                    ? this.state.filteredContacts
+                    : itemData.item
+                }
+                renderItem={this.renderContact}
+                numColumns={3}
+                keyExtractor={(item) => item.info.id}
+              />
+            )}
           />
         </View>
       </>
@@ -148,7 +221,25 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingHorizontal: 20,
+  },
+  menu: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 20,
     marginHorizontal: 20,
+  },
+  menuItem: {
+    flex: 0.34,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingBottom: 10,
+    borderColor: Colors.secondary,
+    borderBottomColor: Colors.primaryColor,
+  },
+  text: {
+    color: Colors.secondary,
+    fontSize: 13,
   },
 });
 
