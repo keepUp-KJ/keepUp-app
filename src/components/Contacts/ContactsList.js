@@ -28,7 +28,7 @@ class ContactsList extends React.Component {
     changed: false,
   };
 
-  STATUS = ["Accepted", "Pending", "Rejected"];
+  STATUS = ["FRIENDS", "PENDING", "BLACKLIST"];
   contactsList = [this.props.accepted, this.props.pending, this.props.rejected];
 
   renderContact = (itemData) => (
@@ -63,12 +63,38 @@ class ContactsList extends React.Component {
     });
   };
 
+  onSwipe = (item) => {
+    this.setState({ active: item.index });
+    this.props.searchInput &&
+      this.search(this.contactsList[item.index], this.props.searchInput);
+  };
+
+  onChangeTab = (index) => {
+    this.list.scrollToIndex({ index });
+    this.props.searchInput &&
+      this.search(this.contactsList[index], this.props.searchInput);
+  };
+
+  renderList = (itemData) => (
+    <FlatList
+      style={{ width: SCREEN_WIDTH - 40 }}
+      showsVerticalScrollIndicator={false}
+      data={
+        this.props.searchInput ? this.state.filteredContacts : itemData.item
+      }
+      renderItem={this.renderContact}
+      numColumns={3}
+      keyExtractor={(item) => item.info.id}
+    />
+  );
+
   render() {
     setTimeout(() => {
-      if (this.props.searchInput && !this.state.changed)
-        this.setState({
-          filteredContacts: this.props.filteredContacts,
-        });
+      if (this.props.searchInput)
+        this.search(
+          this.contactsList[this.state.active],
+          this.props.searchInput
+        );
     });
 
     return (
@@ -93,6 +119,11 @@ class ContactsList extends React.Component {
                   this.props.user.token
                 )
                 .then(() => {
+                  this.contactsList = [
+                    this.props.accepted,
+                    this.props.pending,
+                    this.props.rejected,
+                  ];
                   this.setState({
                     visible: false,
                     activeContact: null,
@@ -107,6 +138,11 @@ class ContactsList extends React.Component {
                   this.props.user.token
                 )
                 .then(() => {
+                  this.contactsList = [
+                    this.props.accepted,
+                    this.props.pending,
+                    this.props.rejected,
+                  ];
                   this.setState({
                     visible: false,
                     activeContact: null,
@@ -125,6 +161,11 @@ class ContactsList extends React.Component {
               this.props
                 .remove(this.state.activeContact, this.props.user.token)
                 .then(() => {
+                  this.contactsList = [
+                    this.props.accepted,
+                    this.props.pending,
+                    this.props.rejected,
+                  ];
                   this.setState({ visible: false, activeContact: null });
                 });
             }}
@@ -141,61 +182,22 @@ class ContactsList extends React.Component {
               }}
             >
               <TextComp
-                style={styles.text}
+                style={styles.menuItemText}
                 bold={this.state.active === index}
-                onPress={() => {
-                  this.list.scrollToIndex({ index });
-                  this.props.onChange(index);
-                  this.setState({ active: index, changed: true });
-                  if (this.props.searchInput) {
-                    const currentList =
-                      item === "Pending"
-                        ? this.props.pending
-                        : item === "Accepted"
-                        ? this.props.accepted
-                        : this.props.rejected;
-                    this.search(currentList, this.props.searchInput);
-                  }
-                }}
+                onPress={() => this.onChangeTab(index)}
               >
-                {item === "Accepted"
-                  ? "FRIENDS"
-                  : item === "Rejected"
-                  ? "BLACKLIST"
-                  : item.toUpperCase()}
+                {item.toUpperCase()}
               </TextComp>
             </View>
           ))}
         </View>
-        <View style={styles.container}>
+
+        <View style={styles.listContainer}>
           <SwiperFlatList
-            ref={(ref) => {
-              this.list = ref;
-            }}
-            index={this.state.active}
+            ref={(ref) => (this.list = ref)}
             data={this.contactsList}
-            onChangeIndex={(item) => {
-              this.props.searchInput &&
-                this.search(
-                  this.contactsList[item.index],
-                  this.props.searchInput
-                );
-              this.setState({ active: item.index });
-            }}
-            renderItem={(itemData) => (
-              <FlatList
-                style={{ width: SCREEN_WIDTH - 40 }}
-                showsVerticalScrollIndicator={false}
-                data={
-                  this.props.searchInput
-                    ? this.state.filteredContacts
-                    : itemData.item
-                }
-                renderItem={this.renderContact}
-                numColumns={3}
-                keyExtractor={(item) => item.info.id}
-              />
-            )}
+            onChangeIndex={(item) => this.onSwipe(item)}
+            renderItem={this.renderList}
           />
         </View>
       </>
@@ -219,7 +221,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     color: Colors.secondary,
   },
-  container: {
+  listContainer: {
     flex: 1,
     paddingHorizontal: 20,
   },
@@ -237,7 +239,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.secondary,
     borderBottomColor: Colors.primaryColor,
   },
-  text: {
+  menuItemText: {
     color: Colors.secondary,
     fontSize: 13,
   },

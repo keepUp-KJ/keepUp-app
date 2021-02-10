@@ -36,8 +36,8 @@ const ContactCard = (props) => {
     },
   ];
 
-  const accepted = props.activeTab === "Accepted";
-  const pending = props.activeTab === "Pending";
+  const accepted = props.activeTab === "FRIENDS";
+  const pending = props.activeTab === "PENDING";
 
   return (
     <Overlay

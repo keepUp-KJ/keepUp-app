@@ -6,6 +6,7 @@ export const ADD_CONTACT = "ADD_CONTACT";
 export const REMOVE_CONTACT = "REMOVE_CONTACT";
 export const EDIT_CONTACT = "EDIT_CONTACT";
 export const REMOVE_FROM_BLACKLIST = "REMOVE_FROM_BLACKLIST";
+export const DONE = "DONE";
 
 import * as Contacts from "expo-contacts";
 import api from "../../api";
@@ -42,6 +43,9 @@ export const getContactDecisions = (id, token) => async (dispatch) => {
       dispatch({
         type: SET_CONTACTS,
         payload: json.contacts,
+      });
+      dispatch({
+        type: DONE,
       });
     });
 };

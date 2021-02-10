@@ -6,7 +6,7 @@ import moment from "moment";
 import { setCompleted } from "../../store/actions/reminders";
 import { connect } from "react-redux";
 
-renderEmpty = () => <TextComp style={styles.text}>No reminders</TextComp>;
+renderEmpty = () => <TextComp style={styles.text}>NO REMINDERS</TextComp>;
 
 class RemindersList extends React.Component {
   render() {
@@ -37,7 +37,7 @@ class RemindersList extends React.Component {
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 20,
+    fontSize: 17,
     alignSelf: "center",
     marginTop: 40,
   },

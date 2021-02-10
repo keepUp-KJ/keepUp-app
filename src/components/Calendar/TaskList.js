@@ -13,7 +13,7 @@ class TaskList extends React.Component {
         {this.props.reminders
           .filter((reminder) => reminder.date === this.props.date.toString())
           .map((item, key) => (
-            <Task key={key} reminder={item} completeTask={() => {}} />
+            <Task key={key} reminder={item} calendar />
           ))}
         {!this.props.reminders.find(
           (reminder) => reminder.date === this.props.date

@@ -76,6 +76,8 @@ const remindersReducer = (state = initialState, action) => {
       );
       reminder.date = action.reminder.date;
 
+      if (reminder.occasion) reminder.completed = true;
+
       return {
         ...state,
         reminders: state.reminders,

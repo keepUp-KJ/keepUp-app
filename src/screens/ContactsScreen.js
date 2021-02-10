@@ -9,13 +9,8 @@ import TabNav from "../components/Tab/TabNav";
 class ContactsScreen extends React.Component {
   state = {
     activeTab: 0,
-    loading: true,
-    filteredContacts: [],
     searchInput: "",
-    changed: true,
   };
-
-  STATUS = ["Accepted", "Pending", "Rejected"];
 
   componentDidMount() {
     BackHandler.addEventListener(
@@ -43,18 +38,11 @@ class ContactsScreen extends React.Component {
       >
         <View style={{ flex: 0.92 }}>
           <SearchInput
-            activeTab={this.STATUS[this.state.activeTab]}
-            onSearch={(filteredContacts, searchInput) => {
-              this.setState({ filteredContacts, searchInput });
+            onSearch={(searchInput) => {
+              this.setState({ searchInput });
             }}
           />
-          <ContactsList
-            onChange={(index) =>
-              this.setState({ activeTab: this.STATUS[index] })
-            }
-            searchInput={this.state.searchInput}
-            filteredContacts={this.state.filteredContacts}
-          />
+          <ContactsList searchInput={this.state.searchInput} />
         </View>
         <TabNav active="contacts" />
       </SafeAreaView>

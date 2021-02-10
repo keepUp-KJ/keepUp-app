@@ -14,26 +14,6 @@ class SearchInput extends React.Component {
     search: false,
   };
 
-  STATUS = ["Accepted", "Pending", "Rejected"];
-
-  search = (currentList, text) => {
-    const updatedContacts = currentList.filter((contact) => {
-      const name = String.prototype.toUpperCase.call(
-        (contact.info.firstName || "") + " " + (contact.info.lastName || "")
-      );
-
-      const search = String.prototype.toUpperCase.call(text);
-      return name.indexOf(search) > -1;
-    });
-
-    this.props.onSearch(updatedContacts, text);
-
-    this.setState({
-      filteredContacts: updatedContacts,
-      searchInput: text,
-    });
-  };
-
   render() {
     return (
       <>
@@ -46,7 +26,13 @@ class SearchInput extends React.Component {
                 color={Colors.secondary}
                 style={{ flex: 0.1 }}
                 onPress={() => {
-                  this.setState({ search: !this.state.search });
+                  this.setState({
+                    search: !this.state.search,
+                    searchInput: this.state.search
+                      ? ""
+                      : this.state.searchInput,
+                  });
+                  this.props.onSearch(this.state.searchInput);
                 }}
               />
               <View style={{ flex: 0.8 }}>
@@ -56,25 +42,12 @@ class SearchInput extends React.Component {
                   placeholder="Search..."
                   value={this.state.searchInput}
                   onDeleteSearch={() => {
-                    const currentList =
-                      this.props.activeTab === "Pending"
-                        ? this.props.pending
-                        : this.props.activeTab === "Accepted"
-                        ? this.props.accepted
-                        : this.props.rejected;
-                    this.search(currentList, "");
+                    this.setState({ searchInput: "" });
+                    this.props.onSearch("");
                   }}
                   onChangeText={(text) => {
-                    const currentList =
-                      this.props.activeTab === "Pending"
-                        ? this.props.pending
-                        : this.props.activeTab === "Accepted"
-                        ? this.props.accepted
-                        : this.props.rejected;
-                    this.search(currentList, text);
-                  }}
-                  onBlur={() => {
-                    Keyboard.dismiss();
+                    this.setState({ searchInput: text });
+                    this.props.onSearch(text);
                   }}
                 />
               </View>

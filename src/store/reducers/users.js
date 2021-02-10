@@ -13,6 +13,7 @@ import {
   VERIFY_EMAIL_ERROR,
   UPDATE_SETTINGS,
 } from "../actions/users";
+import { DONE } from "../actions/contacts";
 
 const initialState = {
   user: null,
@@ -34,7 +35,6 @@ const usersReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload,
-        loading: false,
       };
     case ERROR:
       return {
@@ -98,6 +98,12 @@ const usersReducer = (state = initialState, action) => {
         ...state,
         loading: true,
       };
+    case DONE: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
     case UPDATE_SETTINGS: {
       return {
         user: {
@@ -106,6 +112,7 @@ const usersReducer = (state = initialState, action) => {
         },
       };
     }
+
     default:
       return state;
   }

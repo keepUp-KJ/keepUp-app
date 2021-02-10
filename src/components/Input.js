@@ -45,6 +45,7 @@ const Input = (props) => {
           onBlur={() => {
             setBorderColor(Colors.secondary);
             setBorderWidth(0.5);
+            Keyboard.dismiss();
           }}
           style={{
             fontFamily: "regular",

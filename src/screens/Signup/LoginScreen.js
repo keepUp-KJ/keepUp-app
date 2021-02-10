@@ -164,7 +164,7 @@ class LoginScreen extends React.Component {
                 btnColor={Colors.primaryColor}
                 fontSize={12}
                 bold
-                loading={this.state.loading}
+                loading={this.props.loading}
                 onPress={this.loginHandler}
               />
             </KeyboardAwareScrollView>
